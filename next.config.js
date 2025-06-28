@@ -1,51 +1,46 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Skip TypeScript type checking during build
+  // Ignore TypeScript and ESLint errors during build
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
     // your project has type errors.
+    // !! WARN !!
     ignoreBuildErrors: true,
   },
-  // Skip ESLint during build
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
+    // Disable ESLint during build for now
     ignoreDuringBuilds: true,
   },
+  
   // Configure React Strict Mode
   reactStrictMode: true,
   
+  // Generate static HTML export for Netlify
+  output: 'export',
+  
+  // Disable image optimization for static export
   images: {
+    unoptimized: true,
     domains: [
       'lh3.googleusercontent.com',
-      'storage.googleapis.com',
-      'www.gstatic.com',
-      'encrypted-tbn0.gstatic.com',
-      'images.pexels.com',
+      'avatars.githubusercontent.com',
+      'github.com',
       'images.unsplash.com',
-      'placehold.co',
-      'via.placeholder.com',
-      'picsum.photos',
-      'fastly.picsum.photos'
-    ],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**.googleusercontent.com',
-      },
-      {
-        protocol: 'https',
-        hostname: 'storage.googleapis.com',
-      },
-      {
-        protocol: 'https',
-        hostname: '**.gstatic.com',
-      },
+      'source.unsplash.com',
+      'randomuser.me',
+      'storage.googleapis.com',
+      'www.gstatic.com'
     ],
   },
-  // Enable React Strict Mode
-  reactStrictMode: true,
+  
+  // Disable server components for static export
+  experimental: {
+    appDir: true,
+  },
+  
+  // Disable server actions for static export
+  serverActions: false,
 };
 
 module.exports = nextConfig;
