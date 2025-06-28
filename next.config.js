@@ -34,13 +34,7 @@ const nextConfig = {
     ],
   },
   
-  // Disable server components for static export
-  experimental: {
-    appDir: true,
-  },
-  
-  // Disable server actions for static export
-  serverActions: false,
+  // No experimental features needed for static export
 };
 
 module.exports = nextConfig;

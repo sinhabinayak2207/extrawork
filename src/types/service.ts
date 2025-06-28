@@ -15,4 +15,15 @@ export interface Service {
     question: string;
     answer: string;
   }[];
+  features: {
+    title: string;
+    description: string;
+    icon: string;
+  }[];
+  caseStudies?: {
+    title: string;
+    description: string;
+    image: string;
+    tags: string[];
+  }[];
 }

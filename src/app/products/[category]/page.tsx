@@ -3,7 +3,14 @@ import { notFound } from "next/navigation";
 import MainLayout from "../../../components/layout/MainLayout";
 import Section from "../../../components/ui/Section";
 import ProductCard from "../../../components/products/ProductCard";
-import { getCategory, getProducts } from "../../../lib/api/mockData";
+import { getCategory, getProducts, categories } from "../../../lib/api/mockData";
+
+// Generate static paths for all categories
+export async function generateStaticParams() {
+  return categories.map(category => ({
+    category: category.slug
+  }));
+}
 
 // Generate metadata for the page
 export async function generateMetadata({ params }: { params: { category: string } }): Promise<Metadata> {
