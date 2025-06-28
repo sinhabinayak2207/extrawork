@@ -1,0 +1,18 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NETLIFY_NEXT_PLUGIN = "true"
+  NODE_VERSION = "18"
+  NPM_FLAGS = "--legacy-peer-deps"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# For handling dynamic routes in Next.js
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/next"
+  status = 200
+  force = true

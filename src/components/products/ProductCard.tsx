@@ -1,0 +1,91 @@
+"use client";
+
+import Image from 'next/image';
+import Link from 'next/link';
+
+interface ProductCardProps {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  category: string;
+  slug: string;
+  featured?: boolean;
+}
+
+const ProductCard = ({
+  id,
+  title,
+  description,
+  image,
+  category,
+  slug,
+  featured = false,
+}: ProductCardProps) => {
+  // Create mailto link with product title in subject
+  const mailtoLink = `mailto:info@b2bshowcase.com?subject=Inquiry about ${title}&body=I am interested in learning more about ${title}.`;
+
+  return (
+    <div 
+      className={`bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full transform hover:-translate-y-1 animate-fadeIn ${featured ? 'border-2 border-blue-500' : ''}`}
+    >
+      <div className="relative h-48 sm:h-64 overflow-hidden">
+        <Image
+          src={image || 'https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'}
+          alt={title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 hover:scale-105"
+        />
+        {featured && (
+          <div className="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+            Featured
+          </div>
+        )}
+      </div>
+      
+      <div className="p-5 flex flex-col flex-grow">
+        <div className="flex-grow">
+          <div className="flex justify-between items-start mb-2">
+            <h3 className="text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors duration-300">
+              <Link href={`/products/${category}/${slug}`}>
+                {title}
+              </Link>
+            </h3>
+            <span className="text-xs font-medium bg-gray-100 text-gray-600 px-2 py-1 rounded">
+              {category}
+            </span>
+          </div>
+          
+          <p className="text-gray-600 mb-4 line-clamp-3">
+            {description}
+          </p>
+        </div>
+        
+        <div className="flex justify-between items-center pt-3 border-t border-gray-100">
+          <Link 
+            href={`/products/${category}/${slug}`}
+            className="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center transition-colors duration-300"
+          >
+            View Details
+            <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+          
+          <a 
+            href={mailtoLink}
+            className="text-sm font-medium text-gray-700 hover:text-blue-600 flex items-center transition-colors duration-300"
+          >
+            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            Inquire
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductCard;
