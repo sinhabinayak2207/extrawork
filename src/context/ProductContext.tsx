@@ -1,6 +1,9 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { updateProductImage as updateFirebaseProductImage } from '@/lib/firebase-db';
+import { replaceImage } from '@/lib/firebase-storage';
+import { Product as FirebaseProduct } from '@/lib/firebase-db';
 
 export interface Product {
   id: string;
@@ -12,6 +15,8 @@ export interface Product {
   featured?: boolean;
   updatedAt: Date;
   updatedBy: string;
+  price?: number;
+  specifications?: Record<string, string>;
 }
 
 // Initial product data
@@ -89,67 +94,81 @@ type ProductContextType = {
   updateProductImage: (productId: string, newImageUrl: string, updatedBy: string) => void;
 };
 
-const ProductContext = createContext<ProductContextType | undefined>(undefined);
+const ProductContext = createContext<ProductContextType | null>(null);
 
 export const ProductProvider = ({ children }: { children: React.ReactNode }) => {
-  // Try to load products from localStorage on initial render
-  const [products, setProducts] = useState<Product[]>(() => {
-    // Always initialize with our default products first
-    let productsToUse = [...initialProducts];
-    
-    // Then try to load from localStorage if available
-    if (typeof window !== 'undefined') {
-      try {
-        const savedProducts = localStorage.getItem('products');
-        if (savedProducts) {
-          // Parse dates properly
-          const parsed = JSON.parse(savedProducts);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            productsToUse = parsed.map((product: any) => ({
-              ...product,
-              updatedAt: new Date(product.updatedAt)
-            }));
-            console.log('Loaded products from localStorage:', productsToUse);
-          } else {
-            console.log('No valid products in localStorage, using defaults');
-            // Force save the initial products to localStorage
-            localStorage.setItem('products', JSON.stringify(initialProducts));
-          }
-        } else {
-          console.log('No products in localStorage, using defaults');
-          // Force save the initial products to localStorage
-          localStorage.setItem('products', JSON.stringify(initialProducts));
-        }
-      } catch (e) {
-        console.error('Error parsing products from localStorage:', e);
-        // Force save the initial products to localStorage
-        localStorage.setItem('products', JSON.stringify(initialProducts));
-      }
-    }
-    return productsToUse;
-  });
-  
-  // Initialize products on client side
+  // Set initial products from localStorage or defaults
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+
   useEffect(() => {
-    // This ensures we load from localStorage after hydration
-    if (typeof window !== 'undefined') {
+    const fetchProducts = async () => {
       try {
-        const savedProducts = localStorage.getItem('products');
-        if (savedProducts) {
-          const parsed = JSON.parse(savedProducts);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            const hydratedProducts = parsed.map((product: any) => ({
-              ...product,
-              updatedAt: new Date(product.updatedAt)
-            }));
-            setProducts(hydratedProducts);
-            console.log('Hydrated products from localStorage after mount');
+        // Import dynamically to avoid SSR issues
+        const { getAllProducts } = await import('@/lib/firebase-db');
+        const firebaseProducts = await getAllProducts();
+        
+        if (firebaseProducts && firebaseProducts.length > 0) {
+          // Convert Firebase products to our Product type format
+          const formattedProducts = firebaseProducts.map((product: FirebaseProduct) => ({
+            ...product,
+            slug: product.name.toLowerCase().replace(/\s+/g, '-'), // Generate slug from name
+            featured: false, // Default value for featured
+            updatedAt: product.updatedAt instanceof Date ? product.updatedAt : new Date(product.updatedAt)
+          }));
+          
+          setProducts(formattedProducts as Product[]);
+          console.log('Fetched products from Firebase:', formattedProducts);
+          
+          // Update localStorage with the latest data
+          localStorage.setItem('products', JSON.stringify(formattedProducts));
+        } else {
+          // Fallback to localStorage
+          try {
+            const storedProducts = localStorage.getItem('products');
+            if (storedProducts) {
+              const parsedProducts = JSON.parse(storedProducts);
+              
+              // Convert string dates back to Date objects
+              const hydratedProducts = parsedProducts.map((product: any) => ({
+                ...product,
+                updatedAt: new Date(product.updatedAt)
+              }));
+              
+              setProducts(hydratedProducts);
+              console.log('Hydrated products from localStorage:', hydratedProducts);
+            } else {
+              // If no products in localStorage, use initial data
+              setProducts(initialProducts);
+              console.log('No products in Firebase or localStorage, using initial data');
+            }
+          } catch (e) {
+            console.error('Error hydrating products from localStorage:', e);
+            setProducts(initialProducts);
           }
         }
-      } catch (e) {
-        console.error('Error hydrating products from localStorage:', e);
+      } catch (error) {
+        console.error('Error fetching products from Firebase:', error);
+        
+        // Fallback to localStorage
+        try {
+          const storedProducts = localStorage.getItem('products');
+          if (storedProducts) {
+            const parsedProducts = JSON.parse(storedProducts);
+            setProducts(parsedProducts.map((product: any) => ({
+              ...product,
+              updatedAt: new Date(product.updatedAt)
+            })));
+          } else {
+            setProducts(initialProducts);
+          }
+        } catch (e) {
+          console.error('Error hydrating products from localStorage:', e);
+          setProducts(initialProducts);
+        }
       }
-    }
+    };
+    
+    fetchProducts();
   }, []);
 
   // Save products to localStorage whenever they change
@@ -170,37 +189,45 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
     }
   }, [products]);
 
-  const updateProductImage = (productId: string, newImageUrl: string, updatedBy: string) => {
-    // Create a new array with the updated product
-    const updatedProducts = products.map(product => 
-      product.id === productId 
-        ? { ...product, imageUrl: newImageUrl, updatedAt: new Date(), updatedBy } 
-        : product
-    );
-    
-    // Update state with the new products array
-    setProducts(updatedProducts);
-    
-    // Force save to localStorage immediately
-    if (typeof window !== 'undefined') {
-      try {
-        // Stringify with proper date handling
-        localStorage.setItem('products', JSON.stringify(updatedProducts));
-        console.log('Immediately saved updated products to localStorage');
-        
-        // Verify the save worked by reading it back
-        const savedProducts = localStorage.getItem('products');
-        if (savedProducts) {
-          const parsed = JSON.parse(savedProducts);
-          console.log('Verification - Read back from localStorage:', parsed);
-          
-          // Force a re-render by dispatching a custom event
-          const event = new CustomEvent('productUpdated', { detail: { productId } });
-          window.dispatchEvent(event);
+  const updateProductImage = async (productId: string, newImageUrl: string, updatedBy: string) => {
+    try {
+      // Update Firebase first
+      console.log('Updating product image in Firebase:', productId);
+      // Import dynamically to avoid SSR issues
+      const { updateProductImage: updateFirebaseImage } = await import('@/lib/firebase-db');
+      await updateFirebaseImage(productId, newImageUrl, updatedBy);
+      console.log('Product image updated in Firebase');
+      
+      // Find the product to update
+      const updatedProducts = products.map(product => {
+        if (product.id === productId) {
+          return {
+            ...product,
+            imageUrl: newImageUrl,
+            updatedAt: new Date(),
+            updatedBy
+          };
         }
-      } catch (e) {
-        console.error('Error saving updated products to localStorage:', e);
+        return product;
+      });
+      
+      // Update state
+      setProducts(updatedProducts);
+      
+      // Update localStorage
+      localStorage.setItem('products', JSON.stringify(updatedProducts));
+      
+      // Dispatch a custom event to notify other components
+      if (typeof window !== 'undefined') {
+        const event = new CustomEvent('productUpdated', { detail: { productId } });
+        window.dispatchEvent(event);
+        console.log('Dispatched productUpdated event from ProductContext');
       }
+      
+      return true; // Return success
+    } catch (error) {
+      console.error('Error updating product image:', error);
+      return false; // Return failure
     }
   };
 

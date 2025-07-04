@@ -1,22 +1,23 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
-import { useProducts } from '@/context/ProductContext';
 import Image from 'next/image';
-import { FcUpload } from 'react-icons/fc';
-
-
-
-
-
-
-
+import { useProducts } from '@/context/ProductContext';
+import { useAuth } from '@/context/AuthContext';
+import MainLayout from '@/components/layout/MainLayout';
+import { replaceImage } from '@/lib/firebase-storage';
 
 export default function ChangesPage() {
   const { user, isMasterAdmin } = useAuth();
-  const { products, updateProductImage } = useProducts();
+  const productContext = useProducts();
+  
+  if (!productContext) {
+    console.error('ProductContext is null in ChangesPage');
+    return <MainLayout><div className="p-8">Error loading products</div></MainLayout>;
+  }
+  
+  const { products, updateProductImage } = productContext;
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -68,63 +69,52 @@ export default function ChangesPage() {
   }, [products]);
 
   const handleImageUpload = async (productId: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    // Initialize upload status for this product
+    if (!event.target.files || event.target.files.length === 0) return;
+    
+    const file = event.target.files[0];
+    
+    // Set loading state for this product
     setUploadStatus(prev => ({
       ...prev,
       [productId]: { loading: true, error: null, success: false }
     }));
-
+    
     try {
-      // For demo purposes, we'll just read the file as a data URL
-      const reader = new FileReader();
+      // Generate a unique path for the image in Firebase Storage
+      const storagePath = `products/${productId}/${Date.now()}_${file.name}`;
       
-      reader.onload = (e) => {
-        try {
-          const newImageUrl = e.target?.result as string;
-          
-          // Update the product image in our global context
-          updateProductImage(productId, newImageUrl, user?.email || 'unknown');
-  
-          // Set success status
-          setUploadStatus(prev => ({
-            ...prev,
-            [productId]: { loading: false, error: null, success: true }
-          }));
-  
-          // Reset success status after 3 seconds
-          setTimeout(() => {
-            setUploadStatus(prev => ({
-              ...prev,
-              [productId]: { loading: false, error: null, success: false }
-            }));
-          }, 3000);
-        } catch (innerErr: any) {
-          console.error('Error in FileReader onload:', innerErr);
-          setUploadStatus(prev => ({
-            ...prev,
-            [productId]: { loading: false, error: innerErr.message || 'Failed to process image', success: false }
-          }));
-        }
-      };
+      // Upload the image to Firebase Storage
+      console.log('Uploading image to Firebase Storage:', storagePath);
+      const downloadURL = await replaceImage(file, storagePath);
+      console.log('Image uploaded successfully, URL:', downloadURL);
       
-      reader.onerror = () => {
-        setUploadStatus(prev => ({
-          ...prev,
-          [productId]: { loading: false, error: 'Failed to read file', success: false }
-        }));
-      };
+      // Update the product in our global context which will also update Firebase
+      await updateProductImage(productId, downloadURL, user?.email || 'unknown');
       
-      // Start reading the file as a data URL
-      reader.readAsDataURL(file);
-
-    } catch (err: any) {
-      console.error('Error uploading image:', err);
+      // Update status
       setUploadStatus(prev => ({
         ...prev,
-        [productId]: { loading: false, error: err.message || 'Failed to upload image', success: false }
+        [productId]: { loading: false, error: null, success: true }
+      }));
+      
+      // Reset success after 3 seconds
+      setTimeout(() => {
+        setUploadStatus(prev => {
+          // Only reset if it's still showing success
+          if (prev[productId]?.success) {
+            return {
+              ...prev,
+              [productId]: { loading: false, error: null, success: false }
+            };
+          }
+          return prev;
+        });
+      }, 3000);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      setUploadStatus(prev => ({
+        ...prev,
+        [productId]: { loading: false, error: 'Failed to upload image', success: false }
       }));
     }
   };
@@ -160,7 +150,7 @@ export default function ChangesPage() {
         )}
 
         <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-          {products.map((product) => (
+          {products.map((product: any) => (
             <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="relative h-64 w-full">
                 <Image
@@ -182,8 +172,12 @@ export default function ChangesPage() {
                     htmlFor={`image-upload-${product.id}`}
                     className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md cursor-pointer transition-colors w-full"
                   >
-                    <FcUpload className="w-5 h-5" />
-                    {uploadStatus[product.id]?.loading ? 'Uploading...' : 'Replace Image'}
+                    <div className="flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                      </svg>
+                      {uploadStatus[product.id]?.loading ? 'Uploading...' : 'Replace Image'}
+                    </div>
                   </label>
                   <input
                     id={`image-upload-${product.id}`}

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useProducts } from '@/context/ProductContext';
-import { FcUpload } from 'react-icons/fc';
+import { FiUpload, FiCheck, FiAlertCircle } from 'react-icons/fi';
+import { replaceImage } from '@/lib/firebase-storage';
 
 interface ImageUploaderProps {
   productId: string;
@@ -12,54 +13,65 @@ interface ImageUploaderProps {
 
 export default function ImageUploader({ productId, currentImageUrl }: ImageUploaderProps) {
   const { user, isMasterAdmin } = useAuth();
-  const { updateProductImage } = useProducts();
+  const productContext = useProducts();
+  
+  if (!productContext) {
+    console.error('ProductContext is null in ImageUploader');
+    return null;
+  }
+  
+  const { updateProductImage } = productContext;
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   // If user is not master admin, don't render anything
   if (!isMasterAdmin) {
     return null;
   }
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    try {
-      setIsUploading(true);
-      setError(null);
-      setSuccess(false);
-
-      // For demo purposes, we'll just read the file as a data URL
-      const reader = new FileReader();
-      
-      reader.onload = (e) => {
-        const newImageUrl = e.target?.result as string;
-        
-        // Update the product in our global context
-        updateProductImage(productId, newImageUrl, user?.email || 'unknown');
-        
-        setSuccess(true);
-        
-        // Explicitly dispatch a product update event
-        const event = new CustomEvent('productUpdated', { detail: { productId } });
-        window.dispatchEvent(event);
-        console.log('Dispatched productUpdated event from ImageUploader');
-        
-        // Don't reload the page, changes will be reflected immediately
-        setTimeout(() => {
-          setSuccess(false);
-        }, 1500);
-      };
-      
-      reader.readAsDataURL(file);
+    if (!event.target.files || event.target.files.length === 0) return;
+    
+    const file = event.target.files[0];
+    
+    // Only allow images
+    if (!file.type.startsWith('image/')) {
+      setError('Please select an image file');
       return;
-
-      // Success is now handled in the FileReader onload callback
-    } catch (err) {
-      console.error('Error uploading image:', err);
-      setError('Failed to upload image. Please try again.');
+    }
+    
+    setIsUploading(true);
+    setError(null);
+    setSuccess(false);
+    
+    try {
+      // Generate a unique path for the image in Firebase Storage
+      const storagePath = `products/${productId}/${Date.now()}_${file.name}`;
+      
+      // Upload the image to Firebase Storage
+      console.log('Uploading image to Firebase Storage:', storagePath);
+      const downloadURL = await replaceImage(file, storagePath);
+      console.log('Image uploaded successfully, URL:', downloadURL);
+      
+      // Update the product in our global context which will also update Firebase
+      await updateProductImage(productId, downloadURL, user?.email || 'unknown');
+      
+      setSuccess(true);
+      
+      // Explicitly dispatch a product update event
+      const event = new CustomEvent('productUpdated', { detail: { productId } });
+      window.dispatchEvent(event);
+      console.log('Dispatched productUpdated event from ImageUploader');
+      
+      // Don't reload the page, changes will be reflected immediately
+      setTimeout(() => {
+        setSuccess(false);
+      }, 1500);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      setError('Failed to upload image');
     } finally {
       setIsUploading(false);
     }
@@ -67,13 +79,18 @@ export default function ImageUploader({ productId, currentImageUrl }: ImageUploa
 
   return (
     <div className="mt-2">
-      <label 
-        htmlFor={`image-upload-${productId}`}
-        className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md cursor-pointer transition-colors"
+      <button
+        onClick={() => fileInputRef.current?.click()}
+        className={`flex items-center justify-center w-8 h-8 rounded-full ${isUploading ? 'bg-gray-300' : 'bg-blue-100 hover:bg-blue-200'} transition-colors`}
+        disabled={isUploading}
+        title="Upload new image"
       >
-        <FcUpload className="w-5 h-5" />
-        {isUploading ? 'Uploading...' : 'Replace Image'}
-      </label>
+        {isUploading ? (
+          <div className="w-4 h-4 border-2 border-gray-500 border-t-transparent rounded-full animate-spin"></div>
+        ) : (
+          <FiUpload className="text-blue-500" size={18} />
+        )}
+      </button>
       <input
         id={`image-upload-${productId}`}
         type="file"

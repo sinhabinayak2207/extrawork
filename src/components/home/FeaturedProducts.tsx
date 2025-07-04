@@ -5,6 +5,7 @@ import ProductCard from '../products/ProductCard';
 import Section from '../ui/Section';
 import Button from '../ui/Button';
 import { useProducts } from '@/context/ProductContext';
+import { Product } from '@/context/ProductContext';
 
 
 
@@ -13,8 +14,17 @@ import { useProducts } from '@/context/ProductContext';
 
 const FeaturedProducts = () => {
   // Get products from context
-  const { products } = useProducts();
+  const productContext = useProducts();
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [forceUpdate, setForceUpdate] = useState(0);
+  
+  // Get products from context
+  useEffect(() => {
+    if (productContext && productContext.products) {
+      const featured = productContext.products.filter(product => product.featured);
+      setFeaturedProducts(featured);
+    }
+  }, [productContext, forceUpdate]);
   
   // Listen for product updates
   useEffect(() => {
@@ -31,9 +41,6 @@ const FeaturedProducts = () => {
     };
   }, []);
   
-  // Filter featured products
-  const featuredProducts = products.filter(product => product.featured);
-
   return (
     <Section background="white" id="featured-products">
       <div className="text-center mb-12">
