@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useProducts } from '@/context/ProductContext';
 import { useAuth } from '@/context/AuthContext';
 import MainLayout from '@/components/layout/MainLayout';
-import { replaceImage } from '@/lib/firebase-storage';
+import { replaceImage } from '@/lib/cloudinary';
 
 export default function ChangesPage() {
   const { user, isMasterAdmin } = useAuth();
@@ -80,12 +80,12 @@ export default function ChangesPage() {
     }));
     
     try {
-      // Generate a unique path for the image in Firebase Storage
-      const storagePath = `products/${productId}/${Date.now()}_${file.name}`;
+      // Generate a folder path for Cloudinary
+      const folder = `products/${productId}`;
       
-      // Upload the image to Firebase Storage
-      console.log('Uploading image to Firebase Storage:', storagePath);
-      const downloadURL = await replaceImage(file, storagePath);
+      // Upload the image to Cloudinary
+      console.log('Uploading image to Cloudinary:', folder);
+      const downloadURL = await replaceImage(file, folder);
       console.log('Image uploaded successfully, URL:', downloadURL);
       
       // Update the product in our global context which will also update Firebase

@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { updateProductImage as updateFirebaseProductImage } from '@/lib/firebase-db';
-import { replaceImage } from '@/lib/firebase-storage';
 import { Product as FirebaseProduct } from '@/lib/firebase-db';
 
 export interface Product {
