@@ -168,10 +168,10 @@ export default function AboutPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { value: '15+', label: 'Years Experience' },
-              { value: '500+', label: 'Happy Clients' },
-              { value: '50+', label: 'Team Members' },
-              { value: '30+', label: 'Countries Served' },
+              { value: '10+', label: 'Years Experience' },
+              { value: '300+', label: 'Happy Clients' },
+              { value: '30+', label: 'Team Members' },
+              { value: '20+', label: 'Countries Served' },
             ].map((stat, index) => (
               <motion.div 
                 key={index}
@@ -230,10 +230,10 @@ export default function AboutPage() {
               <div className="relative bg-white p-8 rounded-2xl shadow-xl">
                 <h2 className="text-3xl font-bold mb-6 text-gray-800">Our Story</h2>
                 <p className="text-gray-800 mb-4 leading-relaxed">
-                  Founded in 2010, B2B Showcase has grown from a small trading company to a global provider of premium industrial products and services. Our journey began with a simple mission: to connect businesses with high-quality materials and solutions that drive growth and innovation.
+                  We are a leading freight forwarder & NVOCC agent established in 2014. We serve Far East, South East, Gulf trade lanes, Europe, US, Latin America, and Oceania trade lanes with a strong presence at all major locations in Gujarat.
                 </p>
                 <p className="text-gray-800 mb-6 leading-relaxed">
-                  Today, we serve clients across 30+ countries, offering a diverse range of products and specialized services tailored to meet the unique needs of businesses in various industries. Our success is built on strong relationships with suppliers, manufacturers, and clients worldwide.
+                  We offer FCL and LCL ocean freight services with offices across Gujarat, providing comprehensive to-and-from Gujarat global ocean freight solutions. Our expertise and dedicated service have established us as a trusted partner in international logistics.
                 </p>
                 <div className="space-y-4">
                   {["Global Supply Chain Network", "Quality Assurance", "Sustainable Practices", "24/7 Customer Support"].map((item, index) => (
@@ -640,7 +640,7 @@ export default function AboutPage() {
         </div>
       </Section>
       
-      {/* Team Section */}
+      {/* Affiliated Companies Section */}
       <Section background="light" paddingY="xl" className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50/50"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -652,7 +652,7 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
             >
-              Meet Our Leadership Team
+              Affiliated Companies
             </motion.h2>
             <motion.p 
               className="text-xl text-gray-600 max-w-2xl mx-auto"
@@ -661,77 +661,94 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              Passionate professionals dedicated to driving innovation and delivering exceptional results
+              We proudly partner with industry leaders to deliver exceptional quality and service
             </motion.p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                name: 'Alex Johnson',
-                role: 'CEO & Founder',
-                image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80',
-                bio: 'Visionary leader with 15+ years of industry experience'
-              },
-              {
-                name: 'Sarah Williams',
-                role: 'CTO',
-                image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80',
-                bio: 'Technology expert driving innovation and digital transformation'
-              },
-              {
-                name: 'Michael Chen',
-                role: 'Head of Operations',
-                image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80',
-                bio: 'Operations specialist ensuring seamless business processes'
-              },
-              {
-                name: 'Emily Rodriguez',
-                role: 'Head of Customer Success',
-                image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=300&q=80',
-                bio: 'Customer advocate focused on delivering exceptional experiences'
-              },
-            ].map((member, index) => (
-              <motion.div
-                key={index}
-                className="group relative bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -10 }}
-              >
-                <div className="relative h-64 overflow-hidden">
+          {/* Logo Carousel */}
+          <motion.div 
+            className="w-full overflow-hidden relative py-10"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            {/* Primary logos row with animation */}
+            <div className="flex space-x-16 animate-marquee">
+              {[
+                {
+                  name: 'IFFCO',
+                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/IFFCO_logo.svg/1200px-IFFCO_logo.svg.png'
+                },
+                {
+                  name: 'Maruti Suzuki',
+                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Maruti_Suzuki_Logo.svg/2560px-Maruti_Suzuki_Logo.svg.png'
+                },
+                {
+                  name: 'Tata Group',
+                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Tata_logo.svg/2560px-Tata_logo.svg.png'
+                },
+                {
+                  name: 'Reliance Industries',
+                  logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/57/Reliance_Industries_Logo.svg/1200px-Reliance_Industries_Logo.svg.png'
+                },
+                {
+                  name: 'Mahindra Group',
+                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Mahindra_Rise_Logo.png/1200px-Mahindra_Rise_Logo.png'
+                },
+                {
+                  name: 'Adani Group',
+                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Adani_2012_logo.svg/1200px-Adani_2012_logo.svg.png'
+                },
+              ].map((company, index) => (
+                <div key={index} className="flex-shrink-0 h-16 w-40 flex items-center justify-center bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-3">
                   <img 
-                    src={member.image} 
-                    alt={member.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    src={company.logo} 
+                    alt={company.name} 
+                    className="max-h-full max-w-full object-contain"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-                    <p className="text-white text-sm">{member.bio}</p>
-                  </div>
                 </div>
-                <div className="p-6 text-center">
-                  <h4 className="text-xl font-bold text-gray-900">{member.name}</h4>
-                  <p className="text-blue-600">{member.role}</p>
-                  <div className="mt-4 flex justify-center space-x-3">
-                    <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors">
-                      <span className="sr-only">LinkedIn</span>
-                      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-                      </svg>
-                    </a>
-                    <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
-                      <span className="sr-only">Twitter</span>
-                      <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/>
-                      </svg>
-                    </a>
-                  </div>
+              ))}
+            </div>
+            
+            {/* Duplicate for seamless loop */}
+            <div className="flex space-x-16 animate-marquee2 absolute top-10">
+              {[
+                {
+                  name: 'IFFCO',
+                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/IFFCO_logo.svg/1200px-IFFCO_logo.svg.png'
+                },
+                {
+                  name: 'Maruti Suzuki',
+                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Maruti_Suzuki_Logo.svg/2560px-Maruti_Suzuki_Logo.svg.png'
+                },
+                {
+                  name: 'Tata Group',
+                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Tata_logo.svg/2560px-Tata_logo.svg.png'
+                },
+                {
+                  name: 'Reliance Industries',
+                  logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/57/Reliance_Industries_Logo.svg/1200px-Reliance_Industries_Logo.svg.png'
+                },
+                {
+                  name: 'Mahindra Group',
+                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Mahindra_Rise_Logo.png/1200px-Mahindra_Rise_Logo.png'
+                },
+                {
+                  name: 'Adani Group',
+                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Adani_2012_logo.svg/1200px-Adani_2012_logo.svg.png'
+                },
+              ].map((company, index) => (
+                <div key={index} className="flex-shrink-0 h-16 w-40 flex items-center justify-center bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-3">
+                  <img 
+                    src={company.logo} 
+                    alt={company.name} 
+                    className="max-h-full max-w-full object-contain"
+                  />
                 </div>
-              </motion.div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </Section>
       

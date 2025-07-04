@@ -5,6 +5,7 @@ import FixViewport from "@/components/layout/FixViewport";
 import GlobalStyles from "@/components/layout/GlobalStyles";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import Providers from "@/components/providers/Providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -46,13 +47,15 @@ export default function RootLayout({
       <body className={`${inter.variable} ${poppins.variable} font-sans antialiased`}>
         <GlobalStyles />
         <FixViewport />
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-grow pt-20">
-            {children}
-          </main>
-          <Footer />
-        </div>
+        <Providers>
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main className="flex-grow pt-20">
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </Providers>
       </body>
     </html>
   );

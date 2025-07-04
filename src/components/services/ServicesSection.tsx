@@ -5,65 +5,65 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Section from '../ui/Section';
 
-// Mock data for services (will be replaced with CMS data later)
+// Services data based on client requirements
 const services = [
   {
     id: '1',
-    title: 'Bulk Sourcing',
-    slug: 'bulk-sourcing',
-    description: 'We source high-quality bulk commodities from trusted suppliers worldwide to meet your specific requirements.',
-    icon: '/icons/sourcing.svg',
-    image: 'https://images.pexels.com/photos/4481259/pexels-photo-4481259.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    color: 'from-purple-500 to-indigo-600',
-    hoverColor: 'group-hover:from-purple-600 group-hover:to-indigo-700'
+    title: 'CUSTOM HOUSE BROKERAGE',
+    slug: 'custom-house-brokerage',
+    description: 'Having license on Pan India basis with direct online EDI connectivity with Indian Customs. We offer expertise on clearance of many types of cargos with skilled staff for Documentation, Operation, Customer service, Accounts, and Sales for both Air and Sea.',
+    icon: '/icons/customs.svg',
+    image: 'https://images.pexels.com/photos/1427541/pexels-photo-1427541.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    color: 'from-blue-500 to-indigo-600',
+    hoverColor: 'group-hover:from-blue-600 group-hover:to-indigo-700'
   },
   {
     id: '2',
-    title: 'Quality Control',
-    slug: 'quality-control',
-    description: 'Our rigorous quality control processes ensure that all products meet international standards and specifications.',
-    icon: '/icons/quality.svg',
-    image: 'https://images.pexels.com/photos/3862130/pexels-photo-3862130.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    color: 'from-pink-500 to-rose-600',
-    hoverColor: 'group-hover:from-pink-600 group-hover:to-rose-700'
+    title: 'PACKING & TRANSPORTATION',
+    slug: 'packing-transportation',
+    description: 'We use the latest methods of packing cargo including palletization for necessary cargo and arrange for fumigation. We have our own vehicles to pick up and deliver cargo in and around Chennai, Bangalore, Krishnapatnam, Tuticorin, etc.',
+    icon: '/icons/packaging.svg',
+    image: 'https://images.pexels.com/photos/2226458/pexels-photo-2226458.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    color: 'from-green-500 to-emerald-600',
+    hoverColor: 'group-hover:from-green-600 group-hover:to-emerald-700'
   },
   {
     id: '3',
-    title: 'Global Logistics',
-    slug: 'global-logistics',
-    description: 'Our comprehensive logistics solutions ensure timely delivery of your products to any destination worldwide.',
-    icon: '/icons/logistics.svg',
-    image: 'https://images.pexels.com/photos/2226458/pexels-photo-2226458.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    color: 'from-blue-500 to-cyan-600',
-    hoverColor: 'group-hover:from-blue-600 group-hover:to-cyan-700'
+    title: 'SEA FREIGHT',
+    slug: 'sea-freight',
+    description: 'We arrange regular sailings on reliable liner vessels to & from major ports (20ft, 40ft, any special equipment) and handle LCL consignments to & from major ports worldwide.',
+    icon: '/icons/ship.svg',
+    image: 'https://images.pexels.com/photos/1554646/pexels-photo-1554646.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    color: 'from-cyan-500 to-blue-600',
+    hoverColor: 'group-hover:from-cyan-600 group-hover:to-blue-700'
   },
   {
     id: '4',
-    title: 'Custom Packaging',
-    slug: 'custom-packaging',
-    description: 'We offer tailored packaging solutions to protect your products and enhance your brand identity.',
-    icon: '/icons/packaging.svg',
-    image: 'https://images.pexels.com/photos/5025669/pexels-photo-5025669.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    title: 'AIR FREIGHT',
+    slug: 'air-freight',
+    description: 'We offer attractive rates to & from major airports on reliable airlines with committed transit times to ensure your cargo reaches its destination efficiently.',
+    icon: '/icons/plane.svg',
+    image: 'https://images.pexels.com/photos/358319/pexels-photo-358319.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    color: 'from-sky-500 to-blue-600',
+    hoverColor: 'group-hover:from-sky-600 group-hover:to-blue-700'
+  },
+  {
+    id: '5',
+    title: 'WAREHOUSING AND DISTRIBUTION',
+    slug: 'warehousing-distribution',
+    description: 'We handle all types of cargo with attractive payment options. We provide covered warehouse spaces in India and abroad for tailor-made services, with separate warehouses for Airfreight and Ocean Freight Cargo, and offer distribution and door delivery to all possible corners of the country.',
+    icon: '/icons/warehouse.svg',
+    image: 'https://images.pexels.com/photos/236705/pexels-photo-236705.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     color: 'from-amber-500 to-orange-600',
     hoverColor: 'group-hover:from-amber-600 group-hover:to-orange-700'
   },
   {
-    id: '5',
-    title: 'Market Analysis',
-    slug: 'market-analysis',
-    description: 'Our expert team provides in-depth market analysis to help you make informed business decisions.',
-    icon: '/icons/analysis.svg',
-    image: 'https://images.pexels.com/photos/7567434/pexels-photo-7567434.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    color: 'from-emerald-500 to-green-600',
-    hoverColor: 'group-hover:from-emerald-600 group-hover:to-green-700'
-  },
-  {
     id: '6',
-    title: 'Consulting Services',
-    slug: 'consulting-services',
-    description: 'Get professional advice and strategic guidance to optimize your operations and maximize profitability.',
-    icon: '/icons/consulting.svg',
-    image: 'https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    title: 'DOCUMENTATION & INSURANCE',
+    slug: 'documentation-insurance',
+    description: 'We provide expertise in documentation with faster service and offer insurance services for both inbound & outbound cargos by Air & Sea to ensure your shipments are protected.',
+    icon: '/icons/document.svg',
+    image: 'https://images.pexels.com/photos/95916/pexels-photo-95916.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     color: 'from-red-500 to-rose-600',
     hoverColor: 'group-hover:from-red-600 group-hover:to-rose-700'
   }
@@ -200,7 +200,7 @@ const ServicesSection = () => {
                   </div>
                   
                   <Link 
-                    href={`/services/${service.slug}`}
+                    href="/about"
                     className={`mt-8 inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${service.color} text-white font-medium transition-transform hover:scale-105`}
                   >
                     Learn More

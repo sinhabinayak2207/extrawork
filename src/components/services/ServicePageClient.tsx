@@ -95,7 +95,7 @@ export default function ServicePageClient({ service }: { service: Service }) {
           initial="hidden"
           animate="visible"
         >
-          {service.features.map((feature: {title: string; description: string; icon: string}, index: number) => (
+          {service.features?.map((feature, index) => (
             <motion.div 
               key={index}
               className="bg-white rounded-xl p-6 shadow-md"
@@ -117,13 +117,13 @@ export default function ServicePageClient({ service }: { service: Service }) {
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">Our Process</h2>
             <div className="max-w-4xl mx-auto">
-              {service.process.map((step: {title: string; description: string}, index: number) => (
+              {service.process?.map((step: {title: string; description: string}, index: number) => (
                 <div key={index} className="flex mb-8 last:mb-0">
                   <div className="mr-6 flex-shrink-0">
                     <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl font-bold">
                       {index + 1}
                     </div>
-                    {index < service.process.length - 1 && (
+                    {index < (service.process?.length || 0) - 1 && (
                       <div className="w-0.5 h-full bg-blue-600 mx-auto mt-2"></div>
                     )}
                   </div>

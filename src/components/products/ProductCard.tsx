@@ -2,6 +2,8 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import ImageUploader from './ImageUploader';
+import { useAuth } from '@/context/AuthContext';
 
 interface ProductCardProps {
   id: string;
@@ -22,6 +24,8 @@ const ProductCard = ({
   slug,
   featured = false,
 }: ProductCardProps) => {
+  // Get auth context to check if user is master admin
+  const { isMasterAdmin } = useAuth();
   // Create mailto link with product title in subject
   const mailtoLink = `mailto:info@b2bshowcase.com?subject=Inquiry about ${title}&body=I am interested in learning more about ${title}.`;
 
@@ -36,7 +40,9 @@ const ProductCard = ({
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 hover:scale-105"
+          priority
         />
+        {isMasterAdmin && <ImageUploader productId={id} currentImageUrl={image} />}
         {featured && (
           <div className="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
             Featured

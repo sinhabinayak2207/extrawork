@@ -15,7 +15,7 @@ export interface Service {
     question: string;
     answer: string;
   }[];
-  features: {
+  features?: {
     title: string;
     description: string;
     icon: string;

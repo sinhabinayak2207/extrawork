@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '@/context/AuthContext';
 
 interface NavLink {
   name: string;
@@ -14,26 +15,20 @@ interface NavLink {
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
   const [isClient, setIsClient] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const pathname = usePathname();
   const router = useRouter();
+  
+  // Use our authentication context
+  const { user, logout: signOut, isAdmin, isMasterAdmin } = useAuth();
+  const isLoggedIn = !!user;
 
-  // Set client-side flag and check auth status
+  // Set client-side flag
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsClient(true);
-      
-      // Only access localStorage on client-side
-      if (typeof window !== 'undefined') {
-        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        const email = localStorage.getItem('userEmail') || '';
-        setIsLoggedIn(loggedIn);
-        setUserEmail(email);
-      }
-    }, 100); // Increased delay to ensure proper hydration
+    }, 100); // Delay to ensure proper hydration
     
     return () => clearTimeout(timer);
   }, []);
@@ -57,12 +52,9 @@ const Navbar = () => {
     setOpenDropdown(prevState => prevState === name ? null : name);
   };
   
-  const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userEmail');
-    setIsLoggedIn(false);
-    setUserEmail('');
-    router.push('/');
+  const handleLogout = async () => {
+    await signOut();
+    setOpenDropdown(null);
   };
 
   // Don't render full navbar during SSR
@@ -74,6 +66,7 @@ const Navbar = () => {
     scrolled ? 'bg-black shadow-lg' : 'bg-black'
   } py-1`;
   
+  // Add CHANGES link only for master admin
   const navLinks: NavLink[] = [
     { name: 'Home', path: '/' },
     { 
@@ -91,6 +84,7 @@ const Navbar = () => {
     { name: 'About', path: '/about' },
     { name: 'Achievements', path: '/achievements' },
     { name: 'Contact', path: '/contact' },
+    ...(isMasterAdmin ? [{ name: 'CHANGES', path: '/admin/changes' }] : []),
   ];
   
   return (
@@ -206,7 +200,7 @@ const Navbar = () => {
                     >
                       <span className="sr-only">Open user menu</span>
                       <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-600 to-teal-400 flex items-center justify-center text-white font-bold">
-                        {userEmail.charAt(0).toUpperCase()}
+                        {user?.displayName ? user.displayName.charAt(0).toUpperCase() : user?.email?.charAt(0).toUpperCase()}
                       </div>
                     </button>
                     <AnimatePresence>
@@ -221,9 +215,21 @@ const Navbar = () => {
                           <div className="px-4 py-2 border-b border-gray-100">
                             <p className="text-sm text-gray-700">Signed in as</p>
                             <p className="text-sm font-medium text-gray-900 truncate">
-                              {userEmail}
+                              {user?.displayName || user?.email}
                             </p>
+                            {isAdmin && (
+                              <p className="text-xs text-blue-600 font-semibold mt-1">Admin</p>
+                            )}
                           </div>
+                          {isAdmin && (
+                            <Link
+                              href="/admin"
+                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              onClick={() => setOpenDropdown(null)}
+                            >
+                              Admin Panel
+                            </Link>
+                          )}
                           <button
                             onClick={handleLogout}
                             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -322,7 +328,18 @@ const Navbar = () => {
             <div className="pt-4 pb-3 border-t border-gray-700">
               {isLoggedIn ? (
                 <div className="px-5">
-                  <div className="text-base font-medium text-white">{userEmail}</div>
+                  <div className="text-base font-medium text-white">{user?.displayName || user?.email}</div>
+                  {isAdmin && (
+                    <div className="text-xs text-blue-400 font-semibold">Admin</div>
+                  )}
+                  {isAdmin && (
+                    <Link
+                      href="/admin"
+                      className="mt-3 w-full flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
                   <button
                     onClick={handleLogout}
                     className="mt-3 w-full flex justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700"

@@ -16,8 +16,28 @@ const nextConfig = {
   // Configure React Strict Mode
   reactStrictMode: true,
   
-  // Generate static HTML export for Netlify
+  // Generate static HTML export for Firebase hosting
   output: 'export',
+  
+  // Disable API routes for static export
+  distDir: process.env.BUILD_DIR || '.next',
+  
+  // Configure static generation
+  generateBuildId: async () => {
+    return 'build-' + new Date().toISOString().replace(/[\:\.-]/g, '-');
+  },
+  
+  // For static export, we need to handle authentication differently
+  experimental: {
+    // Remove server components configuration as it's not compatible with static export
+  },
+  
+  // Disable middleware for static export
+  skipMiddlewareUrlNormalize: true,
+  skipTrailingSlashRedirect: true,
+  
+  // Disable trailing slashes for Firebase hosting compatibility
+  trailingSlash: false,
   
   // Disable image optimization for static export
   images: {
@@ -30,7 +50,8 @@ const nextConfig = {
       'source.unsplash.com',
       'randomuser.me',
       'storage.googleapis.com',
-      'www.gstatic.com'
+      'www.gstatic.com',
+      'firebasestorage.googleapis.com'
     ],
   },
   

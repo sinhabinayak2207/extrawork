@@ -1,25 +1,59 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Section from '../ui/Section';
 import Button from '../ui/Button';
 
 const AboutSection = () => {
-
+  // Global business network images for carousel
+  const globalImages = [
+    "https://images.unsplash.com/photo-1480714378408-67c7579f3cac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "https://images.unsplash.com/photo-1529400971008-f566de0e6dfc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "https://images.unsplash.com/photo-1507208773393-40d9fc670acf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80",
+    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80"
+  ];
+  
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  // Auto-rotate images every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % globalImages.length);
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Section background="white" id="about">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        {/* Image Side */}
+        {/* Image Side - Carousel */}
         <div className="relative animate-fadeIn">
           <div className="relative h-[400px] md:h-[500px] w-full rounded-xl overflow-hidden">
-            <Image
-              src="https://images.unsplash.com/photo-1480714378408-67c7579f3cac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-              alt="Global Business Network"
-              fill
-              className="object-cover"
-              priority
-            />
+            {globalImages.map((src, index) => (
+              <Image
+                key={index}
+                src={src}
+                alt={`Global Business Network ${index + 1}`}
+                fill
+                className={`object-cover transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}
+                priority={index === 0}
+              />
+            ))}
+            
+            {/* Carousel Indicators */}
+            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-10">
+              {globalImages.map((_, index) => (
+                <button 
+                  key={index}
+                  onClick={() => setCurrentImageIndex(index)}
+                  className={`w-2 h-2 rounded-full transition-all ${currentImageIndex === index ? 'bg-white w-4' : 'bg-white/50'}`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
           
           {/* Stats Card */}
@@ -78,7 +112,7 @@ const AboutSection = () => {
             ))}
           </div>
           
-          <Button href="/contact" size="lg">
+          <Button href="/about" size="lg">
             Learn More About Us
           </Button>
         </div>
