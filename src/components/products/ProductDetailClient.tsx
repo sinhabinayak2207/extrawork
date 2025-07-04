@@ -30,6 +30,20 @@ export default function ProductDetailClient({ serverProduct, productSlug, catego
     if (products.length > 0) {
       setLoading(false);
     }
+    
+    // Listen for product update events
+    const handleProductUpdate = () => {
+      console.log('Product update detected in ProductDetailClient');
+      // Force re-render by setting loading to true briefly
+      setLoading(true);
+      setTimeout(() => setLoading(false), 100);
+    };
+    
+    window.addEventListener('productUpdated', handleProductUpdate);
+    
+    return () => {
+      window.removeEventListener('productUpdated', handleProductUpdate);
+    };
   }, [products]);
   
   if (loading) {

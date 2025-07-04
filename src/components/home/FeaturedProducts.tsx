@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import ProductCard from '../products/ProductCard';
 import Section from '../ui/Section';
 import Button from '../ui/Button';
@@ -13,6 +14,22 @@ import { useProducts } from '@/context/ProductContext';
 const FeaturedProducts = () => {
   // Get products from context
   const { products } = useProducts();
+  const [forceUpdate, setForceUpdate] = useState(0);
+  
+  // Listen for product updates
+  useEffect(() => {
+    const handleProductUpdate = () => {
+      console.log('Product update detected in FeaturedProducts');
+      // Force re-render
+      setForceUpdate(prev => prev + 1);
+    };
+    
+    window.addEventListener('productUpdated', handleProductUpdate);
+    
+    return () => {
+      window.removeEventListener('productUpdated', handleProductUpdate);
+    };
+  }, []);
   
   // Filter featured products
   const featuredProducts = products.filter(product => product.featured);

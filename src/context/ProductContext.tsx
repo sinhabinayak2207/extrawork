@@ -171,33 +171,37 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
   }, [products]);
 
   const updateProductImage = (productId: string, newImageUrl: string, updatedBy: string) => {
-    setProducts(prevProducts => {
-      const updatedProducts = prevProducts.map(product => 
-        product.id === productId 
-          ? { ...product, imageUrl: newImageUrl, updatedAt: new Date(), updatedBy } 
-          : product
-      );
-      
-      // Force save to localStorage immediately
-      if (typeof window !== 'undefined') {
-        try {
-          // Stringify with proper date handling
-          localStorage.setItem('products', JSON.stringify(updatedProducts));
-          console.log('Immediately saved updated products to localStorage');
+    // Create a new array with the updated product
+    const updatedProducts = products.map(product => 
+      product.id === productId 
+        ? { ...product, imageUrl: newImageUrl, updatedAt: new Date(), updatedBy } 
+        : product
+    );
+    
+    // Update state with the new products array
+    setProducts(updatedProducts);
+    
+    // Force save to localStorage immediately
+    if (typeof window !== 'undefined') {
+      try {
+        // Stringify with proper date handling
+        localStorage.setItem('products', JSON.stringify(updatedProducts));
+        console.log('Immediately saved updated products to localStorage');
+        
+        // Verify the save worked by reading it back
+        const savedProducts = localStorage.getItem('products');
+        if (savedProducts) {
+          const parsed = JSON.parse(savedProducts);
+          console.log('Verification - Read back from localStorage:', parsed);
           
-          // Verify the save worked by reading it back
-          const savedProducts = localStorage.getItem('products');
-          if (savedProducts) {
-            const parsed = JSON.parse(savedProducts);
-            console.log('Verification - Read back from localStorage:', parsed);
-          }
-        } catch (e) {
-          console.error('Error saving updated products to localStorage:', e);
+          // Force a re-render by dispatching a custom event
+          const event = new CustomEvent('productUpdated', { detail: { productId } });
+          window.dispatchEvent(event);
         }
+      } catch (e) {
+        console.error('Error saving updated products to localStorage:', e);
       }
-      
-      return updatedProducts;
-    });
+    }
   };
 
   return (

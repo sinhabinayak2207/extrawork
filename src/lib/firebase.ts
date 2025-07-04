@@ -15,11 +15,25 @@ const firebaseConfig = {
   measurementId: "G-8VTK238F1Y"
 };
 
+// Additional authorized domains for Firebase Auth
+const authorizedDomains = [
+  'localhost',
+  'b2bshowcase-199a8.web.app',
+  'b2bshowcase-199a8.firebaseapp.com',
+  'octopus-sh.netlify.app'
+];
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase Authentication and get a reference to the service
 export const auth = getAuth(app);
+
+// Set authorized domains for authentication
+if (typeof window !== 'undefined') {
+  // This is a client-side only operation
+  auth.useDeviceLanguage();
+}
 
 // Initialize Firebase Storage and get a reference to the service
 export const storage = getStorage(app);

@@ -37,6 +37,34 @@ export default function ChangesPage() {
       setError('No products found. Please check your data source.');
       setLoading(false);
     }
+    
+    // Listen for product update events
+    const handleProductUpdate = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      console.log('Product update detected in admin changes page:', customEvent.detail);
+      
+      // Clear any upload status for the updated product
+      if (customEvent.detail && customEvent.detail.productId) {
+        setUploadStatus(prev => ({
+          ...prev,
+          [customEvent.detail.productId]: { loading: false, error: null, success: true }
+        }));
+        
+        // Reset success status after 3 seconds
+        setTimeout(() => {
+          setUploadStatus(prev => ({
+            ...prev,
+            [customEvent.detail.productId]: { loading: false, error: null, success: false }
+          }));
+        }, 3000);
+      }
+    };
+    
+    window.addEventListener('productUpdated', handleProductUpdate);
+    
+    return () => {
+      window.removeEventListener('productUpdated', handleProductUpdate);
+    };
   }, [products]);
 
   const handleImageUpload = async (productId: string, event: React.ChangeEvent<HTMLInputElement>) => {

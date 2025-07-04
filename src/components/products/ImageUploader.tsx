@@ -42,6 +42,11 @@ export default function ImageUploader({ productId, currentImageUrl }: ImageUploa
         
         setSuccess(true);
         
+        // Explicitly dispatch a product update event
+        const event = new CustomEvent('productUpdated', { detail: { productId } });
+        window.dispatchEvent(event);
+        console.log('Dispatched productUpdated event from ImageUploader');
+        
         // Don't reload the page, changes will be reflected immediately
         setTimeout(() => {
           setSuccess(false);

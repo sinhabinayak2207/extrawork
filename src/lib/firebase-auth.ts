@@ -12,9 +12,24 @@ const firebaseConfig = {
   measurementId: "G-8VTK238F1Y"
 };
 
+// List of authorized domains for Firebase Auth
+const authorizedDomains = [
+  'localhost',
+  'b2bshowcase-199a8.web.app',
+  'b2bshowcase-199a8.firebaseapp.com',
+  'octopus-sh.netlify.app'
+];
+
 // Initialize Firebase
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
+
+// Configure auth settings
+if (typeof window !== 'undefined') {
+  // This is a client-side only operation
+  auth.useDeviceLanguage();
+}
+
 const googleProvider = new GoogleAuthProvider();
 
 // Helper function to sign in with Google

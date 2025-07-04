@@ -30,6 +30,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   
   // Listen for auth state changes
   useEffect(() => {
+    // Log current domain for debugging
+    if (typeof window !== 'undefined') {
+      console.log('Current domain:', window.location.hostname);
+    }
+    
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);

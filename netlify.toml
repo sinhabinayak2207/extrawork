@@ -6,6 +6,7 @@
   NODE_VERSION = "18"
   NPM_FLAGS = "--legacy-peer-deps"
   NETLIFY_NEXT_PLUGIN_SKIP = "true"  # Skip the Next.js plugin since we're using static export
+  FIREBASE_AUTH_DOMAIN = "b2bshowcase-199a8.firebaseapp.com"
 
 # Handle all routes for client-side navigation
 [[redirects]]
@@ -17,6 +18,13 @@
   from = "/*"
   to = "/index.html"
   status = 200
+  
+# Handle Firebase Authentication
+[[redirects]]
+  from = "/.auth/*"
+  to = "https://b2bshowcase-199a8.firebaseapp.com/.auth/:splat"
+  status = 200
+  force = true
 
 # Handle static assets
 [[headers]]
