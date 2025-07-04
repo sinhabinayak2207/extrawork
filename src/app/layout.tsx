@@ -21,6 +21,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://octopus-sh.netlify.app'),
   title: {
     template: "%s | B2B Showcase",
     default: "B2B Showcase - Premium Bulk Products for Global Businesses",
@@ -28,6 +29,22 @@ export const metadata: Metadata = {
   description: "B2B Showcase offers high-quality bulk commodities and raw materials including rice, seeds, oil, raw polymers, and bromine salt for businesses worldwide.",
   keywords: ["B2B", "bulk products", "commodities", "rice", "seeds", "oil", "raw polymers", "bromine salt", "wholesale"],
   authors: [{ name: "B2B Showcase Team" }],
+  openGraph: {
+    type: 'website',
+    url: 'https://octopus-sh.netlify.app',
+    title: 'B2B Showcase - Premium Bulk Products for Global Businesses',
+    description: 'High-quality bulk commodities and raw materials for businesses worldwide',
+    siteName: 'B2B Showcase',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@b2bshowcase',
+    title: 'B2B Showcase - Premium Bulk Products',
+    description: 'High-quality bulk commodities and raw materials for businesses worldwide',
+  },
+  alternates: {
+    canonical: 'https://octopus-sh.netlify.app',
+  },
   creator: "B2B Showcase",
   publisher: "B2B Showcase",
   formatDetection: {
