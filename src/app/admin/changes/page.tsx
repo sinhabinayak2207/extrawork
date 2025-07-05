@@ -21,7 +21,7 @@ export default function ChangesPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [uploadStatus, setUploadStatus] = useState<Record<string, { loading: boolean; error: string | null; success: boolean }>>({});
+  const [uploadStatus, setUploadStatus] = useState<Record<string, { isUploading: boolean, error: string | null, success: boolean }>>({});
 
   useEffect(() => {
     // Redirect if not master admin
@@ -68,15 +68,22 @@ export default function ChangesPage() {
     };
   }, [products]);
 
-  const handleImageUpload = async (productId: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || event.target.files.length === 0) return;
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>, productId: string) => {
+    if (!event.target.files || event.target.files.length === 0) {
+      return;
+    }
     
     const file = event.target.files[0];
+    console.log('File selected for upload:', file.name, 'Size:', file.size, 'Type:', file.type);
     
-    // Set loading state for this product
+    // Update upload status
     setUploadStatus(prev => ({
       ...prev,
-      [productId]: { loading: true, error: null, success: false }
+      [productId]: {
+        isUploading: true,
+        error: null,
+        success: false
+      }
     }));
     
     try {
@@ -86,35 +93,60 @@ export default function ChangesPage() {
       // Upload the image to Cloudinary
       console.log('Uploading image to Cloudinary:', folder);
       const downloadURL = await replaceImage(file, folder);
-      console.log('Image uploaded successfully, URL:', downloadURL);
+      console.log('Image uploaded successfully to Cloudinary, URL:', downloadURL);
       
       // Update the product in our global context which will also update Firebase
-      await updateProductImage(productId, downloadURL, user?.email || 'unknown');
-      
-      // Update status
-      setUploadStatus(prev => ({
-        ...prev,
-        [productId]: { loading: false, error: null, success: true }
-      }));
-      
-      // Reset success after 3 seconds
-      setTimeout(() => {
-        setUploadStatus(prev => {
-          // Only reset if it's still showing success
-          if (prev[productId]?.success) {
-            return {
+      if (productContext) {
+        console.log('Updating product in Firestore with new image URL');
+        const success = await productContext.updateProductImage(productId, downloadURL, user?.email || 'unknown');
+        
+        if (success) {
+          console.log('Product successfully updated in Firestore and context');
+          
+          // Update upload status
+          setUploadStatus(prev => ({
+            ...prev,
+            [productId]: {
+              isUploading: false,
+              error: null,
+              success: true
+            }
+          }));
+          
+          // Dispatch a custom event to notify other components
+          const event = new CustomEvent('productUpdated', { 
+            detail: { productId, imageUrl: downloadURL } 
+          });
+          window.dispatchEvent(event);
+          console.log('Dispatched productUpdated event with new image URL');
+          
+          // Reset success status after 2 seconds
+          setTimeout(() => {
+            setUploadStatus(prev => ({
               ...prev,
-              [productId]: { loading: false, error: null, success: false }
-            };
-          }
-          return prev;
-        });
-      }, 3000);
+              [productId]: {
+                ...prev[productId],
+                success: false
+              }
+            }));
+          }, 2000);
+        } else {
+          throw new Error('Failed to update product in database');
+        }
+      } else {
+        throw new Error('Product context is not available');
+      }
     } catch (error) {
       console.error('Error uploading image:', error);
+      
+      // Update upload status with error
       setUploadStatus(prev => ({
         ...prev,
-        [productId]: { loading: false, error: 'Failed to upload image', success: false }
+        [productId]: {
+          isUploading: false,
+          error: error instanceof Error ? error.message : 'Failed to upload image',
+          success: false
+        }
       }));
     }
   };
@@ -176,15 +208,15 @@ export default function ChangesPage() {
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                       </svg>
-                      {uploadStatus[product.id]?.loading ? 'Uploading...' : 'Replace Image'}
+                      {uploadStatus[product.id]?.isUploading ? 'Uploading...' : 'Replace Image'}
                     </div>
                   </label>
                   <input
                     id={`image-upload-${product.id}`}
                     type="file"
                     accept="image/*"
-                    onChange={(e) => handleImageUpload(product.id, e)}
-                    disabled={uploadStatus[product.id]?.loading}
+                    onChange={(e) => handleImageUpload(e, product.id)}
+                    disabled={uploadStatus[product.id]?.isUploading}
                     className="hidden"
                   />
                   

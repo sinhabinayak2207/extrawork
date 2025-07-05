@@ -14,17 +14,16 @@ interface ImageUploaderProps {
 export default function ImageUploader({ productId, currentImageUrl }: ImageUploaderProps) {
   const { user, isMasterAdmin } = useAuth();
   const productContext = useProducts();
-  
-  if (!productContext) {
-    console.error('ProductContext is null in ImageUploader');
-    return null;
-  }
-  
-  const { updateProductImage } = productContext;
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // If product context is not available, log error but don't return null yet
+  // We'll check again in the upload handler
+  if (!productContext) {
+    console.error('ProductContext is null in ImageUploader');
+  }
   
   // If user is not master admin, don't render anything
   if (!isMasterAdmin) {
@@ -32,18 +31,16 @@ export default function ImageUploader({ productId, currentImageUrl }: ImageUploa
   }
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || event.target.files.length === 0) return;
-    
-    const file = event.target.files[0];
-    
-    // Only allow images
-    if (!file.type.startsWith('image/')) {
-      setError('Please select an image file');
+    if (!event.target.files || event.target.files.length === 0) {
+      console.log('No file selected');
       return;
     }
     
+    const file = event.target.files[0];
+    console.log('File selected:', file.name, 'Size:', file.size, 'Type:', file.type);
+    
     setIsUploading(true);
-    setError(null);
+    setError('');
     setSuccess(false);
     
     try {
@@ -53,25 +50,33 @@ export default function ImageUploader({ productId, currentImageUrl }: ImageUploa
       // Upload the image to Cloudinary
       console.log('Uploading image to Cloudinary:', folder);
       const downloadURL = await replaceImage(file, folder);
-      console.log('Image uploaded successfully, URL:', downloadURL);
+      console.log('Image uploaded successfully to Cloudinary, URL:', downloadURL);
       
       // Update the product in our global context which will also update Firebase
-      await updateProductImage(productId, downloadURL, user?.email || 'unknown');
-      
-      setSuccess(true);
-      
-      // Explicitly dispatch a product update event
-      const event = new CustomEvent('productUpdated', { detail: { productId } });
-      window.dispatchEvent(event);
-      console.log('Dispatched productUpdated event from ImageUploader');
-      
-      // Don't reload the page, changes will be reflected immediately
-      setTimeout(() => {
-        setSuccess(false);
-      }, 1500);
+      if (productContext) {
+        console.log('Updating product in Firestore with new image URL');
+        const success = await productContext.updateProductImage(productId, downloadURL, user?.email || 'unknown');
+        
+        if (success) {
+          console.log('Product successfully updated in Firestore and context');
+          
+          // Dispatch a custom event to notify other components
+          const event = new CustomEvent('productUpdated', { detail: { productId, imageUrl: downloadURL } });
+          window.dispatchEvent(event);
+          console.log('Dispatched productUpdated event with new image URL');
+          
+          setSuccess(true);
+        } else {
+          console.error('Failed to update product in Firestore');
+          setError('Failed to update product in database. Image was uploaded but not saved.');
+        }
+      } else {
+        console.error('Product context is null, cannot update product');
+        setError('Failed to update product: Context is not available');
+      }
     } catch (error) {
-      console.error('Error uploading image:', error);
-      setError('Failed to upload image');
+      console.error('Error in image upload process:', error);
+      setError(`Failed to upload image: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsUploading(false);
     }
