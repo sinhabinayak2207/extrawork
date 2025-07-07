@@ -1,7 +1,11 @@
 {
-  "buildCommand": "next build",
-  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "framework": null,
   "outputDirectory": "out",
   "regions": ["bom1"],
-  "trailingSlash": true
+  "trailingSlash": true,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "cleanUrls": true
 }
