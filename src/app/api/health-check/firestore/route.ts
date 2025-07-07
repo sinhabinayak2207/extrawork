@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 
-// Configure this route for static export
-export const dynamic = "force-static";
+// Configure this route for dynamic rendering with revalidation
+export const dynamic = "force-dynamic";
+export const revalidate = 60; // Revalidate this route every 60 seconds
 import { getFirestore } from 'firebase/firestore';
 import { collection, getDocs, limit, query } from 'firebase/firestore';
 import { initializeApp, getApps, getApp } from 'firebase/app';

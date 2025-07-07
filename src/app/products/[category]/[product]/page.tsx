@@ -5,8 +5,8 @@ import { getProductById, getAllProducts, Product } from "../../../../lib/firebas
 import ProductDetailClient from "@/components/products/ProductDetailClient";
 import { categories } from "../../../../lib/api/mockData"; // Keep categories from mock data for now
 
-// For static exports, we need to handle new products client-side
-// We'll create a fallback page for new products
+// Enable Incremental Static Regeneration for dynamic products
+export const revalidate = 60; // Revalidate this page every 60 seconds
 
 // Generate static paths for all products
 export async function generateStaticParams() {
@@ -110,7 +110,10 @@ export async function generateStaticParams() {
       'rice-product', 'wheat-product', 'grain-product', 'food-item', 'drink-item',
       'test-product-1', 'test-product-2', 'sample-product-1', 'sample-product-2',
       // Add specific product slugs that we know exist
-      'g-xfh'
+      'g-xfh', 'rice-testing',
+      // Add common patterns for product slugs
+      'rice-1', 'rice-2', 'rice-3', 'rice-product', 'rice-test', 'rice-new',
+      'test-rice', 'new-rice', 'premium-rice', 'basmati-rice', 'jasmine-rice'
     ];
     
     categories.forEach(category => {
