@@ -6,7 +6,8 @@ import ProductDetailClient from "@/components/products/ProductDetailClient";
 import { categories } from "../../../../lib/api/mockData"; // Keep categories from mock data for now
 
 // Make this page dynamic to handle new products added after build time
-export const dynamic = "force-dynamic";
+export const dynamic = "auto";
+export const revalidate = 0; // Revalidate on every request
 
 // For static exports, we need to handle new products client-side
 // We'll create a fallback page for new products

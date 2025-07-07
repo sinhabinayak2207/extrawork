@@ -16,10 +16,7 @@ const nextConfig = {
   // Configure React Strict Mode
   reactStrictMode: true,
   
-  // Generate static HTML export for Firebase hosting
-  output: 'export',
-  
-  // Disable API routes for static export
+  // Using server-side rendering for Vercel deployment
   distDir: process.env.BUILD_DIR || '.next',
   
   // Configure static generation
@@ -27,14 +24,13 @@ const nextConfig = {
     return 'build-' + new Date().toISOString().replace(/[\:\.-]/g, '-');
   },
   
-  // For static export, we need to handle authentication differently
+  // Enable experimental features for server components
   experimental: {
-    // Remove server components configuration as it's not compatible with static export
+    // Empty for now
   },
   
-  // Disable middleware for static export
-  skipMiddlewareUrlNormalize: true,
-  skipTrailingSlashRedirect: true,
+  // External packages for server components
+  serverExternalPackages: ['firebase-admin'],
   
   // Disable trailing slashes for Firebase hosting compatibility
   trailingSlash: false,
