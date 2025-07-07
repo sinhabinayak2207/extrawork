@@ -16,8 +16,8 @@ const nextConfig = {
   // Configure React Strict Mode
   reactStrictMode: true,
   
-  // Use hybrid approach for static export with dynamic fallback
-  output: process.env.NEXT_OUTPUT || 'export',
+  // Generate static HTML export for Firebase hosting
+  output: 'export',
   
   // Build directory
   distDir: process.env.BUILD_DIR || '.next',
