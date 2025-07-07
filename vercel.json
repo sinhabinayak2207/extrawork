@@ -1,14 +1,7 @@
 {
   "buildCommand": "next build",
   "framework": "nextjs",
-  "outputDirectory": ".next",
+  "outputDirectory": "out",
   "regions": ["bom1"],
-  "routes": [
-    { "src": "/admin/changes", "dest": "/admin/changes" },
-    { "src": "/admin/products", "dest": "/admin/products" },
-    { "src": "/admin/categories", "dest": "/admin/categories" },
-    { "src": "/products/rice/rice-testing", "dest": "/products/rice/rice-testing" },
-    { "src": "/products/rice/(.*)", "dest": "/products/rice/$1" },
-    { "src": "/products/(.*)", "dest": "/products/$1" }
-  ]
+  "trailingSlash": true
 }

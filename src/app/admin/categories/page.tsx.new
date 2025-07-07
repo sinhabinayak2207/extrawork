@@ -9,7 +9,6 @@ import { useAuth } from '@/context/AuthContext';
 import { useCategories, Category } from '@/context/CategoryContext';
 import { logToSystem } from '@/lib/logger';
 import SystemLog from '@/components/SystemLog';
-import { uploadImage } from '@/lib/cloudinary';
 
 // Interface for system log entries
 interface SystemLogEntry {
@@ -87,11 +86,15 @@ export default function CategoriesManagement() {
         [categoryId]: { isUploading: true, error: null, success: false }
       }));
       
-      // Upload to Cloudinary with category folder
-      const downloadURL = await uploadImage(file, `categories/${categoryId}`);
+      // Create a storage reference
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(`categories/${categoryId}`);
       
-      // Log the new image URL
-      logToSystem(`Uploaded image to Cloudinary: ${downloadURL}`, 'success');
+      // Upload file
+      await fileRef.put(file);
+      
+      // Get download URL
+      const downloadURL = await fileRef.getDownloadURL();
       
       // Update category in Firestore
       await updateCategory(categoryId, { imageUrl: downloadURL });
@@ -175,11 +178,15 @@ export default function CategoriesManagement() {
     setLoading(true);
     
     try {
-      // Upload to Cloudinary with category folder
-      const downloadURL = await uploadImage(selectedFile, `categories/${selectedCategory}`);
+      // Create a storage reference
+      const storageRef = storage.ref();
+      const fileRef = storageRef.child(`categories/${selectedCategory}`);
       
-      // Log the new image URL
-      logToSystem(`Uploaded image to Cloudinary: ${downloadURL}`, 'success');
+      // Upload file
+      await fileRef.put(selectedFile);
+      
+      // Get download URL
+      const downloadURL = await fileRef.getDownloadURL();
       
       // Update category in Firestore
       await updateCategory(selectedCategory, { imageUrl: downloadURL });

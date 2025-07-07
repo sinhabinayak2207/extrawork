@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import MainLayout from "../../../../components/layout/MainLayout";
 import { getProductById, getAllProducts, Product } from "../../../../lib/firebase-db";
 import ProductDetailClient from "@/components/products/ProductDetailClient";
+import DynamicProductLoader from "@/components/products/DynamicProductLoader";
 import { categories } from "../../../../lib/api/mockData"; // Keep categories from mock data for now
 
 // Use auto dynamic mode which works with both static export and dynamic rendering
@@ -187,23 +188,13 @@ export default async function ProductPage({ params }: { params: { product: strin
       console.log(`Product with slug ${productSlug} not found in Firebase, creating fallback`);
       
       // Instead of showing 404, create a fallback server product
-      // This allows the client component to attempt to fetch the product
-      const fallbackServerProduct = {
-        id: 'unknown',
-        title: 'Loading Product...',
-        image: '/placeholder-product.jpg',
-        description: 'Loading product details...',
-        price: 0,
-        category: params.category,
-        specifications: {}
-      };
-      
+      // Use our DynamicProductLoader to attempt to load the product client-side
+      // This will work even for products created after deployment
       return (
         <MainLayout>
-          <ProductDetailClient 
-            serverProduct={fallbackServerProduct} 
-            productSlug={productSlug} 
-            category={params.category} 
+          <DynamicProductLoader 
+            productId={productSlug} 
+            categoryId={params.category} 
           />
         </MainLayout>
       );

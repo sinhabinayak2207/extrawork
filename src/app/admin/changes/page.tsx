@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
+import AdminAuthWrapper from '@/components/admin/AdminAuthWrapper';
 import AddProductForm from '@/components/admin/AddProductForm';
 import DeleteProductModal from '@/components/admin/DeleteProductModal';
 import { useRouter } from 'next/navigation';
@@ -29,6 +30,7 @@ export default function ChangesPage() {
   const { user, isMasterAdmin } = useAuth();
   const productContext = useProducts();
   const categoryContext = useCategories();
+  const router = useRouter();
   
   if (!productContext) {
     console.error('ProductContext is null in ChangesPage');
@@ -42,7 +44,6 @@ export default function ChangesPage() {
   
   const { products, updateProductImage, updateFeaturedStatus, updateStockStatus } = productContext;
   const { categories, updateCategoryFeaturedStatus, updateCategoryImage } = categoryContext;
-  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [uploadStatus, setUploadStatus] = useState<Record<string, { isUploading: boolean, error: string | null, success: boolean }>>({});
@@ -295,17 +296,18 @@ export default function ChangesPage() {
   }
 
   return (
-    <MainLayout>
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Admin Dashboard
-          </h1>
-          <p className="mt-3 text-xl text-gray-500">
-            Manage your B2B showcase system
-          </p>
-        </div>
+    <AdminAuthWrapper requireMasterAdmin={true}>
+      <MainLayout>
+        <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12">
+              <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                Admin Dashboard
+              </h1>
+              <p className="mt-3 text-xl text-gray-500">
+                Manage your B2B showcase system
+              </p>
+            </div>
         
         
         
@@ -601,5 +603,6 @@ export default function ChangesPage() {
         />
       )}
     </MainLayout>
+    </AdminAuthWrapper>
   );
 }
