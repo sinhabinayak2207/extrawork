@@ -108,7 +108,9 @@ export async function generateStaticParams() {
       'test', 'sample', 'demo', 'new', 'premium', 'basic', 'pro',
       'rice', 'wheat', 'grain', 'food', 'drink', 'clothing', 'electronics',
       'rice-product', 'wheat-product', 'grain-product', 'food-item', 'drink-item',
-      'test-product-1', 'test-product-2', 'sample-product-1', 'sample-product-2'
+      'test-product-1', 'test-product-2', 'sample-product-1', 'sample-product-2',
+      // Add specific product slugs that we know exist
+      'g-xfh'
     ];
     
     categories.forEach(category => {

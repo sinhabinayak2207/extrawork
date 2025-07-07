@@ -114,7 +114,7 @@ const ProductCard = ({
       <div className="p-5 flex flex-col flex-grow">
         <div className="flex-grow">
           <div className="flex justify-between items-start mb-2">
-            <h3 className="text-xl font-bold text-gray-800 hover:text-blue-600 transition-colors duration-300">
+            <h3 className="text-xl font-bold text-black hover:text-blue-600 transition-colors duration-300">
               <Link href={`/products/${category}/${slug}`}>
                 {title}
               </Link>
