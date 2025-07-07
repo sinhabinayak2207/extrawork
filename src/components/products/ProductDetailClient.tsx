@@ -239,6 +239,9 @@ export default function ProductDetailClient({ serverProduct, productSlug, catego
           
           {/* Product Details */}
           <div>
+            {/* Product Title - Added for better visibility */}
+            <h1 className="text-3xl font-bold text-black mb-4">{displayProduct.title}</h1>
+            
             <div className="flex flex-wrap items-center justify-between mb-4">
               <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
                 {displayProduct.category.charAt(0).toUpperCase() + displayProduct.category.slice(1).replace(/-/g, ' ')}
