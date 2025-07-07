@@ -1,0 +1,9 @@
+{
+  "buildCommand": "NEXT_OUTPUT=standalone next build",
+  "framework": "nextjs",
+  "outputDirectory": ".next",
+  "regions": ["bom1"],
+  "env": {
+    "NEXT_OUTPUT": "standalone"
+  }
+}

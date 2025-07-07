@@ -5,9 +5,10 @@ import { getProductById, getAllProducts, Product } from "../../../../lib/firebas
 import ProductDetailClient from "@/components/products/ProductDetailClient";
 import { categories } from "../../../../lib/api/mockData"; // Keep categories from mock data for now
 
-// For static exports, we need to handle new products client-side
-// We'll create a fallback page for new products
-// This will still work with dynamic rendering in development mode
+// Use auto dynamic mode which works with both static export and dynamic rendering
+// This allows Next.js to decide the best rendering strategy
+export const dynamic = 'auto';
+export const revalidate = 60; // Revalidate every 60 seconds in dynamic mode
 
 // Generate static paths for all products
 export async function generateStaticParams() {

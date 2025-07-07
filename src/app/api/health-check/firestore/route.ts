@@ -1,7 +1,10 @@
 import { NextResponse } from 'next/server';
 
-// Configure this route for static export
-export const dynamic = "force-static";
+// Configure this route for both static export and dynamic rendering
+// Use force-static for compatibility with static export
+export const dynamic = 'force-static';
+// But allow client-side revalidation
+export const fetchCache = 'force-no-store';
 import { getFirestore } from 'firebase/firestore';
 import { collection, getDocs, limit, query } from 'firebase/firestore';
 import { initializeApp, getApps, getApp } from 'firebase/app';

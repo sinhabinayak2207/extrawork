@@ -16,9 +16,8 @@ const nextConfig = {
   // Configure React Strict Mode
   reactStrictMode: true,
   
-  // Generate static HTML export for Firebase hosting
-  // But enable hybrid approach with ISR for product pages
-  output: 'export',
+  // Use hybrid approach for static export with dynamic fallback
+  output: process.env.NEXT_OUTPUT || 'export',
   
   // Build directory
   distDir: process.env.BUILD_DIR || '.next',
