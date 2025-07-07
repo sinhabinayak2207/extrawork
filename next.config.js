@@ -16,8 +16,8 @@ const nextConfig = {
   // Configure React Strict Mode
   reactStrictMode: true,
   
-  // Enable Server-Side Rendering and Incremental Static Regeneration
-  // output: 'export', -- Removed to enable SSR/ISR
+  // Generate static HTML export for Firebase hosting
+  output: 'export',
   
   // Build directory
   distDir: process.env.BUILD_DIR || '.next',
@@ -27,21 +27,21 @@ const nextConfig = {
     return 'build-' + new Date().toISOString().replace(/[\:\.-]/g, '-');
   },
   
-  // Enable server components and other Next.js features
+  // Static export configuration
   experimental: {
-    // Add any experimental features here if needed
+    // No experimental features needed for static export
   },
   
-  // Enable middleware for dynamic routing
-  // skipMiddlewareUrlNormalize: true, -- Removed
-  // skipTrailingSlashRedirect: true, -- Removed
+  // Configure static export settings
+  skipMiddlewareUrlNormalize: true,
+  skipTrailingSlashRedirect: true,
   
   // Disable trailing slashes for Firebase hosting compatibility
   trailingSlash: false,
   
-  // Enable image optimization for better performance
+  // Image optimization settings
   images: {
-    // unoptimized: true, -- Removed to enable image optimization
+    unoptimized: true, // Keep for static export
     domains: [
       'lh3.googleusercontent.com',
       'avatars.githubusercontent.com',
@@ -55,7 +55,8 @@ const nextConfig = {
     ],
   },
   
-  // No experimental features needed for static export
+  // Note: exportPathMap is not compatible with the app directory
+  // We'll use generateStaticParams in each page instead
 };
 
 module.exports = nextConfig;
