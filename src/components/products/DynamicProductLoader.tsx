@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useProducts, Product } from '@/context/ProductContext';
 import ProductDetailClient from '@/components/products/ProductDetailClient';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import LoadingSpinner from '../ui/LoadingSpinner';
 import { logToSystem } from '@/lib/logger';
 
 interface DynamicProductLoaderProps {
