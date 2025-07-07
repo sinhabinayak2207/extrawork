@@ -16,8 +16,8 @@ const nextConfig = {
   // Configure React Strict Mode
   reactStrictMode: true,
   
-  // Use export mode for static site generation
-  output: 'export',
+  // Removed static export to enable dynamic routes
+  // output: 'export',
   
   // Build directory
   distDir: process.env.BUILD_DIR || '.next',

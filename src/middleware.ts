@@ -1,8 +1,3 @@
-// NOTE: This middleware is disabled for compatibility with static export
-// The file has been renamed to middleware.disabled.ts
-// Authentication is now handled by the AdminAuthWrapper component
-
-/*
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { NextRequest } from 'next/server';
@@ -38,7 +33,3 @@ export const config = {
     '/admin/:path*',
   ],
 };
-*/
-
-// Empty export to avoid TypeScript errors
-export {}
