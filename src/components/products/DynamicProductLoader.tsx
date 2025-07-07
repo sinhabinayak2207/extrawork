@@ -24,11 +24,10 @@ export default function DynamicProductLoader({ categoryId, productId }: DynamicP
   
   // Safely access products and loading state
   const products = productContext?.products || [];
-  // Check if products are still loading
-  const isLoading = !productContext || products.length === 0;
+  const loading = productContext?.loading || false;
 
   useEffect(() => {
-    if (isLoading) return;
+    if (loading) return;
 
     // Check if the product exists
     const product = products.find((p: Product) => p.id === productId);
@@ -39,10 +38,10 @@ export default function DynamicProductLoader({ categoryId, productId }: DynamicP
     } else {
       logToSystem(`Dynamically loaded product: ${product.name}`, 'success');
     }
-  }, [products, productId, categoryId, isLoading]);
+  }, [products, productId, categoryId, loading]);
 
   // Show loading state while products are being fetched
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <LoadingSpinner size="large" />

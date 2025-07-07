@@ -115,7 +115,7 @@ const ProductCard = ({
         <div className="flex-grow">
           <div className="flex justify-between items-start mb-2">
             <h3 className="text-xl font-bold text-black hover:text-blue-600 transition-colors duration-300">
-              <Link href={`/products/${category}/${slug}`}>
+              <Link href={`/products/view?id=${id}`}>
                 {title}
               </Link>
             </h3>
@@ -131,7 +131,7 @@ const ProductCard = ({
         
         <div className="flex justify-between items-center pt-3 border-t border-gray-100">
           <Link 
-            href={`/products/${category}/${slug}`}
+            href={`/products/view?id=${id}`}
             className="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center transition-colors duration-300"
           >
             View Details

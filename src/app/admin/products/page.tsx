@@ -148,15 +148,25 @@ export default function ProductManagementPage() {
                           <span className="w-5 h-5 rounded-full bg-white shadow-md block mx-0.5"></span>
                         </button>
                       </div>
-                      <button
-                        onClick={() => {
-                          setProductToDelete(product.id);
-                          setShowDeleteProductModal(true);
-                        }}
-                        className="text-red-600 hover:text-red-800 text-sm"
-                      >
-                        Delete
-                      </button>
+                      <div className="flex gap-3 mt-2">
+                        <a
+                          href={`/products/view?id=${product.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 text-sm"
+                        >
+                          View
+                        </a>
+                        <button
+                          onClick={() => {
+                            setProductToDelete(product.id);
+                            setShowDeleteProductModal(true);
+                          }}
+                          className="text-red-600 hover:text-red-800 text-sm"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 {
   "buildCommand": "next build",
   "framework": "nextjs",
+  "outputDirectory": "out",
   "regions": ["bom1"],
   "trailingSlash": true
 }
