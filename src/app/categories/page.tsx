@@ -39,7 +39,7 @@ export default function CategoriesPage() {
         
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 animate-fadeIn">
-            Browse Our <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Categories</span>
+            <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent"> Browse Our Categories</span>
           </h2>
           <p className="text-gray-600 max-w-3xl mx-auto animate-fadeIn animation-delay-200">
             Select from our wide range of product categories to find exactly what your business needs.

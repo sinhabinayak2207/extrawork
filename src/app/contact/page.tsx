@@ -14,9 +14,9 @@ export default function ContactPage() {
       <Section background="gradient" paddingY="lg">
         <div className="text-center max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Contact <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Us</span>
+             <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Contact Us</span>
           </h1>
-          <p className="text-lg text-white-600 mb-8">
+          <p className="text-lg text-blue-600 mb-8">
             Have questions about our products or services? Our team is here to help.
             Fill out the form below or use our contact information to get in touch.
           </p>

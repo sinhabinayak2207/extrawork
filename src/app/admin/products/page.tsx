@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { useProductModal } from '@/context/ProductModalContext';
 import { useProducts } from '@/context/ProductContext';
 import Image from 'next/image';
 import SystemLog, { logToSystem } from '@/components/SystemLog';
@@ -14,6 +15,7 @@ import AdminAuthWrapper from '@/components/admin/AdminAuthWrapper';
 export default function ProductManagementPage() {
   const { user, isMasterAdmin } = useAuth();
   const router = useRouter();
+  const { openProductModal } = useProductModal();
   const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [showDeleteProductModal, setShowDeleteProductModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState<string | null>(null);
@@ -25,7 +27,7 @@ export default function ProductManagementPage() {
   
   if (!productContext) {
     console.error('ProductContext is null in ProductManagementPage');
-    return <MainLayout><div className="p-8">Error loading products</div></MainLayout>;
+    return <MainLayout><div className="p-8 text-gray-100">Error loading products</div></MainLayout>;
   }
   
   const { products, updateFeaturedStatus, updateStockStatus } = productContext;
@@ -33,16 +35,16 @@ export default function ProductManagementPage() {
   return (
     <AdminAuthWrapper requireMasterAdmin={true}>
       <MainLayout>
-        <div className="max-w-7xl mx-auto py-8 px-4">
+        <div className="max-w-7xl mx-auto py-8 px-4 bg-gray-900 text-gray-100 rounded-lg shadow-lg">
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Product Management</h1>
-              <p className="text-gray-600">Add, edit, or remove products from your catalog</p>
+              <h1 className="text-3xl font-bold text-white">Product Management</h1>
+              <p className="text-gray-400">Add, edit, or remove products from your catalog</p>
             </div>
             <div className="flex gap-4">
               <button
                 onClick={() => router.push('/admin/changes')}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md flex items-center gap-2"
+                className="bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-2 rounded-md flex items-center gap-2"
               >
                 Back to Admin Panel
               </button>
@@ -59,21 +61,21 @@ export default function ProductManagementPage() {
           </div>
           
           {/* Product List */}
-          <div className="bg-white shadow-md rounded-lg overflow-hidden">
-            <div className="p-4 border-b">
+          <div className="bg-gray-800 shadow-md rounded-lg overflow-hidden">
+            <div className="p-4 border-b border-gray-700">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div className="flex-1">
                   <input
                     type="text"
                     placeholder="Search products..."
-                    className="w-full px-4 py-2 border rounded-md"
+                    className="w-full px-4 py-2 bg-gray-700 text-gray-100 placeholder-gray-400 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
                 <div className="flex flex-col md:flex-row gap-2">
                   <select
-                    className="px-4 py-2 border rounded-md"
+                    className="px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     value={filterCategory}
                     onChange={(e) => setFilterCategory(e.target.value)}
                   >
@@ -82,7 +84,7 @@ export default function ProductManagementPage() {
                   </select>
                   <div className="flex">
                     <select
-                      className="px-4 py-2 border rounded-l-md"
+                      className="px-4 py-2 bg-gray-700 text-gray-100 border border-gray-600 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value as any)}
                     >
@@ -91,7 +93,7 @@ export default function ProductManagementPage() {
                       <option value="price">Price</option>
                     </select>
                     <button
-                      className="px-3 py-2 border-t border-r border-b rounded-r-md"
+                      className="px-3 py-2 bg-gray-700 text-gray-100 border-t border-r border-b border-gray-600 rounded-r-md hover:bg-gray-600"
                       onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
                     >
                       {sortOrder === 'asc' ? '↑' : '↓'}
@@ -102,9 +104,9 @@ export default function ProductManagementPage() {
             </div>
             
             {/* Product Items */}
-            <div className="divide-y">
+            <div className="divide-y divide-gray-700">
               {products?.map((product) => (
-                <div key={product.id} className="p-4 hover:bg-gray-50">
+                <div key={product.id} className="p-4 hover:bg-gray-700">
                   <div className="flex flex-col md:flex-row md:items-center gap-4">
                     <div className="w-24 h-24 relative flex-shrink-0">
                       {product.imageUrl ? (
@@ -115,54 +117,52 @@ export default function ProductManagementPage() {
                           className="object-cover rounded-md"
                         />
                       ) : (
-                        <div className="w-full h-full bg-gray-200 rounded-md flex items-center justify-center">
+                        <div className="w-full h-full bg-gray-700 rounded-md flex items-center justify-center">
                           <span className="text-gray-400">No image</span>
                         </div>
                       )}
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-medium text-lg">{product.name}</h3>
-                      <p className="text-gray-500">{product.category}</p>
-                      <p className="text-gray-700">${product.price}</p>
+                      <h3 className="font-medium text-lg text-white">{product.name}</h3>
+                      <p className="text-gray-400">{product.category}</p>
+                      <p className="text-gray-200">${product.price}</p>
                     </div>
                     <div className="flex flex-col gap-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-600">Featured:</span>
+                        <span className="text-sm text-gray-400">Featured:</span>
                         <button
                           onClick={() => updateFeaturedStatus(product.id, !product.featured)}
                           className={`w-12 h-6 rounded-full flex items-center ${
-                            product.featured ? 'bg-blue-600 justify-end' : 'bg-gray-300 justify-start'
+                            product.featured ? 'bg-blue-600 justify-end' : 'bg-gray-600 justify-start'
                           } transition-all duration-300`}
                         >
                           <span className="w-5 h-5 rounded-full bg-white shadow-md block mx-0.5"></span>
                         </button>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-600">In Stock:</span>
+                        <span className="text-sm text-gray-400">In Stock:</span>
                         <button
                           onClick={() => updateStockStatus(product.id, !product.inStock)}
                           className={`w-12 h-6 rounded-full flex items-center ${
-                            product.inStock ? 'bg-green-600 justify-end' : 'bg-gray-300 justify-start'
+                            product.inStock ? 'bg-green-600 justify-end' : 'bg-gray-600 justify-start'
                           } transition-all duration-300`}
                         >
                           <span className="w-5 h-5 rounded-full bg-white shadow-md block mx-0.5"></span>
                         </button>
                       </div>
                       <div className="flex gap-3 mt-2">
-                        <a
-                          href={`/products/view?id=${product.id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-800 text-sm"
+                        <button
+                          onClick={() => openProductModal(product.id)}
+                          className="text-blue-400 hover:text-blue-300 text-sm"
                         >
                           View
-                        </a>
+                        </button>
                         <button
                           onClick={() => {
                             setProductToDelete(product.id);
                             setShowDeleteProductModal(true);
                           }}
-                          className="text-red-600 hover:text-red-800 text-sm"
+                          className="text-red-400 hover:text-red-300 text-sm"
                         >
                           Delete
                         </button>

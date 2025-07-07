@@ -95,7 +95,7 @@ const Navbar = () => {
   
   return (
     <nav className={navbarClasses}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-1 lg:px-2 w-full">
         <div className="flex items-center justify-between h-16">
           {/* Mobile view - Logo on left, hamburger on right */}
           <div className="md:hidden w-full">
@@ -136,9 +136,9 @@ const Navbar = () => {
           </div>
           
           {/* Desktop view */}
-          <div className="hidden md:flex items-center justify-between w-full">
-            {/* Logo and company name - positioned on the left */}
-            <div className="flex-shrink-0">
+          <div className="hidden md:flex items-center justify-between w-full px-1">
+            {/* Logo and company name - positioned on the extreme left */}
+            <div className="flex-shrink-0 pl-1">
               <Link href="/" className="flex items-center space-x-3">
                 <Image 
                   src="/octpopuslogo.jpg" 
@@ -152,14 +152,14 @@ const Navbar = () => {
             </div>
             
             {/* All navigation links and buttons grouped together on the right */}
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center justify-end space-x-5 pr-1">
               {navLinks.map((link) => (
                 <div key={link.path} className="relative">
                   {link.dropdown ? (
                     <div>
                       <button
                         onClick={() => toggleDropdown(link.name)}
-                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center transition-all duration-200 hover:scale-105 active:scale-95"
+                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-sm font-medium flex items-center transition-all duration-200 hover:scale-105 active:scale-95"
                       >
                         {link.name}
                         <svg
@@ -202,7 +202,7 @@ const Navbar = () => {
                   ) : (
                     <Link
                       href={link.path}
-                      className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium ${pathname === link.path ? 'bg-gray-800 text-white' : ''} transition-all duration-200 hover:scale-105 active:scale-95`}
+                      className={`text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-sm font-medium ${pathname === link.path ? 'bg-gray-800 text-white' : ''} transition-all duration-200 hover:scale-105 active:scale-95`}
                     >
                       {link.name}
                     </Link>
@@ -211,7 +211,7 @@ const Navbar = () => {
               ))}
               
               {/* Auth buttons - now part of the same right-side group */}
-              <div className="flex items-center ml-6">
+              <div className="flex items-center ml-4">
                 {isLoggedIn ? (
                   <div className="relative">
                     <button
@@ -261,16 +261,16 @@ const Navbar = () => {
                     </AnimatePresence>
                   </div>
                 ) : (
-                  <div className="flex space-x-3">
+                  <div className="flex space-x-4">
                     <Link
                       href="/auth"
-                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-md text-xs font-medium transition-colors duration-200 hover:scale-105 active:scale-95"
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-2 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:scale-105 active:scale-95"
                     >
                       Sign In
                     </Link>
                     <Link
                       href="/auth"
-                      className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-base font-medium transition-colors duration-200 hover:scale-105 active:scale-95"
+                      className="text-white bg-blue-600 hover:bg-blue-700 px-2 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:scale-105 active:scale-95"
                     >
                       Sign Up
                     </Link>

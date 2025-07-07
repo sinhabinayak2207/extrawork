@@ -313,13 +313,13 @@ export default function ChangesPage() {
         
         
         {/* Featured Categories Management Section */}
-        <div className="mb-12 bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Featured Categories Management</h2>
-          <p className="text-gray-600 mb-4">Toggle categories to show in the Featured Categories section on the home page (maximum 3).</p>
+        <div className="mb-12 bg-black rounded-lg shadow-md p-6">
+          <h2 className="text-2xl font-bold text-white mb-4">Featured Categories Management</h2>
+          <p className="text-gray-300 mb-4">Toggle categories to show in the Featured Categories section on the home page (maximum 3).</p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {categories.map((category) => (
-              <div key={category.id} className="border rounded-lg p-4">
+              <div key={category.id} className="border border-gray-700 bg-black rounded-lg p-4 text-white">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center">
                     <div className="w-12 h-12 relative rounded overflow-hidden mr-3">
@@ -331,16 +331,16 @@ export default function ChangesPage() {
                       />
                     </div>
                     <div>
-                      <h3 className="font-medium">{category.title}</h3>
-                      <p className="text-sm text-gray-500">{category.productCount} products</p>
+                      <h3 className="font-medium text-white">{category.title}</h3>
+                      <p className="text-sm text-gray-300">{category.productCount} products</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-3 justify-between">
+                <div className="flex flex-col sm:flex-row gap-0 justify-between">
                   {/* Featured Toggle */}
-                  <div className="flex items-center justify-between border rounded p-2">
-                    <span className="text-sm font-medium mr-3">Featured</span>
+                  <div className="flex items-center justify-between border border-gray-700 bg-gray-900 rounded p-2">
+                    <span className="text-sm font-medium mr-3 text-white">Featured</span>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input 
                         type="checkbox" 
@@ -365,7 +365,7 @@ export default function ChangesPage() {
                         }}
                       />
                       <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                      <span className="ms-3 text-sm font-medium text-gray-900">
+                      <span className="ms-3 text-sm font-medium text-white">
                         {category.featured ? 'Featured' : 'Not Featured'}
                       </span>
                     </label>
@@ -386,7 +386,7 @@ export default function ChangesPage() {
             <div className="flex gap-2">
               <button
                 onClick={() => router.push('/admin/products')}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md flex items-center gap-2"
+                className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-md flex items-center gap-0"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -396,7 +396,7 @@ export default function ChangesPage() {
               </button>
               <button
                 onClick={() => setShowAddProductModal(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-2"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center gap-0"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
@@ -408,7 +408,7 @@ export default function ChangesPage() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {products.map((product: any) => (
-              <div key={product.id} className="border rounded-lg p-4 bg-white hover:shadow-md transition-shadow">
+              <div key={product.id} className="border border-gray-700 rounded-lg p-4 bg-black hover:shadow-md transition-shadow text-white">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center">
                     <div className="w-12 h-12 relative rounded overflow-hidden mr-3">
@@ -420,8 +420,8 @@ export default function ChangesPage() {
                       />
                     </div>
                     <div>
-                      <h3 className="font-medium">{product.name}</h3>
-                      <p className="text-sm text-gray-500">{product.category}</p>
+                      <h3 className="font-medium text-white">{product.name}</h3>
+                      <p className="text-sm text-gray-300">{product.category}</p>
                     </div>
                   </div>
                   <button 
@@ -437,10 +437,10 @@ export default function ChangesPage() {
                   </button>
                 </div>
                 
-                <div className="flex flex-col sm:flex-row gap-3 justify-between">
+                <div className="flex flex-col sm:flex-row gap-0 justify-between">
                   {/* Featured Toggle */}
-                  <div className="flex items-center justify-between border rounded p-2">
-                    <span className="text-sm font-medium mr-3">Featured</span>
+                  <div className="flex items-center justify-between border border-gray-700 bg-gray-900 rounded p-2">
+                    <span className="text-sm font-medium mr-3 text-white">Featured</span>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input 
                         type="checkbox" 
@@ -465,15 +465,15 @@ export default function ChangesPage() {
                         }}
                       />
                       <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                      <span className="ms-3 text-sm font-medium text-gray-900">
+                      <span className="ms-3 text-sm font-medium text-white">
                         {product.featured ? 'Featured' : 'Not Featured'}
                       </span>
                     </label>
                   </div>
                   
                   {/* In Stock Toggle */}
-                  <div className="flex items-center justify-between border rounded p-2">
-                    <span className="text-sm font-medium mr-3">Stock Status</span>
+                  <div className="flex items-center justify-between border border-gray-700 bg-gray-900 rounded p-2">
+                    <span className="text-sm font-medium mr-3 text-white">Stock Status</span>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input 
                         type="checkbox" 
@@ -489,7 +489,7 @@ export default function ChangesPage() {
                         }}
                       />
                       <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
-                      <span className="ms-3 text-sm font-medium text-gray-900">
+                      <span className="ms-3 text-sm font-medium text-white">
                         {product.inStock !== false ? 'In Stock' : 'Out of Stock'}
                       </span>
                     </label>
@@ -503,7 +503,7 @@ export default function ChangesPage() {
         {/* Product Cards Section */}
         <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
           {products.map((product: any) => (
-            <div key={`card-${product.id}`} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div key={`card-${product.id}`} className="bg-black border border-gray-700 rounded-lg shadow-md overflow-hidden text-white">
               <div className="relative h-64 w-full">
                 <Image
                   src={product.imageUrl || '/placeholder-image.jpg'}
@@ -515,9 +515,9 @@ export default function ChangesPage() {
               </div>
               
               <div className="p-4">
-                <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
-                <p className="mt-1 text-sm text-gray-500">{product.category}</p>
-                <p className="mt-1 text-sm text-gray-500 truncate">{product.description}</p>
+                <h3 className="text-lg font-medium text-white">{product.name}</h3>
+                <p className="mt-1 text-sm text-gray-300">{product.category}</p>
+                <p className="mt-1 text-sm text-gray-300 truncate">{product.description}</p>
                 
                 <div className="mt-4">
                   <label 
@@ -568,13 +568,13 @@ export default function ChangesPage() {
                 <span className="font-medium">Products Loaded</span>
               </div>
             </div>
-            <div className={`p-3 rounded-lg ${systemStatus.firestoreConnected ? 'bg-green-100' : 'bg-red-100'}`}>
+            <div className={`p-3 rounded-lg ${systemStatus.firestoreConnected ? 'bg-green-900' : 'bg-red-900'} text-white`}>
               <div className="flex items-center">
                 <div className={`w-3 h-3 rounded-full mr-2 ${systemStatus.firestoreConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
                 <span className="font-medium">Firestore Connected</span>
               </div>
             </div>
-            <div className={`p-3 rounded-lg ${systemStatus.cloudinaryConfigured ? 'bg-green-100' : 'bg-red-100'}`}>
+            <div className={`p-3 rounded-lg ${systemStatus.cloudinaryConfigured ? 'bg-green-900' : 'bg-red-900'} text-white`}>
               <div className="flex items-center">
                 <div className={`w-3 h-3 rounded-full mr-2 ${systemStatus.cloudinaryConfigured ? 'bg-green-500' : 'bg-red-500'}`}></div>
                 <span className="font-medium">Cloudinary Configured</span>

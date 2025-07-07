@@ -227,17 +227,17 @@ export default function CategoriesManagement() {
           
           {/* Main Upload Form */}
           <div className="bg-white shadow-md rounded-lg p-6 mb-8">
-            <h2 className="text-xl font-semibold mb-4">Update Category Image</h2>
+            <h2 className="text-xl text-black font-semibold mb-4">Update Category Image</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-black mb-2">
                   Select Category
                 </label>
                 <select
                   value={selectedCategory || ""}
                   onChange={handleCategoryChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   disabled={loading}
                 >
                   <option value="">-- Select a category --</option>
@@ -257,7 +257,7 @@ export default function CategoriesManagement() {
                   type="file"
                   accept="image/*"
                   onChange={handleFileChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border text-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   disabled={loading}
                 />
               </div>
@@ -296,123 +296,10 @@ export default function CategoriesManagement() {
             </div>
           </div>
 
-          {/* Quick Demo Options */}
-          <div className="bg-white shadow-md rounded-lg p-6 mb-8">
-            <h2 className="text-xl font-semibold mb-4">Quick Demo Options</h2>
-            <p className="text-gray-600 mb-4">
-              Use these options to quickly update category images with demo content
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {categories?.map(category => (
-                <div key={category.id} className="border rounded-md p-4">
-                  <div className="flex items-center mb-3">
-                    <div className="relative h-12 w-12 rounded-md overflow-hidden mr-3">
-                      {category.imageUrl ? (
-                        <Image
-                          src={category.imageUrl}
-                          alt={category.title}
-                          fill
-                          className="object-cover"
-                        />
-                      ) : (
-                        <div className="h-full w-full bg-gray-200 flex items-center justify-center">
-                          <span className="text-gray-400 text-xs">No image</span>
-                        </div>
-                      )}
-                    </div>
-                    <div>
-                      <h3 className="font-medium">{category.title}</h3>
-                      <p className="text-xs text-gray-500">ID: {category.id}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-4 gap-2 mb-3">
-                    {demoImages.map((imageUrl, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleDemoImageUpdate(category.id, imageUrl)}
-                        className="relative h-16 w-full rounded overflow-hidden border hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        disabled={loading}
-                      >
-                        <div className="absolute inset-0">
-                          <Image
-                            src={imageUrl}
-                            alt={`${category.title} option ${index + 1}`}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-                          <span className="text-white text-xs font-medium">Option {index + 1}</span>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                  
-                  <button
-                    onClick={() => handleDemoImageUpdate(
-                      category.id,
-                      `https://source.unsplash.com/random/300x200?${category.title.toLowerCase()},product`
-                    )}
-                    className="w-full px-4 py-2 bg-gray-100 text-gray-800 rounded-md hover:bg-gray-200 transition-colors"
-                    disabled={loading}
-                  >
-                    Random {category.title} Image
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          {/* System Logs */}
-          <div className="bg-white shadow-md rounded-lg p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold">System Logs</h2>
-              <button
-                onClick={() => setShowLogs(!showLogs)}
-                className="text-blue-600 hover:text-blue-800"
-              >
-                {showLogs ? 'Hide Logs' : 'Show Logs'}
-              </button>
-            </div>
-            
-            {showLogs && (
-              <div className="bg-gray-100 p-4 rounded-md max-h-64 overflow-y-auto">
-                {systemLogs.length === 0 ? (
-                  <p className="text-gray-500 text-center">No logs yet</p>
-                ) : (
-                  <div className="space-y-2">
-                    {systemLogs.map((log, index) => (
-                      <div
-                        key={index}
-                        className={`p-2 rounded-md ${
-                          log.level === 'error'
-                            ? 'bg-red-100 text-red-800'
-                            : log.level === 'success'
-                            ? 'bg-green-100 text-green-800'
-                            : log.level === 'warning'
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-blue-100 text-blue-800'
-                        }`}
-                      >
-                        <div className="flex justify-between">
-                          <span className="font-medium">{log.level.toUpperCase()}</span>
-                          <span className="text-xs opacity-75">{log.timestamp}</span>
-                        </div>
-                        <p>{log.message}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
+         
           
           {/* System Log Component */}
-          <div className="mt-8">
-            <SystemLog maxEntries={50} />
-          </div>
+          
         </div>
       </MainLayout>
     </AdminAuthWrapper>

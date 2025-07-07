@@ -5,6 +5,7 @@ import Link from 'next/link';
 import ImageUploader from './ImageUploader';
 import { useAuth } from '@/context/AuthContext';
 import { useState, useEffect } from 'react';
+import { useProductModal } from '@/context/ProductModalContext';
 
 interface ProductCardProps {
   id: string;
@@ -29,6 +30,8 @@ const ProductCard = ({
 }: ProductCardProps) => {
   // Get auth context to check if user is master admin
   const { isMasterAdmin } = useAuth();
+  // Get product modal context
+  const { openProductModal } = useProductModal();
   // State to track the current image URL
   const [currentImage, setCurrentImage] = useState(image);
   
@@ -114,10 +117,8 @@ const ProductCard = ({
       <div className="p-5 flex flex-col flex-grow">
         <div className="flex-grow">
           <div className="flex justify-between items-start mb-2">
-            <h3 className="text-xl font-bold text-black hover:text-blue-600 transition-colors duration-300">
-              <Link href={`/products/view?id=${id}`}>
-                {title}
-              </Link>
+            <h3 className="text-xl font-bold text-black hover:text-blue-600 transition-colors duration-300 cursor-pointer" onClick={() => openProductModal(id)}>
+              {title}
             </h3>
             <span className="text-xs font-medium bg-gray-100 text-gray-600 px-2 py-1 rounded">
               {category}
@@ -130,15 +131,15 @@ const ProductCard = ({
         </div>
         
         <div className="flex justify-between items-center pt-3 border-t border-gray-100">
-          <Link 
-            href={`/products/view?id=${id}`}
+          <button 
+            onClick={() => openProductModal(id)}
             className="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center transition-colors duration-300"
           >
             View Details
             <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-          </Link>
+          </button>
           
           <a 
             href={mailtoLink}
