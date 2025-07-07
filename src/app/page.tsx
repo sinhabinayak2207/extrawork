@@ -5,9 +5,6 @@ import AboutSection from "../components/home/AboutSection";
 import CtaSection from "../components/home/CtaSection";
 import { Metadata } from "next";
 
-// Make this page dynamic to handle category and product updates
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: 'B2B Showcase - Premium Bulk Products for Global Businesses',
   description: 'B2B Showcase offers high-quality bulk commodities and raw materials including rice, seeds, oil, raw polymers, and bromine salt for businesses worldwide.',
