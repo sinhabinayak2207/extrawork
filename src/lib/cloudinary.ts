@@ -1,11 +1,12 @@
 import axios from 'axios';
+import { logToSystem } from '@/components/SystemLog';
 
 // Cloudinary configuration
 const CLOUDINARY_CLOUD_NAME = 'doa53gfwf';
 const CLOUDINARY_API_KEY = '117273964533914';
 // IMPORTANT: Make sure you've created this exact preset name in your Cloudinary dashboard
 // and set it to 'unsigned' mode
-const CLOUDINARY_UPLOAD_PRESET = 'ml_default'; // This is the default unsigned preset
+const CLOUDINARY_UPLOAD_PRESET = 'b2b_showcase'; // Your custom unsigned upload preset
 
 /**
  * Uploads an image to Cloudinary
@@ -43,13 +44,15 @@ export const uploadImage = async (file: File, folder: string): Promise<string> =
  */
 export const replaceImage = async (file: File, folder: string): Promise<string> => {
   try {
-    console.log('Starting Cloudinary image replacement');
-    console.log('File:', file.name, 'Size:', file.size, 'Type:', file.type);
-    console.log('Folder:', folder);
+    logToSystem('Starting Cloudinary image replacement', 'info');
+    logToSystem(`File: ${file.name} (${file.type}, ${Math.round(file.size / 1024)} KB)`, 'info');
+    logToSystem(`Target folder: ${folder}`, 'info');
     
-    // Generate a unique ID for the image
-    const uniqueId = `${Date.now()}_${file.name.replace(/\s+/g, '_')}`;
-    console.log('Generated unique ID:', uniqueId);
+    // Generate a unique ID for the image with timestamp to prevent caching
+    const timestamp = new Date().getTime();
+    const sanitizedFileName = file.name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_.-]/g, '');
+    const uniqueId = `${timestamp}_${sanitizedFileName}`;
+    logToSystem(`Generated unique ID: ${uniqueId}`, 'info');
     
     // Upload the new image with the unique ID
     const formData = new FormData();
@@ -58,24 +61,42 @@ export const replaceImage = async (file: File, folder: string): Promise<string> 
     formData.append('folder', folder);
     formData.append('public_id', uniqueId);
     
-    console.log('FormData created with upload_preset:', CLOUDINARY_UPLOAD_PRESET);
-    console.log('Uploading to Cloudinary URL:', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`);
+    // Add cache-busting parameters
+    formData.append('timestamp', timestamp.toString());
+    
+    logToSystem(`Uploading to Cloudinary with preset: ${CLOUDINARY_UPLOAD_PRESET}`, 'info');
     
     const response = await axios.post(
       `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
       formData
     );
     
-    console.log('Cloudinary upload successful!');
-    console.log('Response data:', response.data);
-    console.log('Secure URL:', response.data.secure_url);
-    
-    return response.data.secure_url;
-  } catch (error) {
-    console.error('Error replacing image in Cloudinary:', error);
-    if (axios.isAxiosError(error)) {
-      console.error('Axios error details:', error.response?.data || error.message);
+    if (!response.data || !response.data.secure_url) {
+      throw new Error('Cloudinary response missing secure_url');
     }
-    throw new Error('Failed to replace image');
+    
+    logToSystem('Cloudinary upload successful!', 'success');
+    
+    // Add a cache-busting query parameter to the URL
+    const secureUrl = response.data.secure_url;
+    const cacheBustedUrl = secureUrl.includes('?') 
+      ? `${secureUrl}&t=${timestamp}` 
+      : `${secureUrl}?t=${timestamp}`;
+    
+    logToSystem(`Image URL with cache-busting: ${cacheBustedUrl}`, 'info');
+    
+    return cacheBustedUrl;
+  } catch (error) {
+    logToSystem('Error replacing image in Cloudinary', 'error');
+    
+    if (axios.isAxiosError(error)) {
+      const errorDetails = error.response?.data 
+        ? JSON.stringify(error.response.data) 
+        : error.message;
+      
+      logToSystem(`Axios error details: ${errorDetails}`, 'error');
+    }
+    
+    throw new Error(error instanceof Error ? error.message : 'Failed to replace image');
   }
 };

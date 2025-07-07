@@ -41,10 +41,10 @@ const Footer = () => {
           {/* Company Info */}
           <motion.div variants={itemVariants}>
             <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-teal-300 bg-clip-text text-transparent">
-              B2B Showcase
+              OCTOPUS SCM EXPEDITORS PVT. LTD.
             </h3>
             <p className="text-gray-300 mb-4">
-              Your trusted partner for premium bulk products. We provide high-quality products for businesses worldwide.
+              Your Supply Chain Management partner. We are Offline Service Provider, NVOCC, and Agent Marketing Agent.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-300 hover:text-white transition-colors duration-300">
@@ -137,22 +137,22 @@ const Footer = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <span className="text-gray-300">
-                  123 Business Avenue<br />
-                  New York, NY 10001
+                  B-503, Ganesh Glory 11,<br />
+                  Jagatpur Road, Ahmedabad
                 </span>
               </div>
               <div className="flex items-center mb-3">
                 <svg className="h-6 w-6 text-blue-400 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                <span className="text-gray-300">+1 (555) 123-4567</span>
+                <span className="text-gray-300">+91 7574831100</span>
               </div>
               <div className="flex items-center">
                 <svg className="h-6 w-6 text-blue-400 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <a href="mailto:info@b2bshowcase.com" className="text-gray-300 hover:text-white transition-colors duration-300">
-                  info@b2bshowcase.com
+                <a href="mailto:biz@octopusexpeditors.com" className="text-gray-300 hover:text-white transition-colors duration-300">
+                  biz@octopusexpeditors.com
                 </a>
               </div>
             </address>
@@ -169,7 +169,9 @@ const Footer = () => {
           whileInView={{ opacity: 1, transition: { delay: 0.5, duration: 0.5 } }}
           viewport={{ once: true }}
         >
-          <p>&copy; {currentYear} B2B Showcase. All rights reserved.</p>
+          <p className="text-center text-gray-400">
+            &copy; {currentYear} OCTOPUS SCM EXPEDITORS PVT. LTD. All rights reserved.
+          </p>
         </motion.div>
       </div>
     </footer>

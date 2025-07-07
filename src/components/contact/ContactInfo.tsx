@@ -11,8 +11,8 @@ const ContactInfo = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       ),
-      title: 'Our Location',
-      content: '123 Business Avenue, Suite 500, New York, NY 10001, USA'
+      title: 'Our Locations',
+      content: 'Ahmedabad Office: B-503, Ganesh Glory 11, Jagatpur Road\nCorp Office: Octopus SCM Expeditors Pvt. Ltd.'
     },
     {
       icon: (
@@ -21,7 +21,7 @@ const ContactInfo = () => {
         </svg>
       ),
       title: 'Email Us',
-      content: 'info@b2bshowcase.com\nsales@b2bshowcase.com'
+      content: 'biz@octopusexpeditors.com\nhttps://octopusexpeditors.com'
     },
     {
       icon: (
@@ -30,7 +30,7 @@ const ContactInfo = () => {
         </svg>
       ),
       title: 'Call Us',
-      content: '+1 (555) 123-4567\n+1 (555) 765-4321'
+      content: 'Hitendra Joshi (Director)\n+91 7574831100'
     },
     {
       icon: (
@@ -38,8 +38,8 @@ const ContactInfo = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      title: 'Business Hours',
-      content: 'Monday - Friday: 9:00 AM - 5:00 PM\nSaturday - Sunday: Closed'
+      title: 'Find Us',
+      content: 'View on Google Maps'
     }
   ];
 
@@ -54,21 +54,26 @@ const ContactInfo = () => {
       
       <div className="space-y-6">
         {contactItems.map((item, index) => (
-          <motion.div 
-            key={index}
-            className="flex items-start"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 + (index * 0.1) }}
-          >
-            <div className="flex-shrink-0 bg-white/20 rounded-full p-2">
-              <div className="text-white">{item.icon}</div>
+          <div key={index} className="flex items-start">
+            <div className="flex-shrink-0 bg-blue-100 rounded-lg p-3 text-blue-600">
+              {item.icon}
             </div>
             <div className="ml-4">
               <h4 className="text-lg font-semibold">{item.title}</h4>
-              <p className="whitespace-pre-line">{item.content}</p>
+              {index === 3 ? (
+                <a 
+                  href="https://maps.app.goo.gl/aDByo2g6FKJpDZvL9" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 transition-colors whitespace-pre-line"
+                >
+                  {item.content}
+                </a>
+              ) : (
+                <p className="text-white whitespace-pre-line">{item.content}</p>
+              )}
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
       

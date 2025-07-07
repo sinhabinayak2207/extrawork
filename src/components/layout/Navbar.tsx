@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
@@ -80,11 +81,16 @@ const Navbar = () => {
         { name: 'Bromine Salt', path: '/products/bromine-salt' },
       ]
     },
+    { name: 'Categories', path: '/categories' },
     { name: 'Services', path: '/services' },
     { name: 'About', path: '/about' },
     { name: 'Achievements', path: '/achievements' },
     { name: 'Contact', path: '/contact' },
-    ...(isMasterAdmin ? [{ name: 'CHANGES', path: '/admin/changes' }] : []),
+    ...(isMasterAdmin ? [
+      { name: 'CHANGES', path: '/admin/changes' },
+      { name: 'Products Management', path: '/admin/products' },
+      { name: 'Categories Management', path: '/admin/categories' }
+    ] : []),
   ];
   
   return (
@@ -94,9 +100,16 @@ const Navbar = () => {
           {/* Mobile view - Logo on left, hamburger on right */}
           <div className="md:hidden w-full">
             <div className="flex justify-between items-center">
-              {/* Left: Logo with increased font */}
-              <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent ml-4">
-                B2B Showcase
+              {/* Left: Logo and company name */}
+              <Link href="/" className="flex items-center space-x-2">
+                <Image 
+                  src="/octpopuslogo.jpg" 
+                  alt="Octopus SCM Logo" 
+                  width={40} 
+                  height={40} 
+                  className="rounded-md"
+                />
+                <span className="text-2xl font-bold text-white">Octopus SCM</span>
               </Link>
               
               {/* Right: Hamburger menu */}
@@ -124,10 +137,17 @@ const Navbar = () => {
           
           {/* Desktop view */}
           <div className="hidden md:flex items-center justify-between w-full">
-            {/* Logo - increased font size by 2 and placed on left (not extreme left) */}
-            <div className="flex-shrink-0 ml-8">
-              <Link href="/" className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">
-                B2B Showcase
+            {/* Logo and company name - positioned on the left */}
+            <div className="flex-shrink-0">
+              <Link href="/" className="flex items-center space-x-3">
+                <Image 
+                  src="/octpopuslogo.jpg" 
+                  alt="Octopus SCM Logo" 
+                  width={48} 
+                  height={48} 
+                  className="rounded-md"
+                />
+                <span className="text-2xl font-bold text-white">Octopus SCM</span>
               </Link>
             </div>
             
@@ -139,7 +159,7 @@ const Navbar = () => {
                     <div>
                       <button
                         onClick={() => toggleDropdown(link.name)}
-                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium flex items-center transition-all duration-200 hover:scale-105 active:scale-95"
+                        className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center transition-all duration-200 hover:scale-105 active:scale-95"
                       >
                         {link.name}
                         <svg
@@ -182,7 +202,7 @@ const Navbar = () => {
                   ) : (
                     <Link
                       href={link.path}
-                      className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium ${pathname === link.path ? 'bg-gray-800 text-white' : ''} transition-all duration-200 hover:scale-105 active:scale-95`}
+                      className={`text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-base font-medium ${pathname === link.path ? 'bg-gray-800 text-white' : ''} transition-all duration-200 hover:scale-105 active:scale-95`}
                     >
                       {link.name}
                     </Link>
@@ -244,13 +264,13 @@ const Navbar = () => {
                   <div className="flex space-x-3">
                     <Link
                       href="/auth"
-                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-md font-medium transition-all duration-200 hover:scale-105 active:scale-95"
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-4 py-2 rounded-md text-xs font-medium transition-colors duration-200 hover:scale-105 active:scale-95"
                     >
                       Sign In
                     </Link>
                     <Link
                       href="/auth"
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-md font-medium transition-all duration-200 hover:scale-105 active:scale-95"
+                      className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md text-base font-medium transition-colors duration-200 hover:scale-105 active:scale-95"
                     >
                       Sign Up
                     </Link>
@@ -272,7 +292,7 @@ const Navbar = () => {
                   <div>
                     <button
                       onClick={() => toggleDropdown(link.name)}
-                      className="text-gray-300 hover:bg-gray-700 hover:text-white block w-full text-left px-3 py-2 rounded-md text-base font-medium flex justify-between items-center"
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white block w-full text-left px-3 py-2 rounded-md text-xl font-medium flex justify-between items-center"
                     >
                       {link.name}
                       <svg
@@ -351,13 +371,13 @@ const Navbar = () => {
                 <div className="space-y-2 px-2">
                   <Link
                     href="/auth"
-                    className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-md font-medium text-white bg-gray-600 hover:bg-gray-700 transition-transform active:scale-95"
+                    className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700 transition-transform active:scale-95"
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/auth"
-                    className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-md font-medium text-white bg-blue-600 hover:bg-blue-700 transition-transform active:scale-95"
+                    className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-transform active:scale-95"
                   >
                     Sign Up
                   </Link>

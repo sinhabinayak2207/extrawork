@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Section from "../ui/Section";
 import ProductCard from "./ProductCard";
-import { useProducts, Product as ContextProduct } from "@/context/ProductContext";
+import { useProducts, Product } from "@/context/ProductContext";
 
 interface CategoryPageClientProps {
   category: any;
@@ -11,13 +11,14 @@ interface CategoryPageClientProps {
 }
 
 export default function CategoryPageClient({ category, categorySlug }: CategoryPageClientProps) {
-  const { products } = useProducts();
+  const productContext = useProducts();
+  const products = productContext?.products || [];
   const [loading, setLoading] = useState(true);
   
   // Filter products by category
-  const categoryProducts = products.filter(product => 
+  const categoryProducts = products.filter((product: Product) => 
     product.category.toLowerCase() === categorySlug.toLowerCase()
-  ) as ContextProduct[];
+  );
   
   // Set loading to false once products are loaded
   useEffect(() => {
@@ -62,6 +63,7 @@ export default function CategoryPageClient({ category, categorySlug }: CategoryP
                 category={product.category}
                 slug={product.slug}
                 featured={product.featured}
+                inStock={product.inStock}
               />
             ))}
           </div>

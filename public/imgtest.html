@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload Test</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .log-container {
+            height: 300px;
+            overflow-y: auto;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-radius: 4px;
+        }
+        .log-info {
+            background-color: #e3f2fd;
+        }
+        .log-success {
+            background-color: #e8f5e9;
+        }
+        .log-error {
+            background-color: #ffebee;
+        }
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #3367d6;
+        }
+        .test-section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Upload Test</h1>
+        
+        <div class="card">
+            <h2>Firebase Connection Test</h2>
+            <div class="test-section">
+                <button id="test-firebase">Test Firebase Connection</button>
+                <div id="firebase-status"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Cloudinary Upload Test</h2>
+            <div class="test-section">
+                <button id="upload-image">Upload Image</button>
+                <div id="cloudinary-status"></div>
+            </div>
+            <div>
+                <h3>Image Preview:</h3>
+                <img id="image-preview" class="image-preview" src="" alt="No image uploaded yet">
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Full Process Test</h2>
+            <div class="test-section">
+                <button id="full-test">Run Full Test</button>
+                <div id="full-test-status"></div>
+            </div>
+            <div>
+                <h3>Updated Image Preview:</h3>
+                <img id="updated-image-preview" class="image-preview" src="" alt="No image updated yet">
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>System Log</h2>
+            <div id="log-container" class="log-container"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCKv_Rs6MNXV1cshKhf7T4C93RG82u11LA",
+            authDomain: "b2bshowcase-199a8.firebaseapp.com",
+            projectId: "b2bshowcase-199a8",
+            storageBucket: "b2bshowcase-199a8.firebasestorage.app",
+            messagingSenderId: "608819928179",
+            appId: "1:608819928179:web:774b8f3e120a927f279e06",
+            measurementId: "G-8VTK238F1Y"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        // Cloudinary configuration
+        const cloudName = 'doa53gfwf';
+        const uploadPreset = 'b2b_showcase';
+        
+        // Log function
+        function log(message, type = 'info') {
+            const logContainer = document.getElementById('log-container');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            
+            const timestamp = new Date().toLocaleTimeString();
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            
+            logContainer.prepend(logEntry);
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        // Test Firebase Connection
+        document.getElementById('test-firebase').addEventListener('click', async () => {
+            const statusElement = document.getElementById('firebase-status');
+            statusElement.textContent = 'Testing...';
+            
+            try {
+                log('Testing Firebase connection...', 'info');
+                
+                // Try to fetch a product from Firestore
+                const productId = '1'; // Using product ID 1 as a test
+                const productRef = db.collection('products').doc(productId);
+                const doc = await productRef.get();
+                
+                if (doc.exists) {
+                    const data = doc.data();
+                    log(`Firebase connection successful! Found product: ${data.name}`, 'success');
+                    statusElement.textContent = '✅ Connected';
+                    statusElement.style.color = 'green';
+                    
+                    // Display the current image
+                    if (data.imageUrl) {
+                        log(`Current image URL: ${data.imageUrl}`, 'info');
+                        document.getElementById('image-preview').src = data.imageUrl;
+                    }
+                } else {
+                    log(`Firebase connection successful, but product ${productId} not found`, 'error');
+                    statusElement.textContent = '⚠️ Connected but product not found';
+                    statusElement.style.color = 'orange';
+                }
+            } catch (error) {
+                log(`Firebase connection error: ${error.message}`, 'error');
+                statusElement.textContent = '❌ Connection failed';
+                statusElement.style.color = 'red';
+            }
+        });
+
+        // Cloudinary Upload
+        document.getElementById('upload-image').addEventListener('click', () => {
+            const statusElement = document.getElementById('cloudinary-status');
+            statusElement.textContent = 'Preparing upload...';
+            
+            log('Opening Cloudinary upload widget...', 'info');
+            
+            const uploadWidget = cloudinary.createUploadWidget(
+                {
+                    cloudName: cloudName,
+                    uploadPreset: uploadPreset,
+                    sources: ['local', 'url', 'camera'],
+                    multiple: false,
+                    folder: 'test_uploads',
+                    tags: ['test'],
+                },
+                (error, result) => {
+                    if (error) {
+                        log(`Cloudinary upload error: ${error.message}`, 'error');
+                        statusElement.textContent = '❌ Upload failed';
+                        statusElement.style.color = 'red';
+                        return;
+                    }
+                    
+                    if (result.event === 'success') {
+                        const imageUrl = result.info.secure_url;
+                        log(`Cloudinary upload successful! Image URL: ${imageUrl}`, 'success');
+                        statusElement.textContent = '✅ Upload successful';
+                        statusElement.style.color = 'green';
+                        
+                        // Add cache-busting parameter
+                        const timestamp = new Date().getTime();
+                        const imageUrlWithCache = `${imageUrl}?t=${timestamp}`;
+                        log(`Image URL with cache-busting: ${imageUrlWithCache}`, 'info');
+                        
+                        // Display the uploaded image
+                        document.getElementById('image-preview').src = imageUrlWithCache;
+                    }
+                }
+            );
+            
+            uploadWidget.open();
+        });
+
+        // Full Test Process
+        document.getElementById('full-test').addEventListener('click', async () => {
+            const statusElement = document.getElementById('full-test-status');
+            statusElement.textContent = 'Starting full test...';
+            
+            try {
+                log('Starting full test process...', 'info');
+                
+                // 1. Check Firebase connection
+                log('1. Testing Firebase connection...', 'info');
+                const productId = '1'; // Using product ID 1 as a test
+                const productRef = db.collection('products').doc(productId);
+                const doc = await productRef.get();
+                
+                if (!doc.exists) {
+                    throw new Error(`Product ${productId} not found in Firestore`);
+                }
+                
+                const productData = doc.data();
+                log(`Firebase connection successful! Found product: ${productData.name}`, 'success');
+                
+                // 2. Open Cloudinary upload widget
+                log('2. Opening Cloudinary upload widget...', 'info');
+                statusElement.textContent = 'Please select an image in the upload widget';
+                
+                const uploadPromise = new Promise((resolve, reject) => {
+                    const uploadWidget = cloudinary.createUploadWidget(
+                        {
+                            cloudName: cloudName,
+                            uploadPreset: uploadPreset,
+                            sources: ['local', 'url', 'camera'],
+                            multiple: false,
+                            folder: `products/${productId}`,
+                            tags: ['test'],
+                        },
+                        (error, result) => {
+                            if (error) {
+                                reject(error);
+                                return;
+                            }
+                            
+                            if (result.event === 'success') {
+                                resolve(result.info.secure_url);
+                            }
+                        }
+                    );
+                    
+                    uploadWidget.open();
+                });
+                
+                const imageUrl = await uploadPromise;
+                log(`Cloudinary upload successful! Image URL: ${imageUrl}`, 'success');
+                
+                // 3. Add cache-busting parameter
+                const timestamp = new Date().getTime();
+                const imageUrlWithCache = imageUrl.includes('?') 
+                    ? `${imageUrl}&t=${timestamp}` 
+                    : `${imageUrl}?t=${timestamp}`;
+                log(`Image URL with cache-busting: ${imageUrlWithCache}`, 'info');
+                
+                // 4. Update Firestore
+                log('4. Updating product in Firestore...', 'info');
+                await productRef.update({
+                    imageUrl: imageUrlWithCache,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedBy: 'test-user'
+                });
+                
+                log('Product updated in Firestore successfully!', 'success');
+                
+                // 5. Verify the update
+                log('5. Verifying the update...', 'info');
+                const updatedDoc = await productRef.get();
+                const updatedData = updatedDoc.data();
+                
+                if (updatedData.imageUrl === imageUrlWithCache) {
+                    log('Verification successful! Image URL was updated correctly.', 'success');
+                    statusElement.textContent = '✅ Full test successful';
+                    statusElement.style.color = 'green';
+                    
+                    // Display the updated image
+                    document.getElementById('updated-image-preview').src = updatedData.imageUrl;
+                } else {
+                    log(`Verification failed! Expected: ${imageUrlWithCache}, Got: ${updatedData.imageUrl}`, 'error');
+                    statusElement.textContent = '❌ Verification failed';
+                    statusElement.style.color = 'red';
+                }
+            } catch (error) {
+                log(`Full test error: ${error.message}`, 'error');
+                statusElement.textContent = '❌ Test failed';
+                statusElement.style.color = 'red';
+            }
+        });
+
+        // Initialize
+        log('Test page loaded', 'info');
+    </script>
+</body>
+</html>

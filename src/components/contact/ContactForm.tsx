@@ -1,10 +1,14 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Button from '../ui/Button';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const ContactForm = () => {
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,6 +19,18 @@ const ContactForm = () => {
   });
   
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  
+  // Pre-fill user data if logged in
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        name: user.displayName || '',
+        email: user.email || ''
+      }));
+    }
+  }, [user]);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -27,18 +43,52 @@ const ContactForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // In a real application, this would send data to a backend API
-    // For now, we'll simulate a submission with a timeout
+    // Check if user is logged in
+    if (!user) {
+      setFormStatus('error');
+      setErrorMessage('Please log in to send a message');
+      
+      // Redirect to login page with return URL after a short delay
+      setTimeout(() => {
+        router.push('/login?returnUrl=/contact');
+      }, 2000);
+      return;
+    }
+    
     setFormStatus('submitting');
+    setErrorMessage('');
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      console.log('Sending email via Formspree...');
+      
+      // Send form data to Formspree
+      const response = await fetch('https://formspree.io/f/mdkzvblv', { // Your actual Formspree form ID
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          phone: formData.phone,
+          subject: formData.subject,
+          message: formData.message,
+          _replyto: formData.email
+        }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to send message');
+      }
+      
+      console.log('Formspree response:', response);
       
       // Reset form
       setFormData({
-        name: '',
-        email: '',
+        name: user.displayName || '',
+        email: user.email || '',
         company: '',
         phone: '',
         subject: '',
@@ -52,11 +102,18 @@ const ContactForm = () => {
         setFormStatus('idle');
       }, 5000);
     } catch (error) {
+      console.error('EmailJS error:', error);
       setFormStatus('error');
+      setErrorMessage(
+        error instanceof Error 
+          ? `Error: ${error.message}` 
+          : 'Failed to send message. Please try again later.'
+      );
       
-      // Reset status after 5 seconds
+      // Reset error message after 5 seconds
       setTimeout(() => {
         setFormStatus('idle');
+        setErrorMessage('');
       }, 5000);
     }
   };
@@ -86,7 +143,7 @@ const ContactForm = () => {
           animate={{ opacity: 1 }}
           className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700"
         >
-          There was an error sending your message. Please try again later.
+          {errorMessage || 'There was an error sending your message. Please try again later.'}
         </motion.div>
       )}
       

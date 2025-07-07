@@ -1,8 +1,13 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import MainLayout from "../../../components/layout/MainLayout";
-import { getCategory, categories } from "../../../lib/api/mockData";
+import { categories } from "../../../lib/api/mockData";
 import CategoryPageClient from "@/components/products/CategoryPageClient";
+
+// Helper function to get category by slug
+const getCategory = async (slug: string) => {
+  return categories.find(cat => cat.slug === slug) || null;
+};
 
 // Generate static paths for all categories
 export async function generateStaticParams() {

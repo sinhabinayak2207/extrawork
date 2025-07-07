@@ -21,8 +21,14 @@ const FeaturedProducts = () => {
   // Get products from context
   useEffect(() => {
     if (productContext && productContext.products) {
-      const featured = productContext.products.filter(product => product.featured);
+      const featured = productContext.products.filter(product => product.featured === true);
+      console.log('Found featured products:', featured.length);
       setFeaturedProducts(featured);
+      
+      // Only show products that are actually marked as featured
+      // Do not automatically set products as featured if none are found
+      console.log('Only showing products explicitly marked as featured');
+      // Empty array is fine if no products are featured
     }
   }, [productContext, forceUpdate]);
   
@@ -40,6 +46,12 @@ const FeaturedProducts = () => {
       window.removeEventListener('productUpdated', handleProductUpdate);
     };
   }, []);
+  
+  // Don't render anything if there are no featured products
+  if (featuredProducts.length === 0) {
+    console.log('No featured products found, not rendering FeaturedProducts section');
+    return null;
+  }
   
   return (
     <Section background="white" id="featured-products">
@@ -64,6 +76,7 @@ const FeaturedProducts = () => {
             category={product.category}
             slug={product.slug}
             featured={product.featured}
+            inStock={product.inStock}
           />
         ))}
       </div>

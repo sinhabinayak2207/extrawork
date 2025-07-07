@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ImageUploader from './ImageUploader';
 import { useAuth } from '@/context/AuthContext';
+import { useState, useEffect } from 'react';
 
 interface ProductCardProps {
   id: string;
@@ -13,6 +14,7 @@ interface ProductCardProps {
   category: string;
   slug: string;
   featured?: boolean;
+  inStock?: boolean;
 }
 
 const ProductCard = ({
@@ -23,9 +25,65 @@ const ProductCard = ({
   category,
   slug,
   featured = false,
+  inStock = true,
 }: ProductCardProps) => {
   // Get auth context to check if user is master admin
   const { isMasterAdmin } = useAuth();
+  // State to track the current image URL
+  const [currentImage, setCurrentImage] = useState(image);
+  
+  // Add cache-busting to initial image if needed
+  useEffect(() => {
+    if (image) {
+      // Always apply fresh cache-busting on component mount
+      const timestamp = new Date().getTime();
+      const cacheBustedUrl = image.includes('?') 
+        ? `${image.split('?')[0]}?t=${timestamp}` 
+        : `${image}?t=${timestamp}`;
+      console.log(`ProductCard: Adding cache-busting to initial image: ${cacheBustedUrl}`);
+      setCurrentImage(cacheBustedUrl);
+    }
+  }, [image]);
+  
+  // Listen for product update events
+  useEffect(() => {
+    const handleProductUpdate = (event: CustomEvent) => {
+      // Handle both formats of event data
+      const { 
+        productId: updatedProductId, 
+        productId, 
+        imageUrl, 
+        timestamp 
+      } = event.detail;
+      
+      // Check if this event is for this product
+      const eventProductId = updatedProductId || productId;
+      
+      if (eventProductId === id && imageUrl) {
+        console.log(`ProductCard: Received update event for product ${id}`);
+        
+        // Apply fresh cache-busting
+        const newTimestamp = new Date().getTime();
+        const cacheBustedUrl = imageUrl.includes('?') 
+          ? `${imageUrl.split('?')[0]}?t=${newTimestamp}` 
+          : `${imageUrl}?t=${newTimestamp}`;
+          
+        console.log(`ProductCard: Updating image with cache-busting: ${cacheBustedUrl}`);
+        setCurrentImage(cacheBustedUrl);
+      }
+    };
+    
+    // Add event listeners to both window and document
+    window.addEventListener('productUpdated', handleProductUpdate as EventListener);
+    document.addEventListener('productUpdated', handleProductUpdate as EventListener);
+    
+    return () => {
+      // Clean up event listeners
+      window.removeEventListener('productUpdated', handleProductUpdate as EventListener);
+      document.removeEventListener('productUpdated', handleProductUpdate as EventListener);
+    };
+  }, [id]);
+  
   // Create mailto link with product title in subject
   const mailtoLink = `mailto:info@b2bshowcase.com?subject=Inquiry about ${title}&body=I am interested in learning more about ${title}.`;
 
@@ -35,19 +93,22 @@ const ProductCard = ({
     >
       <div className="relative h-48 sm:h-64 overflow-hidden">
         <Image
-          src={image || 'https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'}
+          src={currentImage || 'https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'}
           alt={title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 hover:scale-105"
           priority
         />
-        {isMasterAdmin && <ImageUploader productId={id} currentImageUrl={image} />}
+        {isMasterAdmin && <ImageUploader productId={id} currentImageUrl={currentImage} />}
         {featured && (
           <div className="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
             Featured
           </div>
         )}
+        <div className={`absolute bottom-0 left-0 text-xs font-bold px-3 py-1 rounded-tr-lg ${inStock ? 'bg-green-600 text-white' : 'bg-red-600 text-white'}`}>
+          {inStock ? 'In Stock' : 'Out of Stock'}
+        </div>
       </div>
       
       <div className="p-5 flex flex-col flex-grow">

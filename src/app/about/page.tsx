@@ -109,7 +109,7 @@ export default function AboutPage() {
             </motion.h1>
             
             <motion.p 
-              className="text-lg md:text-xl text-white/90 max-w-3xl mx-auto mb-8"
+              className="text-lg md:text-xl text-black max-w-3xl mx-auto mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -153,6 +153,8 @@ export default function AboutPage() {
               className="object-cover"
               priority
             />
+
+
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent"></div>
             <div className="absolute bottom-0 left-0 p-6 text-white">
               <p className="text-sm font-medium text-blue-300">Global Presence</p>
@@ -446,7 +448,7 @@ export default function AboutPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl font-bold mb-4">Our Leadership Team</h2>
+          <h2 className="text-3xl font-bold mb-4">Our Directors</h2>
           <p className="text-gray-600 max-w-3xl mx-auto">
             Meet the experienced professionals who guide our company's vision and operations.
           </p>
@@ -455,28 +457,16 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {[
             {
-              name: "A",
-              role: "Chief Executive Officer",
-              image: "https://lh3.googleusercontent.com/pw/AP1GczPQlwR7tVl8-GYcTxV7yXUUlQX-AKpJGRVdTpBDcgL8WRGkLLHjqQRyLVYFXMtGCqaG9JHJeJMXJTuPQQAJaHMgOqnxKVcmQXEB9Oj0UBGvbHnm=w2400",
+              name: "Mitesh Desai",
+              role: "Director",
+              image: "/director1.jpg",
               bio: "With over 20 years of experience in global trade and business development."
             },
             {
-              name: "S",
-              role: "Chief Operations Officer",
-              image: "https://lh3.googleusercontent.com/pw/AP1GczMXAGLDNNJOuXHFU9JFhMbKl9MmgJN7BWP-UJQmTfXeJ-7nqMZlzLZLYxph9qKP6XlHGCEk_kIYRXCXQCGDDFHZQf-_aNLfLKkUVYMVQnhIFJAm=w2400",
+              name: "Hitendra Joshi",
+              role: "Director",
+              image: "/director2.jpg",
               bio: "Expert in supply chain optimization and operational excellence."
-            },
-            {
-              name: "M",
-              role: "Chief Technology Officer",
-              image: "https://lh3.googleusercontent.com/pw/AP1GczPgGVVXWvh9Ktvn7BrHVJ_vVLYVfSGdvZenS7tPfZUOiuTKNlThcBTQYJaXYMKs-EKjEGP8Zd4wCLWj9Yl9Vz1xwQfHYJKQOTjDlOA9_ZcLPXsD=w2400",
-              bio: "Leading our digital transformation and innovation initiatives."
-            },
-            {
-              name: "P",
-              role: "Chief Marketing Officer",
-              image: "https://lh3.googleusercontent.com/pw/AP1GczPMQnFJ9XMhMVxpgVLTBBgpt8eMSLMTzqbpXHrB9T_HCqLCnpH9_UaLYdSgUvNfA4Wy_2-VQnTJKVzYwCGIJbmWgHlTdvRXQf9uyJQxlpqnvEHn=w2400",
-              bio: "Driving our global brand strategy and market expansion."
             }
           ].map((member, index) => (
             <motion.div 
@@ -525,7 +515,7 @@ export default function AboutPage() {
         
         <div className="relative h-[500px] rounded-xl overflow-hidden mb-8">
           <Image 
-            src="https://lh3.googleusercontent.com/pw/AP1GczMgGxRJJOcKzL9vD9GZZpXsYTKFEWB7I9kbdRYrC5GcYIcwB9iSyOtqjHAKXDlQkjkGJTVEjHWAPvXWDBdAS9XCiKbSQJEe-_eHYQQPgRPQPnA=w2400" 
+            src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=1748&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
             alt="Global Presence Map" 
             fill 
             className="object-cover transition-transform duration-500 hover:scale-105"
@@ -655,7 +645,7 @@ export default function AboutPage() {
               Affiliated Companies
             </motion.h2>
             <motion.p 
-              className="text-xl text-gray-600 max-w-2xl mx-auto"
+              className="text-xl text-black max-w-2xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

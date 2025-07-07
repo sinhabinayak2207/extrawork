@@ -9,31 +9,30 @@ export default function AuthPageClient() {
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
 
   return (
-    <div className="min-h-screen bg-[#0d1117] bg-opacity-95 py-16 px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
-      <div className="max-w-md w-full mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-purple-900 py-16 px-4 sm:px-6 lg:px-8 flex flex-col justify-center relative">
+      {/* Background pattern */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+      
+      {/* Glass container */}
+      <div className="max-w-md w-full mx-auto relative z-10">
         <motion.div 
-          className="bg-[#161b22]/80 backdrop-blur-md shadow-xl rounded-lg overflow-hidden border border-[#30363d]/80"
+          className="bg-white/10 backdrop-blur-lg shadow-2xl rounded-xl overflow-hidden border border-white/20"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="flex border-b border-[#30363d]">
+          <div className="flex border-b border-white/20">
             <button
-              className={`w-1/2 py-3 text-center font-medium ${activeTab === 'login' ? 'text-white border-b-2 border-[#2ea0f8]' : 'text-gray-400 hover:text-gray-300'}`}
+              className={`w-1/2 py-4 text-center font-medium transition-all duration-300 ${activeTab === 'login' ? 'text-white border-b-2 border-blue-400' : 'text-white/70 hover:text-white'}`}
               onClick={() => setActiveTab('login')}
             >
               Login
             </button>
             <button
-              className={`w-1/2 py-3 text-center font-medium ${activeTab === 'signup' ? 'text-white border-b-2 border-[#2ea0f8]' : 'text-gray-400 hover:text-gray-300'}`}
+              className={`w-1/2 py-4 text-center font-medium transition-all duration-300 ${activeTab === 'signup' ? 'text-white border-b-2 border-blue-400' : 'text-white/70 hover:text-white'}`}
               onClick={() => setActiveTab('signup')}
             >
               Sign Up
-            </button>
-            <button className="absolute top-2 right-2 text-gray-400 hover:text-white">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
             </button>
           </div>
 

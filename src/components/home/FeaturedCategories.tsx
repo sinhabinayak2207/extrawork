@@ -1,11 +1,13 @@
 "use client";
 
-
+import { useEffect, useState } from 'react';
 import CategoryCard from '../products/CategoryCard';
 import Section from '../ui/Section';
+import { useCategories } from '@/context/CategoryContext';
+import Link from 'next/link';
 
-// Mock data for categories (will be replaced with CMS data later)
-const categories = [
+// Fallback data in case context is not available
+const fallbackCategories = [
   {
     id: '1',
     title: 'Rice',
@@ -29,26 +31,35 @@ const categories = [
     description: 'Refined and crude oils for industrial and commercial applications.',
     image: 'https://images.pexels.com/photos/1458694/pexels-photo-1458694.jpeg?auto=compress&cs=tinysrgb&w=600',
     productCount: 6
-  },
-  {
-    id: '4',
-    title: 'Raw Polymers',
-    slug: 'raw-polymers',
-    description: 'Industrial-grade polymers for manufacturing and production needs.',
-    image: 'https://images.pexels.com/photos/3825527/pexels-photo-3825527.jpeg?auto=compress&cs=tinysrgb&w=600',
-    productCount: 9
-  },
-  {
-    id: '5',
-    title: 'Bromine Salt',
-    slug: 'bromine-salt',
-    description: 'High-purity bromine salt compounds for chemical and industrial use.',
-    image: 'https://images.pexels.com/photos/6195085/pexels-photo-6195085.jpeg?auto=compress&cs=tinysrgb&w=600',
-    productCount: 4
   }
 ];
 
 const FeaturedCategories = () => {
+  const categoryContext = useCategories();
+  const [categoryUpdateTrigger, setCategoryUpdateTrigger] = useState(0);
+  
+  // Use featured categories from context if available, otherwise use fallback
+  const displayCategories = categoryContext?.featuredCategories?.length > 0 
+    ? categoryContext.featuredCategories 
+    : fallbackCategories;
+
+  // Listen for category updates
+  useEffect(() => {
+    const handleCategoryUpdate = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      console.log('Category update detected in FeaturedCategories:', customEvent.detail);
+      
+      // Force a re-render by updating the state
+      setCategoryUpdateTrigger(prev => prev + 1);
+    };
+    
+    window.addEventListener('categoryUpdated', handleCategoryUpdate);
+    
+    return () => {
+      window.removeEventListener('categoryUpdated', handleCategoryUpdate);
+    };
+  }, []);
+
   return (
     <Section background="light" id="categories">
       <div className="text-center mb-12">
@@ -68,16 +79,25 @@ const FeaturedCategories = () => {
       <div 
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fadeIn animation-delay-300"
       >
-        {categories.map((category) => (
+        {displayCategories.map((category) => (
           <CategoryCard
-            key={category.id}
+            key={`${category.id}-${categoryUpdateTrigger}`}
             title={category.title}
             description={category.description}
-            image={category.image}
+            image={`${category.image || '/placeholder-image.jpg'}${category.image?.includes('?') ? '&' : '?'}t=${categoryUpdateTrigger}`}
             slug={category.slug}
             productCount={category.productCount}
           />
         ))}
+      </div>
+      
+      <div className="mt-8 text-center">
+        <Link 
+          href="/categories"
+          className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 md:py-4 md:text-lg md:px-8 transition-colors duration-300"
+        >
+          View All Categories
+        </Link>
       </div>
     </Section>
   );

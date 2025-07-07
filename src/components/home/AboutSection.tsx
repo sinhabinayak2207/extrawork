@@ -8,7 +8,7 @@ import Button from '../ui/Button';
 const AboutSection = () => {
   // Global business network images for carousel
   const globalImages = [
-    "https://images.unsplash.com/photo-1480714378408-67c7579f3cac?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
     "https://images.unsplash.com/photo-1529400971008-f566de0e6dfc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
     "https://images.unsplash.com/photo-1507208773393-40d9fc670acf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80",
@@ -73,7 +73,7 @@ const AboutSection = () => {
               </div>
               <div>
                 <p className="text-gray-500 text-sm">Years Experience</p>
-                <h4 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">15+</h4>
+                <h4 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">10+</h4>
               </div>
             </div>
           </div>
@@ -82,19 +82,19 @@ const AboutSection = () => {
         {/* Content Side */}
         <div className="space-y-6 animate-fadeIn">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Your Trusted Partner for <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Premium Bulk Products</span>
+            Your Trusted Partner for <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Supply Chain Management</span>
           </h2>
           
           <p className="text-gray-600 mb-6">
-            For over 15 years, B2B Showcase has been a leading provider of high-quality bulk commodities and raw materials to businesses worldwide. We pride ourselves on our commitment to quality, reliability, and exceptional service.
+            OCTOPUS SCM EXPEDITORS PVT. LTD. is a leading provider of supply chain management solutions. We are an Offline Service Provider, NVOCC, and Agent Marketing Agent serving businesses worldwide with reliability and exceptional service.
           </p>
           
           <div className="space-y-4 mb-8">
             {[
-              { title: 'Premium Quality', description: 'We source only the highest quality products from trusted suppliers.' },
-              { title: 'Global Reach', description: 'Our extensive network allows us to serve clients in over 40 countries.' },
-              { title: 'Competitive Pricing', description: 'We offer competitive pricing without compromising on quality.' },
-              { title: 'Reliable Delivery', description: 'Our efficient logistics ensure timely delivery of your orders.' }
+              { title: 'Supply Chain Management', description: 'We offer comprehensive supply chain solutions for your business needs.' },
+              { title: 'Global Network', description: 'Our extensive network allows us to serve clients across multiple countries.' },
+              { title: 'Professional Team', description: 'Led by Director Hitendra Joshi, our team provides expert service.' },
+              { title: 'Reliable Service', description: 'Our efficient logistics ensure timely delivery and exceptional support.' }
             ].map((item, index) => (
               <div className="flex items-start" key={index}>
                 <div className="flex-shrink-0 mt-1">

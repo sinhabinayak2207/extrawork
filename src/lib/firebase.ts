@@ -1,11 +1,12 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 import { getAnalytics } from 'firebase/analytics';
+import { getFirestore } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyCKv_Rs6MNXV1cshKhf7T4C93RG82u11LA",
   authDomain: "b2bshowcase-199a8.firebaseapp.com",
   projectId: "b2bshowcase-199a8",
@@ -24,7 +25,20 @@ const authorizedDomains = [
 ];
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+let app: any;
+
+// Function to initialize Firebase app
+export const initializeFirebaseApp = () => {
+  if (getApps().length === 0) {
+    app = initializeApp(firebaseConfig);
+    return app;
+  } else {
+    return getApps()[0];
+  }
+};
+
+// Initialize Firebase
+app = initializeFirebaseApp();
 
 // Initialize Firebase Authentication and get a reference to the service
 export const auth = getAuth(app);
@@ -45,5 +59,8 @@ if (typeof window !== 'undefined') {
   analytics = getAnalytics(app);
 }
 export { analytics };
+
+// Initialize Firestore
+export const db = getFirestore(app);
 
 export default app;
