@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 // Configure this route for server-side rendering
-export const dynamic = "auto";
+export const dynamic = "force-dynamic";
 import { getFirestore } from 'firebase/firestore';
 import { collection, getDocs, limit, query } from 'firebase/firestore';
 import { initializeApp, getApps, getApp } from 'firebase/app';

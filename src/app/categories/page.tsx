@@ -1,8 +1,7 @@
 "use client";
 
 // Make this page dynamic to handle category image updates
-export const dynamic = "auto";
-export const revalidate = 0; // Revalidate on every request
+export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
 import MainLayout from "../../components/layout/MainLayout";
