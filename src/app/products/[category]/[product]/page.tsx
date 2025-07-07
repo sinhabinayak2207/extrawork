@@ -5,8 +5,9 @@ import { getProductById, getAllProducts, Product } from "../../../../lib/firebas
 import ProductDetailClient from "@/components/products/ProductDetailClient";
 import { categories } from "../../../../lib/api/mockData"; // Keep categories from mock data for now
 
-// For static exports, we need extensive fallback paths
-// This helps ensure new products can be viewed without rebuilding
+// For static exports, we need to handle new products client-side
+// We'll create a fallback page for new products
+// This will still work with dynamic rendering in development mode
 
 // Generate static paths for all products
 export async function generateStaticParams() {
@@ -103,34 +104,30 @@ export async function generateStaticParams() {
     
     // Add extensive fallback paths even if Firebase fetch fails
     const fallbackSlugs = [
-      // Common product slug patterns
+      // Common product patterns
       'new-product', 'product-details', 'details', 'view', 'product', 'item', 'fg',
       'tes', 'tejaswi', 'tejaswi-sinha', 'sinha', 'tejasvi', 'tejasvi-sinha',
       'test', 'sample', 'demo', 'new', 'premium', 'basic', 'pro',
-      
-      // Category names as slugs
       'rice', 'wheat', 'grain', 'food', 'drink', 'clothing', 'electronics',
-      
-      // Category-product combinations
       'rice-product', 'wheat-product', 'grain-product', 'food-item', 'drink-item',
       'test-product-1', 'test-product-2', 'sample-product-1', 'sample-product-2',
       
-      // Known specific product slugs
+      // Add specific product slugs that we know exist
       'g-xfh', 'rice-testing',
       
-      // Common rice product patterns
+      // Add common patterns for product slugs
       'rice-1', 'rice-2', 'rice-3', 'rice-product', 'rice-test', 'rice-new',
       'test-rice', 'new-rice', 'premium-rice', 'basmati-rice', 'jasmine-rice',
       
-      // Additional patterns for dynamic products
-      'rice-testing-1', 'rice-testing-2', 'rice-premium', 'rice-special', 'rice-organic',
-      'rice-white', 'rice-brown', 'rice-long', 'rice-short', 'rice-medium',
-      'rice-basmati', 'rice-jasmine', 'rice-wild', 'rice-black', 'rice-red',
+      // Add common testing patterns
+      'test1', 'test2', 'test3', 'test-a', 'test-b', 'test-c',
+      'testing', 'testing-1', 'testing-2', 'testing-3',
+      'rice-testing', 'rice-test-1', 'rice-test-2',
       
-      // Generic patterns that might match user-created products
+      // Add common ID patterns
       'product-1', 'product-2', 'product-3', 'product-4', 'product-5',
       'item-1', 'item-2', 'item-3', 'item-4', 'item-5',
-      'new-1', 'new-2', 'new-3', 'test-1', 'test-2', 'test-3'
+      'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10'
     ];
     
     categories.forEach(category => {

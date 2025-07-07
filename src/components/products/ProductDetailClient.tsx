@@ -61,20 +61,6 @@ export default function ProductDetailClient({ serverProduct, productSlug, catego
     };
   }, [product, refreshProduct]);
 
-  // Retry loading if product context updates
-  useEffect(() => {
-    if (!product && productContext && productContext.products && productContext.products.length > 0 && productSlug) {
-      const foundProduct = productContext.products.find(p => p.slug === productSlug);
-      if (foundProduct) {
-        console.log('Product found in updated context:', foundProduct);
-        setProduct({
-          ...foundProduct,
-          price: typeof foundProduct.price === 'number' ? foundProduct.price : 0
-        });
-      }
-    }
-  }, [productContext, productSlug, product]);
-
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -94,6 +80,10 @@ export default function ProductDetailClient({ serverProduct, productSlug, catego
             return;
           }
         }
+        
+        // For newly added products that might not be in the static export
+        // Always try to fetch from Firebase on the client side
+        logToSystem(`Product not found in context, fetching directly from Firebase: ${productSlug}`, 'info');
 
         // If not in context, try to fetch from Firebase
         try {

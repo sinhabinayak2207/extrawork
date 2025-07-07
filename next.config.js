@@ -17,6 +17,7 @@ const nextConfig = {
   reactStrictMode: true,
   
   // Generate static HTML export for Firebase hosting
+  // But enable hybrid approach with ISR for product pages
   output: 'export',
   
   // Build directory
@@ -27,21 +28,21 @@ const nextConfig = {
     return 'build-' + new Date().toISOString().replace(/[\:\.-]/g, '-');
   },
   
-  // Static export configuration
+  // For static export, we need to handle authentication differently
   experimental: {
-    // No experimental features needed for static export
+    // Remove server components configuration as it's not compatible with static export
   },
   
-  // Configure static export settings
+  // Disable middleware for static export
   skipMiddlewareUrlNormalize: true,
   skipTrailingSlashRedirect: true,
   
   // Disable trailing slashes for Firebase hosting compatibility
   trailingSlash: false,
   
-  // Image optimization settings
+  // Disable image optimization for static export
   images: {
-    unoptimized: true, // Keep for static export
+    unoptimized: true,
     domains: [
       'lh3.googleusercontent.com',
       'avatars.githubusercontent.com',
@@ -55,8 +56,7 @@ const nextConfig = {
     ],
   },
   
-  // Note: exportPathMap is not compatible with the app directory
-  // We'll use generateStaticParams in each page instead
+  // No experimental features needed for static export
 };
 
 module.exports = nextConfig;
