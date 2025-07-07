@@ -1,5 +1,8 @@
 "use client";
 
+// Make this page dynamic to handle category image updates
+export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
 import MainLayout from "../../components/layout/MainLayout";
 import Section from "../../components/ui/Section";
@@ -12,6 +15,7 @@ export default function CategoriesPage() {
   // Use the categories from context to get live updates
   const { categories } = useCategories();
   const [enhancedCategories, setEnhancedCategories] = useState<Category[]>([]);
+  const [timestamp, setTimestamp] = useState(Date.now());
   
   // Listen for category updates
   useEffect(() => {
@@ -19,13 +23,17 @@ export default function CategoriesPage() {
     
     // Listen for category update events
     const handleCategoryUpdate = () => {
+      // Update timestamp to force image refresh
+      setTimestamp(Date.now());
       setEnhancedCategories([...categories]);
     };
     
     window.addEventListener('categoryUpdated', handleCategoryUpdate);
+    window.addEventListener('refreshCategories', handleCategoryUpdate);
     
     return () => {
       window.removeEventListener('categoryUpdated', handleCategoryUpdate);
+      window.removeEventListener('refreshCategories', handleCategoryUpdate);
     };
   }, [categories]);
 
@@ -55,10 +63,11 @@ export default function CategoriesPage() {
             >
               <div className="relative h-48 w-full overflow-hidden">
                 <Image
-                  src={`${category.imageUrl || "/images/placeholder-category.jpg"}${category.imageUrl?.includes('?') ? '&' : '?'}t=${new Date().getTime()}`}
+                  src={`${category.imageUrl || "/images/placeholder-category.jpg"}${category.imageUrl?.includes('?') ? '&' : '?'}t=${timestamp}`}
                   alt={category.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  unoptimized={true} /* Disable Next.js image optimization to prevent caching */
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-4">
