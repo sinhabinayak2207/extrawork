@@ -56,7 +56,7 @@ const FeaturedProducts = () => {
   return (
     <Section background="white" id="featured-products">
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 animate-fadeIn">
+        <h2 className="text-3xl md:text-4xl text-gray-700 font-bold mb-4 animate-fadeIn">
           Featured <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Products</span>
         </h2>
         <p className="text-gray-600 max-w-2xl mx-auto animate-fadeIn delay-100">

@@ -231,7 +231,7 @@ export default function ProductDetailClient({ serverProduct, productSlug, catego
       <Section background="white" paddingY="lg">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Image */}
-          <div className="relative h-[400px] md:h-[500px] rounded-xl overflow-hidden">
+          <div className="relative h-[600px] md:h-[800px] lg:h-[100px] rounded-xl overflow-hidden">
             <Image
               src={displayProduct.image}
               alt={displayProduct.title}

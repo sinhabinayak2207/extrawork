@@ -1,4 +1,4 @@
-"use client";
+
 
 "use client";
 
@@ -53,13 +53,13 @@ export default function AchievementsPage() {
             transition={{ duration: 0.5 }}
             className="text-4xl md:text-5xl font-bold mb-6"
           >
-            Our <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Achievements</span>
+            <span className="text-gray-700">Our</span> <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Achievements</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-lg text-gray-200 mb-8"
+            className="text-lg text-gray-700 mb-8"
           >
             Recognized for excellence, quality, and innovation in the B2B industry
           </motion.p>
@@ -97,7 +97,7 @@ export default function AchievementsPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl font-bold mb-4">Certifications & Awards</h2>
+            <h2 className="text-3xl font-bold mb-4 text-gray-700">Certifications & Awards</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Our commitment to quality and excellence has been recognized through various industry certifications and awards.
             </p>
@@ -146,13 +146,13 @@ export default function AchievementsPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl font-bold mb-4">What Our Partners Say</h2>
+          <h2 className="text-3xl font-bold mb-4 text-gray-700">What Our Partners Say</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Don't just take our word for it. Here's what our partners and clients have to say about working with us.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 text-gray-700 gap-8">
           {[
             {
               quote: "B2B Showcase has been an invaluable partner in our supply chain. Their quality and reliability are unmatched.",
@@ -185,7 +185,7 @@ export default function AchievementsPage() {
                   </svg>
                 ))}
               </div>
-              <p className="text-gray-600 italic mb-6">"{testimonial.quote}"</p>
+              <p className="text-gray-700 italic mb-6">"{testimonial.quote}"</p>
               <div className="flex items-center">
                 <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-600 to-teal-400 flex items-center justify-center text-white font-bold">
                 {testimonial.author.charAt(0)}

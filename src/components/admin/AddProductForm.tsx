@@ -229,7 +229,7 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
                   name="name" 
                   value={newProductForm.name}
                   onChange={handleProductFormChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full border text-black border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
               </div>
@@ -241,7 +241,7 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
                   name="category" 
                   value={newProductForm.category}
                   onChange={handleProductFormChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full border text-black border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 >
                   {productCategories.map(category => (
                     <option key={category.id} value={category.id}>{category.name}</option>
@@ -261,7 +261,7 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
                     name="price" 
                     value={newProductForm.price}
                     onChange={handleProductFormChange}
-                    className="block w-full pl-7 pr-12 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="block w-full text-black pl-7 pr-12 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     placeholder="0.00"
                     required
                   />
@@ -276,7 +276,7 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
                   rows={4} 
                   value={newProductForm.description}
                   onChange={handleProductFormChange}
-                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block c w-full border text-black border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   required
                 ></textarea>
               </div>
@@ -346,7 +346,7 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
                                 newSpecs[index].key = e.target.value;
                                 setSpecifications(newSpecs);
                               }}
-                              className="w-full text-sm border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full text-sm border text-black border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             />
                           </div>
                           <div className="flex-1">
@@ -359,7 +359,7 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
                                 newSpecs[index].value = e.target.value;
                                 setSpecifications(newSpecs);
                               }}
-                              className="w-full text-sm border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                              className="w-full text-sm border text-black border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             />
                           </div>
                           {specifications.length > 1 && (

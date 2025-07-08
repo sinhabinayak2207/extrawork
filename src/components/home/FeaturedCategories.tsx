@@ -64,7 +64,7 @@ const FeaturedCategories = () => {
     <Section background="light" id="categories">
       <div className="text-center mb-12">
         <h2 
-          className="text-3xl md:text-4xl font-bold mb-4 animate-fadeIn"
+          className="text-3xl md:text-4xl text-gray-700 font-bold mb-4 animate-fadeIn"
         >
           Our Product <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Categories</span>
         </h2>

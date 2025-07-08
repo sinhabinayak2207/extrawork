@@ -41,7 +41,7 @@ export default function CategoryPageClient({ category, categorySlug }: CategoryP
     <>
       <Section background="gradient" paddingY="lg">
         <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-700">
             {category.title} <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Products</span>
           </h1>
           <p className="text-lg text-gray-600 mb-8">

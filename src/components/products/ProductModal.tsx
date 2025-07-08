@@ -97,7 +97,7 @@ export default function ProductModal({ productId, onClose }: ProductModalProps) 
         ) : product ? (
           <div className="flex flex-col md:flex-row">
             {/* Product Image */}
-            <div className="w-full md:w-1/2 relative h-64 md:h-auto">
+            <div className="w-full md:w-1/2 relative h-80 md:h-[500px]">
               {product.imageUrl ? (
                 <Image
                   src={product.imageUrl}

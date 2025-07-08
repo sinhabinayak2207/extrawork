@@ -100,7 +100,7 @@ export default function AboutPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
           <div className="text-center">
             <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6"
+              className="text-4xl md:text-5xl lg:text-6xl text-gray-700 font-bold mb-4 md:mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -200,7 +200,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="text-4xl md:text-5xl font-bold mb-6"
+            className="text-4xl md:text-5xl text-gray-700 font-bold mb-6"
           >
             About <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Our Company</span>
           </motion.h1>
@@ -208,7 +208,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-lg text-gray-200 mb-8"
+            className="text-lg text-gray-600 mb-8"
           >
             Leading the way in B2B solutions with innovation, quality, and exceptional service for businesses worldwide.
           </motion.p>
@@ -346,7 +346,7 @@ export default function AboutPage() {
                 </svg>
               </div>
               
-              <h3 className="text-2xl font-bold mb-4">Our Mission</h3>
+              <h3 className="text-2xl font-bold mb-4 text-gray-600">Our Mission</h3>
               <p className="text-gray-600 mb-6 text-lg">
                 To provide businesses with premium quality products and innovative solutions that drive efficiency, sustainability, and growth. We aim to be the trusted partner that helps our clients succeed in an ever-evolving global marketplace.
               </p>
@@ -377,7 +377,7 @@ export default function AboutPage() {
                 </svg>
               </div>
               
-              <h3 className="text-2xl font-bold mb-4">Our Vision</h3>
+              <h3 className="text-2xl font-bold mb-4 text-gray-700">Our Vision</h3>
               <p className="text-gray-600 mb-6 text-lg">
                 To be the global leader in B2B solutions, recognized for our commitment to quality, innovation, and exceptional service. We envision a world where businesses have seamless access to the best products and services to fuel their success.
               </p>
@@ -392,7 +392,7 @@ export default function AboutPage() {
           </motion.div>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-gray-600" >
           {[
             {
               title: "Quality",
@@ -448,13 +448,13 @@ export default function AboutPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl font-bold mb-4">Our Directors</h2>
+          <h2 className="text-3xl font-bold mb-4 text-gray-700">Our <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Directors</span></h2>
           <p className="text-gray-600 max-w-3xl mx-auto">
             Meet the experienced professionals who guide our company's vision and operations.
           </p>
         </motion.div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="flex flex-row justify-center gap-12 max-w-4xl mx-auto">
           {[
             {
               name: "Mitesh Desai",
@@ -477,11 +477,12 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              <div className="relative h-64 overflow-hidden group">
+              <div className="relative overflow-hidden group" style={{ width: '900px', height: '300px' }}>
                 <Image 
                   src={member.image} 
                   alt={member.name} 
-                  fill 
+                  width={387}
+                  height={287}
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
@@ -507,7 +508,7 @@ export default function AboutPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl font-bold mb-4">Our Global Presence</h2>
+          <h2 className="text-3xl font-bold mb-4 text-gray-700">Our Global Presence</h2>
           <p className="text-gray-600 max-w-3xl mx-auto">
             With offices and partners worldwide, we deliver solutions to businesses across the globe.
           </p>
@@ -751,8 +752,8 @@ export default function AboutPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Business?</h2>
-            <p className="text-lg text-gray-200 mb-8 max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl text-gray-700 font-bold mb-6">Ready to Transform Your Business?</h2>
+            <p className="text-lg text-gray-200 mb-8 max-w-2xl mx-auto text-gray-600">
               Partner with us to access premium B2B solutions that drive growth, efficiency, and innovation for your business.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -766,7 +767,7 @@ export default function AboutPage() {
               </motion.a>
               <motion.a 
                 href="/services" 
-                className="px-8 py-3 bg-transparent border-2 border-white text-white font-medium rounded-lg transition-all duration-300 hover:bg-white/10 hover:shadow-lg"
+                className="px-8 py-3 text-gray-700 bg-transparent border-2 border-gray-300 font-medium rounded-lg transition-all duration-300 hover:bg-white/10 hover:shadow-lg"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
               >

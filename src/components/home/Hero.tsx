@@ -167,7 +167,7 @@ const Hero = () => {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                           </div>
-                          
+                        
                           {/* Caption */}
                           <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
                             <h4 className="font-medium text-lg">

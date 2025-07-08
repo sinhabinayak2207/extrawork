@@ -12,7 +12,7 @@ const CtaSection = () => {
         <div className="absolute bottom-0 right-0 w-32 h-32 bg-teal-500/10 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl"></div>
         
         <div className="relative z-10 text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 animate-fadeIn">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl text-gray-700 font-bold mb-6 animate-fadeIn">
             Ready to Source <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Premium Products</span> for Your Business?
           </h2>
           

@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { doc, getFirestore, setDoc, Timestamp } from 'firebase/firestore';
 import { addCategory as addFirebaseCategory, removeCategory as removeFirebaseCategory } from '@/lib/firebase-db';
+import { useProducts, Product } from './ProductContext';
 
 export interface Category {
   id: string;
@@ -81,6 +82,7 @@ const CategoryContext = createContext<CategoryContextType | null>(null);
 export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [categories, setCategories] = useState<Category[]>(initialCategories);
   const [featuredCategories, setFeaturedCategories] = useState<Category[]>([]);
+  const productContext = useProducts();
 
   // Initialize categories from localStorage, Firestore, or local data
   useEffect(() => {
@@ -145,6 +147,33 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const featured = categories.filter(category => category.featured === true);
     setFeaturedCategories(featured);
   }, [categories]);
+
+  // Update product counts dynamically based on actual products
+  useEffect(() => {
+    if (productContext?.products) {
+      const products = productContext.products;
+      
+      // Create a count of products per category
+      const categoryCounts: Record<string, number> = {};
+      
+      // Count products for each category
+      products.forEach((product: Product) => {
+        const categorySlug = product.category.toLowerCase();
+        if (!categoryCounts[categorySlug]) {
+          categoryCounts[categorySlug] = 0;
+        }
+        categoryCounts[categorySlug]++;
+      });
+      
+      // Update category counts
+      const updatedCategories = categories.map(category => ({
+        ...category,
+        productCount: categoryCounts[category.slug.toLowerCase()] || 0
+      }));
+      
+      setCategories(updatedCategories);
+    }
+  }, [productContext?.products]);
 
   /**
    * Update a category's featured status

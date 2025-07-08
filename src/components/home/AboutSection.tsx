@@ -81,7 +81,7 @@ const AboutSection = () => {
         
         {/* Content Side */}
         <div className="space-y-6 animate-fadeIn">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+          <h2 className="text-3xl md:text-4xl text-gray-700 font-bold mb-6">
             Your Trusted Partner for <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Supply Chain Management</span>
           </h2>
           
