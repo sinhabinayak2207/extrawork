@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import MainLayout from "../../../../components/layout/MainLayout";
-import { getProductById, getAllProducts, Product } from "../../../../lib/firebase-db";
+import MainLayout from "@/components/layout/MainLayout";
+import { getProductById, getAllProducts, Product } from "@/lib/firebase-db";
 import ProductDetailClient from "@/components/products/ProductDetailClient";
-import { categories } from "../../../../lib/api/mockData"; // Keep categories from mock data for now
+import { categories } from "@/lib/api/mockData"; // Keep categories from mock data for now
 
 // For static exports, we need to handle new products client-side
 // We'll create a fallback page for new products
