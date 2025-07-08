@@ -5,6 +5,7 @@ import styles from './ProductModal.module.css';
 import Image from 'next/image';
 import { useProducts, Product } from '@/context/ProductContext';
 import LoadingSpinner from '../ui/LoadingSpinner';
+import { useRouter } from 'next/navigation';
 
 interface ProductModalProps {
   productId: string | null;
@@ -15,7 +16,9 @@ export default function ProductModal({ productId, onClose }: ProductModalProps) 
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const productContext = useProducts();
+  const router = useRouter();
   
   // Close modal when Escape key is pressed
   useEffect(() => {
@@ -35,6 +38,17 @@ export default function ProductModal({ productId, onClose }: ProductModalProps) 
     return () => {
       document.body.style.overflow = 'auto';
     };
+  }, []);
+  
+  // Detect if user is on mobile device
+  useEffect(() => {
+    const checkIfMobile = () => {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|windows phone/i;
+      setIsMobile(mobileRegex.test(userAgent));
+    };
+    
+    checkIfMobile();
   }, []);
   
   // Fetch product data
@@ -175,12 +189,26 @@ export default function ProductModal({ productId, onClose }: ProductModalProps) 
               ) : null}
               
               <div className="flex flex-col space-y-4">
-                <a 
-                  href={`mailto:info@b2bshowcase.com?subject=Inquiry about ${product.name}&body=I am interested in learning more about ${product.name}.`}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md text-center font-medium transition-colors duration-300"
-                >
-                  Contact Supplier
-                </a>
+                {isMobile ? (
+                  // For mobile users: Use mailto link that opens email app
+                  <a 
+                    href={`mailto:info@b2bshowcase.com?subject=Inquiry about ${product.name}&body=I am interested in learning more about ${product.name}.`}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md text-center font-medium transition-colors duration-300"
+                  >
+                    Contact Supplier
+                  </a>
+                ) : (
+                  // For desktop users: Redirect to contact page with product info
+                  <button
+                    onClick={() => {
+                      onClose(); // Close the modal first
+                      router.push(`/contact?product=${encodeURIComponent(product.name)}`);
+                    }}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md text-center font-medium transition-colors duration-300"
+                  >
+                    Contact Supplier
+                  </button>
+                )}
                 <button
                   onClick={onClose}
                   className="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-6 rounded-md text-center font-medium transition-colors duration-300"
