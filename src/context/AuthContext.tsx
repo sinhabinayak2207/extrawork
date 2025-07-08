@@ -26,7 +26,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   
   // Check if user is admin or master admin
   const isAdmin = user?.email === 'admin@example.com';
-  const isMasterAdmin = user?.email === 'sinha.vinayak2207@gmail.com';
+  const masterAdminEmails = ['sinha.vinayak2207@gmail.com', 'octopusscm3@gmail.com'];
+  const isMasterAdmin = user?.email ? masterAdminEmails.includes(user.email) : false;
   
   // Listen for auth state changes
   useEffect(() => {
