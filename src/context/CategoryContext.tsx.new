@@ -1,13 +1,13 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { doc, getFirestore, setDoc, Timestamp } from 'firebase/firestore';
 import { 
   addCategory as addFirebaseCategory, 
   removeCategory as removeFirebaseCategory,
   updateCategoryImage as updateFirebaseCategoryImage
 } from '@/lib/firebase-db';
-import { useProducts, Product } from './ProductContext';
+import { useProducts } from './ProductContext';
 
 export interface Category {
   id: string;
@@ -79,7 +79,6 @@ interface CategoryContextType {
   updateCategory: (categoryId: string, updates: Partial<Category>) => Promise<void>;
   addCategory: (category: { title: string, description: string, image?: string }) => Promise<string>;
   removeCategory: (categoryId: string) => Promise<void>;
-  updateProductCount: (categorySlug: string, count?: number) => void;
 }
 
 const CategoryContext = createContext<CategoryContextType | null>(null);
@@ -349,80 +348,6 @@ export const CategoryProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
   };
 
-  // Function to update product count for a category
-  const updateProductCount = useCallback((categorySlug: string, count?: number) => {
-    // If count is provided, use it directly, otherwise calculate from products if available
-    const newCount = count !== undefined ? count : 
-      (productContext?.products?.filter(product => product.category === categorySlug)?.length || 0);
-    
-    console.log(`Updating product count for category ${categorySlug} to ${newCount}`);
-    
-    setCategories(prevCategories => prevCategories.map(category => {
-      if (category.slug === categorySlug) {
-        return { ...category, productCount: newCount };
-      }
-      return category;
-    }));
-  }, [productContext?.products]);
-
-  // Listen for product added/removed events to update category counts
-  useEffect(() => {
-    // Skip if productContext is not available
-    if (!productContext) return;
-    
-    const handleProductAdded = (event: CustomEvent) => {
-      const { detail } = event;
-      const product = productContext.products.find(p => p.id === detail.productId);
-      if (product && product.category) {
-        updateProductCount(product.category);
-      }
-    };
-
-    const handleProductRemoved = (event: CustomEvent) => {
-      // Since the product is already removed from the products array,
-      // we need to use the category from the event detail if available
-      const { detail } = event;
-      if (detail && detail.category) {
-        updateProductCount(detail.category);
-      } else {
-        // If category is not in the event detail, update all categories
-        // This is less efficient but ensures counts are correct
-        const uniqueCategories = Array.from(new Set(productContext.products.map(p => p.category)));
-        uniqueCategories.forEach(categorySlug => updateProductCount(categorySlug));
-      }
-    };
-
-    // Initialize product counts on mount
-    const initializeCounts = () => {
-      const categoryCounts: Record<string, number> = {};
-      
-      // Count products per category
-      productContext.products.forEach(product => {
-        const category = product.category;
-        if (category) {
-          categoryCounts[category] = (categoryCounts[category] || 0) + 1;
-        }
-      });
-      
-      // Update each category with its count
-      Object.entries(categoryCounts).forEach(([categorySlug, count]) => {
-        updateProductCount(categorySlug, count);
-      });
-    };
-
-    // Run initialization
-    initializeCounts();
-
-    // Add event listeners
-    window.addEventListener('productAdded', handleProductAdded as EventListener);
-    window.addEventListener('productRemoved', handleProductRemoved as EventListener);
-    
-    return () => {
-      window.removeEventListener('productAdded', handleProductAdded as EventListener);
-      window.removeEventListener('productRemoved', handleProductRemoved as EventListener);
-    };
-  }, [productContext?.products, updateProductCount]);
-
   return (
     <CategoryContext.Provider value={{
       categories,
@@ -431,8 +356,7 @@ export const CategoryProvider: React.FC<{ children: ReactNode }> = ({ children }
       updateCategoryImage,
       updateCategory,
       addCategory,
-      removeCategory,
-      updateProductCount
+      removeCategory
     }}>
       {children}
     </CategoryContext.Provider>

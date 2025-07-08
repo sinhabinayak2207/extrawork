@@ -405,8 +405,13 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
       
       setProducts(prevProducts => [...prevProducts, newProduct]);
       
-      // Dispatch event for components to update
-      window.dispatchEvent(new CustomEvent('productAdded', { detail: { productId: newProductId } }));
+      // Dispatch event for components to update with category information
+      window.dispatchEvent(new CustomEvent('productAdded', { 
+        detail: { 
+          productId: newProductId,
+          category: product.category
+        } 
+      }));
       
       return newProductId;
     } catch (error) {
@@ -455,11 +460,19 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
       const events = ['productRemoved', 'productDeleted', 'productUpdated'];
       events.forEach(eventName => {
         window.dispatchEvent(new CustomEvent(eventName, { 
-          detail: { productId, name: productToDelete?.name },
+          detail: { 
+            productId, 
+            name: productToDelete?.name,
+            category: productToDelete?.category // Include category for product count updates
+          },
           bubbles: true 
         }));
         document.dispatchEvent(new CustomEvent(eventName, { 
-          detail: { productId, name: productToDelete?.name },
+          detail: { 
+            productId, 
+            name: productToDelete?.name,
+            category: productToDelete?.category // Include category for product count updates
+          },
           bubbles: true 
         }));
       });

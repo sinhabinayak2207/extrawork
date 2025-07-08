@@ -511,7 +511,8 @@ export const updateCategoryImage = async (categoryId: string, imageUrl: string, 
     
     // Use setDoc with merge option to ensure the update goes through
     const updateData = {
-      imageUrl,
+      image: imageUrl,  // Update both image and imageUrl fields
+      imageUrl: imageUrl,
       updatedAt: Timestamp.now(),
       updatedBy
     };

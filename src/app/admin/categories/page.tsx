@@ -93,8 +93,8 @@ export default function CategoriesManagement() {
       // Log the new image URL
       logToSystem(`Uploaded image to Cloudinary: ${downloadURL}`, 'success');
       
-      // Update category in Firestore
-      await updateCategory(categoryId, { imageUrl: downloadURL });
+      // Update category in Firestore with both image and imageUrl fields
+      await updateCategory(categoryId, { image: downloadURL, imageUrl: downloadURL });
       
       // Log success
       logToSystem(`Updated image for category ${categoryId}`, 'success');
@@ -135,8 +135,8 @@ export default function CategoriesManagement() {
         [categoryId]: { isUploading: true, error: null, success: false }
       }));
       
-      // Update category in Firestore directly with URL
-      await updateCategory(categoryId, { imageUrl });
+      // Update category in Firestore directly with URL - both image and imageUrl fields
+      await updateCategory(categoryId, { image: imageUrl, imageUrl: imageUrl });
       
       // Log success
       logToSystem(`Updated image for category ${categoryId} with demo image`, 'success');

@@ -21,27 +21,44 @@ const CategoryCard = ({
 }: CategoryCardProps) => {
   const [imageUrl, setImageUrl] = useState<string>(image || 'https://lh3.googleusercontent.com/pw/AP1GczMJmz5XYZnIKL-uD_2FjEGAQbJ9xJABjv1Xt7Ov9Zt5BwJvdnNJJ_HXxRwVlmcKbgILEOkxcjkF4UNYfWvdJnZxlDDDlvEwjFAjpQxQJnvQHvs=w2400');
   
-  // Add a timestamp to the image URL to prevent caching
+  // For Cloudinary URLs, we don't need to add timestamps as they're already unique
+  // Just use the image URL directly
   useEffect(() => {
     if (image) {
-      // Extract base URL without any timestamp parameters
-      const baseUrl = image.split('?')[0];
-      // Add a new timestamp
-      const timestamp = new Date().getTime();
-      setImageUrl(`${baseUrl}?t=${timestamp}`);
+      // Check if this is a Cloudinary URL (contains cloudinary.com)
+      if (image.includes('cloudinary.com')) {
+        // Use the Cloudinary URL directly without modifications
+        setImageUrl(image);
+      } else {
+        // For non-Cloudinary URLs, we still use timestamp to prevent caching
+        const baseUrl = image.split('?')[0];
+        const timestamp = new Date().getTime();
+        setImageUrl(`${baseUrl}?t=${timestamp}`);
+      }
     }
   }, [image]);
   
   // Listen for category updates
   useEffect(() => {
     const handleCategoryUpdate = (event: CustomEvent) => {
-      // Force refresh the image if needed
+      // Check if this update is relevant to this category
       if (event.detail && event.detail.imageUpdated) {
-        const timestamp = new Date().getTime();
-        setImageUrl(current => {
-          const baseUrl = current.split('?')[0];
-          return `${baseUrl}?t=${timestamp}`;
-        });
+        // If the update includes a new image URL, use it directly
+        if (event.detail.updates && event.detail.updates.imageUrl) {
+          setImageUrl(event.detail.updates.imageUrl);
+        } else {
+          // Otherwise force refresh with timestamp for non-Cloudinary URLs
+          setImageUrl(current => {
+            // If it's a Cloudinary URL, don't modify it
+            if (current.includes('cloudinary.com')) {
+              return current;
+            }
+            // Otherwise add a timestamp
+            const baseUrl = current.split('?')[0];
+            const timestamp = new Date().getTime();
+            return `${baseUrl}?t=${timestamp}`;
+          });
+        }
       }
     };
     
