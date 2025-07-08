@@ -25,10 +25,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   
   // Check if user is admin or master admin
+  const isAdmin = user?.email === 'admin@example.com';
   const masterAdminEmails = ['sinha.vinayak2207@gmail.com', 'octopusscm3@gmail.com'];
   const isMasterAdmin = user?.email ? masterAdminEmails.includes(user.email) : false;
-  // Give master admins full admin access too
-  const isAdmin = isMasterAdmin || user?.email === 'admin@example.com';
   
   // Listen for auth state changes
   useEffect(() => {

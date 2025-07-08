@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 interface CategoryCardProps {
   title: string;
@@ -18,6 +19,38 @@ const CategoryCard = ({
   slug,
   productCount,
 }: CategoryCardProps) => {
+  const [imageUrl, setImageUrl] = useState<string>(image || 'https://lh3.googleusercontent.com/pw/AP1GczMJmz5XYZnIKL-uD_2FjEGAQbJ9xJABjv1Xt7Ov9Zt5BwJvdnNJJ_HXxRwVlmcKbgILEOkxcjkF4UNYfWvdJnZxlDDDlvEwjFAjpQxQJnvQHvs=w2400');
+  
+  // Add a timestamp to the image URL to prevent caching
+  useEffect(() => {
+    if (image) {
+      // Extract base URL without any timestamp parameters
+      const baseUrl = image.split('?')[0];
+      // Add a new timestamp
+      const timestamp = new Date().getTime();
+      setImageUrl(`${baseUrl}?t=${timestamp}`);
+    }
+  }, [image]);
+  
+  // Listen for category updates
+  useEffect(() => {
+    const handleCategoryUpdate = (event: CustomEvent) => {
+      // Force refresh the image if needed
+      if (event.detail && event.detail.imageUpdated) {
+        const timestamp = new Date().getTime();
+        setImageUrl(current => {
+          const baseUrl = current.split('?')[0];
+          return `${baseUrl}?t=${timestamp}`;
+        });
+      }
+    };
+    
+    window.addEventListener('categoryUpdated', handleCategoryUpdate as EventListener);
+    return () => {
+      window.removeEventListener('categoryUpdated', handleCategoryUpdate as EventListener);
+    };
+  }, []);
+  
   return (
     <div 
       className="relative group overflow-hidden rounded-xl shadow-lg transform hover:-translate-y-1 transition-transform duration-300 animate-fadeIn"
@@ -25,11 +58,12 @@ const CategoryCard = ({
       {/* Background Image with Gradient Overlay */}
       <div className="relative h-72 w-full">
         <Image
-          src={image || 'https://lh3.googleusercontent.com/pw/AP1GczMJmz5XYZnIKL-uD_2FjEGAQbJ9xJABjv1Xt7Ov9Zt5BwJvdnNJJ_HXxRwVlmcKbgILEOkxcjkF4UNYfWvdJnZxlDDDlvEwjFAjpQxQJnvQHvs=w2400'}
+          src={imageUrl}
           alt={title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-700 group-hover:scale-110"
+          unoptimized={true} // Disable Next.js image optimization to prevent caching
         />
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
       </div>

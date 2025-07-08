@@ -98,19 +98,62 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         let cachedCategories = [...baseCategories];
         try {
           if (typeof window !== 'undefined') {
+            // Check for individual category caches first (more specific)
+            for (const category of baseCategories) {
+              const storageKey = `category_${category.id}`;
+              const cachedCategoryData = localStorage.getItem(storageKey);
+              
+              if (cachedCategoryData) {
+                try {
+                  const cachedCategory = JSON.parse(cachedCategoryData);
+                  if (cachedCategory.image) {
+                    // Add timestamp to prevent browser caching
+                    const timestamp = new Date().getTime();
+                    const cachedImageUrl = cachedCategory.image.includes('?') 
+                      ? `${cachedCategory.image}&t=${timestamp}` 
+                      : `${cachedCategory.image}?t=${timestamp}`;
+                    
+                    console.log(`Applying cached image for category ${category.id}: ${cachedImageUrl}`);
+                    
+                    // Update the category in our array
+                    const index = cachedCategories.findIndex(c => c.id === category.id);
+                    if (index !== -1) {
+                      cachedCategories[index] = {
+                        ...cachedCategories[index],
+                        image: cachedCategory.image,
+                        imageUrl: cachedImageUrl
+                      };
+                    }
+                  }
+                } catch (e) {
+                  console.warn(`Failed to parse cached category ${category.id}:`, e);
+                }
+              }
+            }
+            
+            // Also check legacy categoryCache format as fallback
             const categoryCache = JSON.parse(localStorage.getItem('categoryCache') || '{}');
             console.log('Found category cache:', categoryCache);
             
-            // Apply cached images to categories
-            cachedCategories = baseCategories.map(category => {
+            // Apply cached images to categories that weren't already updated
+            cachedCategories = cachedCategories.map(category => {
               const cached = categoryCache[category.id];
               if (cached && cached.image) {
-                console.log(`Applying cached image for category ${category.id}`);
-                return {
-                  ...category,
-                  image: cached.image,
-                  imageUrl: cached.image
-                };
+                // Only apply if we don't already have a cached image from individual storage
+                if (category.imageUrl === category.image) {
+                  // Add timestamp to prevent browser caching
+                  const timestamp = new Date().getTime();
+                  const cachedImageUrl = cached.image.includes('?') 
+                    ? `${cached.image}&t=${timestamp}` 
+                    : `${cached.image}?t=${timestamp}`;
+                  
+                  console.log(`Applying legacy cached image for category ${category.id}`);
+                  return {
+                    ...category,
+                    image: cached.image,
+                    imageUrl: cachedImageUrl
+                  };
+                }
               }
               return category;
             });
@@ -273,16 +316,38 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         return category;
       }));
       
-      // Update localStorage cache with the new image URL
+      // Update localStorage cache with the new image URL - both individual and global cache
       try {
+        // Update individual category cache
         const storageKey = `category_${categoryId}`;
         const cachedCategory = JSON.parse(localStorage.getItem(storageKey) || '{}');
-        localStorage.setItem(storageKey, JSON.stringify({
+        const updatedCache = {
           ...cachedCategory,
+          id: categoryId,
           image: imageUrl,
           imageUrl: cachedImageUrl,
           updatedAt: new Date().toISOString()
-        }));
+        };
+        localStorage.setItem(storageKey, JSON.stringify(updatedCache));
+        console.log(`Updated individual category cache for ${categoryId}:`, updatedCache);
+        
+        // Also update the global categoryCache
+        const globalCache = JSON.parse(localStorage.getItem('categoryCache') || '{}');
+        globalCache[categoryId] = {
+          ...globalCache[categoryId],
+          image: imageUrl,
+          imageUrl: cachedImageUrl,
+          updatedAt: new Date().toISOString()
+        };
+        localStorage.setItem('categoryCache', JSON.stringify(globalCache));
+        console.log('Updated global category cache:', globalCache);
+        
+        // Force clear any image cache in the browser
+        if (typeof window !== 'undefined') {
+          // Create a temporary image element to force reload the image
+          const tempImg = new Image();
+          tempImg.src = cachedImageUrl;
+        }
       } catch (e) {
         console.warn('Failed to update localStorage cache:', e);
       }
@@ -291,6 +356,9 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       window.dispatchEvent(new CustomEvent('categoryUpdated', {
         detail: { categoryId, imageUpdated: true }
       }));
+      
+      // Also dispatch a global refresh event
+      window.dispatchEvent(new Event('refreshCategories'));
 
       console.log(`Category ${categoryId} image updated to ${imageUrl}`);
     } catch (error) {
