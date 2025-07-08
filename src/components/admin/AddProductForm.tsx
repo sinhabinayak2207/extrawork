@@ -36,6 +36,7 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
     name: '',
     description: '',
     price: '',
+    unit: 'kg', // Default unit
     category: 'rice',
     imageUrl: '',
     featured: false,
@@ -104,20 +105,19 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
       }
       
       // Process specifications if master admin and specifications are enabled
-      let productSpecifications: Record<string, string> | undefined;
+      let productSpecifications: Record<string, string> | undefined = undefined;
       if (isMasterAdmin && showSpecifications) {
-        productSpecifications = {};
+        const validSpecs: Record<string, string> = {};
         specifications.forEach(spec => {
           if (spec.key.trim() !== '' && spec.value.trim() !== '') {
-            productSpecifications![spec.key.trim()] = spec.value.trim();
+            validSpecs[spec.key.trim()] = spec.value.trim();
           }
         });
         
-        // If no valid specifications, set to undefined
-        if (Object.keys(productSpecifications).length === 0) {
-          productSpecifications = undefined;
-        } else {
-          logToSystem(`Added ${Object.keys(productSpecifications).length} specifications to product`, 'info');
+        // Only set specifications if there are valid ones
+        if (Object.keys(validSpecs).length > 0) {
+          productSpecifications = validSpecs;
+          logToSystem(`Added ${Object.keys(validSpecs).length} specifications to product`, 'info');
         }
       }
       
@@ -126,6 +126,7 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
         ...newProductForm,
         imageUrl: imageUrl, // Use the uploaded image URL or default
         price: parseFloat(newProductForm.price),
+        unit: newProductForm.unit,
         createdAt: new Date(),
         updatedAt: new Date(),
         updatedBy: user?.email || 'admin',
@@ -141,6 +142,7 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
         name: '',
         description: '',
         price: '',
+        unit: 'kg',
         category: 'rice',
         imageUrl: '',
         featured: false,
@@ -249,22 +251,41 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
                 </select>
               </div>
               
-              <div>
-                <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
-                <div className="mt-1 relative rounded-md shadow-sm">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span className="text-gray-500 sm:text-sm">₹</span>
+              <div className="flex space-x-4">
+                <div className="flex-1">
+                  <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
+                  <div className="mt-1 relative rounded-md shadow-sm">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <span className="text-gray-500 sm:text-sm">₹</span>
+                    </div>
+                    <input 
+                      type="text" 
+                      id="price" 
+                      name="price" 
+                      value={newProductForm.price}
+                      onChange={handleProductFormChange}
+                      className="block w-full text-black pl-7 pr-12 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="0.00"
+                      required
+                    />
                   </div>
-                  <input 
-                    type="text" 
-                    id="price" 
-                    name="price" 
-                    value={newProductForm.price}
+                </div>
+                <div className="flex-1">
+                  <label htmlFor="unit" className="block text-sm font-medium text-gray-700">Unit</label>
+                  <select
+                    id="unit"
+                    name="unit"
+                    value={newProductForm.unit}
                     onChange={handleProductFormChange}
-                    className="block w-full text-black pl-7 pr-12 border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="0.00"
-                    required
-                  />
+                    className="mt-1 block w-full border text-black border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="kg">per kg</option>
+                    <option value="unit">per unit</option>
+                    <option value="dozen">per dozen</option>
+                    <option value="box">per box</option>
+                    <option value="ton">per ton</option>
+                    <option value="liter">per liter</option>
+                  </select>
                 </div>
               </div>
               

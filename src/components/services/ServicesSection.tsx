@@ -13,7 +13,7 @@ const services = [
     slug: 'custom-house-brokerage',
     description: 'Having license on Pan India basis with direct online EDI connectivity with Indian Customs. We offer expertise on clearance of many types of cargos with skilled staff for Documentation, Operation, Customer service, Accounts, and Sales for both Air and Sea.',
     icon: '/icons/customs.svg',
-    image: 'https://images.pexels.com/photos/1427541/pexels-photo-1427541.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
     color: 'from-blue-500 to-indigo-600',
     hoverColor: 'group-hover:from-blue-600 group-hover:to-indigo-700'
   },
@@ -23,29 +23,9 @@ const services = [
     slug: 'packing-transportation',
     description: 'We use the latest methods of packing cargo including palletization for necessary cargo and arrange for fumigation. We have our own vehicles to pick up and deliver cargo in and around Chennai, Bangalore, Krishnapatnam, Tuticorin, etc.',
     icon: '/icons/packaging.svg',
-    image: 'https://images.pexels.com/photos/2226458/pexels-photo-2226458.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image: 'https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
     color: 'from-green-500 to-emerald-600',
     hoverColor: 'group-hover:from-green-600 group-hover:to-emerald-700'
-  },
-  {
-    id: '3',
-    title: 'SEA FREIGHT',
-    slug: 'sea-freight',
-    description: 'We arrange regular sailings on reliable liner vessels to & from major ports (20ft, 40ft, any special equipment) and handle LCL consignments to & from major ports worldwide.',
-    icon: '/icons/ship.svg',
-    image: 'https://images.pexels.com/photos/1554646/pexels-photo-1554646.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    color: 'from-cyan-500 to-blue-600',
-    hoverColor: 'group-hover:from-cyan-600 group-hover:to-blue-700'
-  },
-  {
-    id: '4',
-    title: 'AIR FREIGHT',
-    slug: 'air-freight',
-    description: 'We offer attractive rates to & from major airports on reliable airlines with committed transit times to ensure your cargo reaches its destination efficiently.',
-    icon: '/icons/plane.svg',
-    image: 'https://images.pexels.com/photos/358319/pexels-photo-358319.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    color: 'from-sky-500 to-blue-600',
-    hoverColor: 'group-hover:from-sky-600 group-hover:to-blue-700'
   },
   {
     id: '5',
@@ -53,7 +33,7 @@ const services = [
     slug: 'warehousing-distribution',
     description: 'We handle all types of cargo with attractive payment options. We provide covered warehouse spaces in India and abroad for tailor-made services, with separate warehouses for Airfreight and Ocean Freight Cargo, and offer distribution and door delivery to all possible corners of the country.',
     icon: '/icons/warehouse.svg',
-    image: 'https://images.pexels.com/photos/236705/pexels-photo-236705.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image: 'https://images.unsplash.com/photo-1553413077-190dd305871c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
     color: 'from-amber-500 to-orange-600',
     hoverColor: 'group-hover:from-amber-600 group-hover:to-orange-700'
   },
@@ -63,9 +43,29 @@ const services = [
     slug: 'documentation-insurance',
     description: 'We provide expertise in documentation with faster service and offer insurance services for both inbound & outbound cargos by Air & Sea to ensure your shipments are protected.',
     icon: '/icons/document.svg',
-    image: 'https://images.pexels.com/photos/95916/pexels-photo-95916.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1511&q=80',
     color: 'from-red-500 to-rose-600',
     hoverColor: 'group-hover:from-red-600 group-hover:to-rose-700'
+  },
+  {
+    id: '3',
+    title: 'SEA FREIGHT',
+    slug: 'sea-freight',
+    description: 'We arrange regular sailings on reliable liner vessels to & from major ports (20ft, 40ft, any special equipment) and handle LCL consignments to & from major ports worldwide.',
+    icon: '/icons/ship.svg',
+    image: 'https://images.unsplash.com/photo-1577125305658-dee71d4e7b91?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+    color: 'from-cyan-500 to-blue-600',
+    hoverColor: 'group-hover:from-cyan-600 group-hover:to-blue-700'
+  },
+  {
+    id: '4',
+    title: 'AIR FREIGHT',
+    slug: 'air-freight',
+    description: 'We offer attractive rates to & from major airports on reliable airlines with committed transit times to ensure your cargo reaches its destination efficiently.',
+    icon: '/icons/plane.svg',
+    image: 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+    color: 'from-sky-500 to-blue-600',
+    hoverColor: 'group-hover:from-sky-600 group-hover:to-blue-700'
   }
 ];
 
@@ -127,18 +127,36 @@ const ServicesSection = () => {
       {/* Interactive Service Tabs */}
       <div className="mt-8">
         {/* Service Navigation */}
-        <div className="flex overflow-x-auto pb-4 hide-scrollbar space-x-2 md:space-x-4 justify-center">
-          {services.map((service) => (
-            <button
-              key={service.id}
-              onClick={() => setActiveService(service.id)}
-              className={`px-4 py-3 rounded-full whitespace-nowrap transition-all duration-300 ${activeService === service.id 
-                ? `bg-gradient-to-r ${service.color} text-white shadow-lg` 
-                : 'bg-gray-800 text-gray-400 hover:text-white'}`}
-            >
-              {service.title}
-            </button>
-          ))}
+        <div className="flex flex-wrap overflow-x-auto pb-4 hide-scrollbar space-x-2 md:space-x-4 justify-center">
+          {/* First row: First 4 services */}
+          <div className="flex flex-wrap justify-center w-full mb-4">
+            {services.slice(0, 4).map((service) => (
+              <button
+                key={service.id}
+                onClick={() => setActiveService(service.id)}
+                className={`px-4 py-3 m-2 rounded-full whitespace-nowrap transition-all duration-300 ${activeService === service.id 
+                  ? `bg-gradient-to-r ${service.color} text-white shadow-lg` 
+                  : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+              >
+                {service.title}
+              </button>
+            ))}
+          </div>
+          
+          {/* Second row: Last 2 services */}
+          <div className="flex flex-wrap justify-center w-full">
+            {services.slice(4, 6).map((service) => (
+              <button
+                key={service.id}
+                onClick={() => setActiveService(service.id)}
+                className={`px-4 py-3 m-2 rounded-full whitespace-nowrap transition-all duration-300 ${activeService === service.id 
+                  ? `bg-gradient-to-r ${service.color} text-white shadow-lg` 
+                  : 'bg-gray-800 text-gray-400 hover:text-white'}`}
+              >
+                {service.title}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Active Service Display */}
@@ -156,6 +174,7 @@ const ServicesSection = () => {
                     alt={service.title}
                     fill
                     className="object-cover"
+                    unoptimized={true}
                   />
                   <div className={`absolute inset-0 bg-gradient-to-r ${service.color} opacity-60`}></div>
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
@@ -200,10 +219,10 @@ const ServicesSection = () => {
                   </div>
                   
                   <Link 
-                    href="/about"
+                    href="/contact"
                     className={`mt-8 inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r ${service.color} text-white font-medium transition-transform hover:scale-105`}
                   >
-                    Learn More
+                    Contact Us
                     <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>

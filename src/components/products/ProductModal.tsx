@@ -96,13 +96,13 @@ export default function ProductModal({ productId, onClose }: ProductModalProps) 
           </div>
         ) : product ? (
           <div className="flex flex-col md:flex-row">
-            {/* Product Image */}
-            <div className="w-full md:w-1/2 relative h-80 md:h-[500px]">
+            {/* Product Image - Increased size to take half of the modal */}
+            <div className="w-full md:w-1/2 relative h-[600px] md:h-[600px]">
               {product.imageUrl ? (
                 <Image
                   src={product.imageUrl}
                   alt={product.name}
-                  className="object-cover rounded-t-lg md:rounded-l-lg md:rounded-tr-none"
+                  className="object-contain rounded-t-lg md:rounded-l-lg md:rounded-tr-none"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority
@@ -143,20 +143,29 @@ export default function ProductModal({ productId, onClose }: ProductModalProps) 
                 <p className="text-gray-700">{product.description}</p>
               </div>
               
+              {/* Only show key features if specifications exist */}
+              {product.specifications && Object.keys(product.specifications).length > 0 ? (
+                <div className="mb-6">
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">Key Features</h3>
+                  <ul className="list-disc pl-5 space-y-1 text-gray-700">
+                    {Object.entries(product.specifications).map(([key, value]) => (
+                      <li key={key}>{key}: {value}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+              
+              {/* Show price with unit if available */}
               <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Key Features</h3>
-                <ul className="list-disc pl-5 space-y-1 text-gray-700">
-                  <li>Premium quality product</li>
-                  <li>Sourced from trusted suppliers</li>
-                  <li>Competitive bulk pricing</li>
-                  <li>Fast international shipping</li>
-                  <li>Quality assurance guaranteed</li>
-                </ul>
+                <p className="text-xl font-medium text-gray-700">
+                  {product.unit ? `Price: ₹${product.price} per ${product.unit}` : `Price: ₹${product.price}`}
+                </p>
               </div>
               
-              <div className="mb-8">
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Specifications</h3>
-                {product.specifications ? (
+              {/* Only show specifications section if they exist */}
+              {product.specifications && Object.keys(product.specifications).length > 0 ? (
+                <div className="mb-8">
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">Specifications</h3>
                   <div className="grid grid-cols-1 gap-2">
                     {Object.entries(product.specifications).map(([key, value]) => (
                       <div key={key} className="flex">
@@ -165,27 +174,8 @@ export default function ProductModal({ productId, onClose }: ProductModalProps) 
                       </div>
                     ))}
                   </div>
-                ) : (
-                  <div className="grid grid-cols-1 gap-2">
-                    <div className="flex">
-                      <span className="font-medium text-gray-700 w-1/3">Origin:</span>
-                      <span className="text-gray-600">International</span>
-                    </div>
-                    <div className="flex">
-                      <span className="font-medium text-gray-700 w-1/3">Packaging:</span>
-                      <span className="text-gray-600">Bulk packaging available</span>
-                    </div>
-                    <div className="flex">
-                      <span className="font-medium text-gray-700 w-1/3">Minimum Order:</span>
-                      <span className="text-gray-600">Please inquire</span>
-                    </div>
-                    <div className="flex">
-                      <span className="font-medium text-gray-700 w-1/3">Certification:</span>
-                      <span className="text-gray-600">Industry standard compliant</span>
-                    </div>
-                  </div>
-                )}
-              </div>
+                </div>
+              ) : null}
               
               <div className="flex flex-col space-y-4">
                 <a 

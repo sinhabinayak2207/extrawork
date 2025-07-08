@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
@@ -29,7 +30,7 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white">
+    <footer className="bg-gradient-to-br from-blue-900 to-gray-800 text-white">
       <div className="container mx-auto px-4 md:px-6 py-12">
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
@@ -40,9 +41,18 @@ const Footer = () => {
         >
           {/* Company Info */}
           <motion.div variants={itemVariants}>
-            <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-teal-300 bg-clip-text text-transparent">
-              OCTOPUS SCM EXPEDITORS PVT. LTD.
-            </h3>
+            <div className="flex items-center mb-4">
+              <Image 
+                src="/octpopuslogo.jpg" 
+                alt="Octopus SCM Logo" 
+                width={60} 
+                height={60} 
+                className="rounded-md mr-3"
+              />
+              <h3 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-teal-300 bg-clip-text text-transparent">
+                OCTOPUS SCM EXPEDITORS PVT. LTD.
+              </h3>
+            </div>
             <p className="text-gray-300 mb-4">
               Your Supply Chain Management partner. We are Offline Service Provider, NVOCC, and Agent Marketing Agent.
             </p>
@@ -169,9 +179,12 @@ const Footer = () => {
           whileInView={{ opacity: 1, transition: { delay: 0.5, duration: 0.5 } }}
           viewport={{ once: true }}
         >
-          <p className="text-center text-gray-400">
-            &copy; {currentYear} OCTOPUS SCM EXPEDITORS PVT. LTD. All rights reserved.
-          </p>
+          <div className="flex items-center justify-center mb-3">
+           
+            <p className="text-gray-300">
+              &copy; {currentYear} OCTOPUS SCM EXPEDITORS PVT. LTD. All rights reserved.
+            </p>
+          </div>
         </motion.div>
       </div>
     </footer>
