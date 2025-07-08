@@ -259,13 +259,33 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         // Continue with local state update even if Firestore update fails
       }
       
+      // Add timestamp to image URL to prevent browser caching
+      const timestamp = new Date().getTime();
+      const cachedImageUrl = imageUrl.includes('?') 
+        ? `${imageUrl}&t=${timestamp}` 
+        : `${imageUrl}?t=${timestamp}`;
+      
       // Update local state
       setCategories(prevCategories => prevCategories.map(category => {
         if (category.id === categoryId) {
-          return { ...category, image: imageUrl, imageUrl: imageUrl, updatedAt: new Date(), updatedBy };
+          return { ...category, image: imageUrl, imageUrl: cachedImageUrl, updatedAt: new Date(), updatedBy };
         }
         return category;
       }));
+      
+      // Update localStorage cache with the new image URL
+      try {
+        const storageKey = `category_${categoryId}`;
+        const cachedCategory = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        localStorage.setItem(storageKey, JSON.stringify({
+          ...cachedCategory,
+          image: imageUrl,
+          imageUrl: cachedImageUrl,
+          updatedAt: new Date().toISOString()
+        }));
+      } catch (e) {
+        console.warn('Failed to update localStorage cache:', e);
+      }
 
       // Notify UI components that category data has changed
       window.dispatchEvent(new CustomEvent('categoryUpdated', {
