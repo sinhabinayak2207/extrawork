@@ -17,6 +17,7 @@ export interface Product {
   updatedAt: Date;
   updatedBy: string;
   price?: number;
+  unit?: string;
   specifications?: Record<string, string>;
 }
 
@@ -31,6 +32,8 @@ export const initialProducts: Product[] = [
     category: 'rice',
     featured: true,
     inStock: true,
+    price: 120,
+    unit: 'kg',
     updatedAt: new Date(),
     updatedBy: 'system'
   },
@@ -43,6 +46,8 @@ export const initialProducts: Product[] = [
     category: 'seeds',
     featured: true,
     inStock: true,
+    price: 85,
+    unit: 'kg',
     updatedAt: new Date(),
     updatedBy: 'system'
   },
@@ -55,6 +60,8 @@ export const initialProducts: Product[] = [
     category: 'oil',
     featured: true,
     inStock: true,
+    price: 110,
+    unit: 'liter',
     updatedAt: new Date(),
     updatedBy: 'system'
   },
@@ -66,6 +73,8 @@ export const initialProducts: Product[] = [
     imageUrl: 'https://images.pexels.com/photos/39348/plastic-waste-environment-recycling-39348.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     category: 'raw-polymers',
     inStock: true,
+    price: 95,
+    unit: 'kg',
     updatedAt: new Date(),
     updatedBy: 'system'
   },
@@ -77,6 +86,8 @@ export const initialProducts: Product[] = [
     imageUrl: 'https://images.pexels.com/photos/6195085/pexels-photo-6195085.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     category: 'bromine-salt',
     inStock: false,
+    price: 150,
+    unit: 'liter',
     updatedAt: new Date(),
     updatedBy: 'system'
   },
@@ -88,6 +99,8 @@ export const initialProducts: Product[] = [
     imageUrl: 'https://images.pexels.com/photos/7421213/pexels-photo-7421213.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     category: 'rice',
     inStock: true,
+    price: 135,
+    unit: 'kg',
     updatedAt: new Date(),
     updatedBy: 'system'
   }
