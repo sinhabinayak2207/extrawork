@@ -125,7 +125,7 @@ export default function ProductManagementPage() {
                     <div className="flex-1">
                       <h3 className="font-medium text-lg text-white">{product.name}</h3>
                       <p className="text-gray-400">{product.category}</p>
-                      <p className="text-gray-200">${product.price}</p>
+                      <p className="text-gray-200">₹{product.price}</p>
                     </div>
                     <div className="flex flex-col gap-2">
                       <div className="flex items-center gap-2">

@@ -135,7 +135,7 @@ export default function ProductModal({ productId, onClose }: ProductModalProps) 
               </div>
               
               <div className="mb-6">
-                <p className="text-2xl font-bold text-gray-900 mb-2">${product.price || 'Price not available'}</p>
+                <p className="text-2xl font-bold text-gray-900 mb-2">₹{product.price || 'Price not available'}</p>
               </div>
               
               <div className="mb-6">
