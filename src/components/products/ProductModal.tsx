@@ -135,7 +135,9 @@ export default function ProductModal({ productId, onClose }: ProductModalProps) 
               </div>
               
               <div className="mb-6">
-                <p className="text-2xl font-bold text-gray-900 mb-2">₹{product.price || 'Price not available'}</p>
+                <p className="text-2xl font-bold text-gray-900 mb-2">
+                  {product.unit ? `₹${product.price} per ${product.unit}` : `₹${product.price || 'Price not available'}`}
+                </p>
               </div>
               
               <div className="mb-6">
@@ -155,12 +157,7 @@ export default function ProductModal({ productId, onClose }: ProductModalProps) 
                 </div>
               ) : null}
               
-              {/* Show price with unit if available */}
-              <div className="mb-6">
-                <p className="text-xl font-medium text-gray-700">
-                  {product.unit ? `Price: ₹${product.price} per ${product.unit}` : `Price: ₹${product.price}`}
-                </p>
-              </div>
+              {/* Price is already displayed above with unit information */}
               
               {/* Only show specifications section if they exist */}
               {product.specifications && Object.keys(product.specifications).length > 0 ? (
