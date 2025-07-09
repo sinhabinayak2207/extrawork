@@ -159,18 +159,16 @@ export default function ProductModal({ productId, onClose }: ProductModalProps) 
                 <p className="text-gray-700">{product.description}</p>
               </div>
               
-              {/* Only show key features if specifications exist */}
-              {product.specifications && Object.keys(product.specifications).length > 0 ? (
-                <div className="mb-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Key Features</h3>
-                  <ul className="list-disc pl-5 space-y-1 text-gray-700">
-                    {Object.entries(product.specifications).map(([key, value]) => (
-                      <li key={key}>{key}: {value}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-              
+              {product.keyFeatures && product.keyFeatures.length > 0 ? (
+  <div className="mb-6">
+    <h3 className="text-lg font-medium text-gray-900 mb-2">Key Features</h3>
+    <ul className="list-disc pl-5 space-y-1 text-gray-700">
+      {product.keyFeatures.map((feature, index) => (
+        <li key={index}>{feature}</li>
+      ))}
+    </ul>
+  </div>
+) : null}
               {/* Price is already displayed above with unit information */}
               
               {/* Only show specifications section if they exist */}

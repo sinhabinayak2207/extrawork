@@ -30,8 +30,9 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
   const productContext = useProducts();
   const [productImageFile, setProductImageFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSpecifications, setShowSpecifications] = useState(false);
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
   const [specifications, setSpecifications] = useState<{key: string, value: string}[]>([{key: '', value: ''}]);
+  const [keyFeatures, setKeyFeatures] = useState<string[]>(['']);
   const [newProductForm, setNewProductForm] = useState({
     name: '',
     description: '',
@@ -77,12 +78,20 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
         return;
       }
       
-      // Validate specifications if they are being added
-      if (isMasterAdmin && showSpecifications) {
+      // Validate advanced options if they are being added
+      if (isMasterAdmin && showAdvancedOptions) {
         // Filter out empty specifications
         const validSpecs = specifications.filter(spec => spec.key.trim() !== '' && spec.value.trim() !== '');
         if (validSpecs.length === 0 && specifications.length > 1) {
-          logToSystem('Please add at least one valid specification or disable specifications', 'error');
+          logToSystem('Please add at least one valid specification or remove empty ones', 'error');
+          return;
+        }
+        
+        // Filter out empty key features
+        const validFeatures = keyFeatures.filter(feature => feature.trim() !== '');
+        if (validFeatures.length === 0 && keyFeatures.length > 1) {
+          logToSystem('Please add at least one valid key feature or remove empty ones', 'error');
+          return;
         }
       }
       
@@ -104,9 +113,12 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
         imageUrl = 'https://via.placeholder.com/300x300?text=Product+Image';
       }
       
-      // Process specifications if master admin and specifications are enabled
+      // Process specifications if master admin and advanced options are enabled
       let productSpecifications: Record<string, string> | undefined = undefined;
-      if (isMasterAdmin && showSpecifications) {
+      let productKeyFeatures: string[] | undefined = undefined;
+      
+      if (isMasterAdmin && showAdvancedOptions) {
+        // Process specifications
         const validSpecs: Record<string, string> = {};
         specifications.forEach(spec => {
           if (spec.key.trim() !== '' && spec.value.trim() !== '') {
@@ -119,9 +131,18 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
           productSpecifications = validSpecs;
           logToSystem(`Added ${Object.keys(validSpecs).length} specifications to product`, 'info');
         }
+        
+        // Process key features
+        const validFeatures = keyFeatures.filter(feature => feature.trim() !== '');
+        
+        // Only set key features if there are valid ones
+        if (validFeatures.length > 0) {
+          productKeyFeatures = validFeatures;
+          logToSystem(`Added ${validFeatures.length} key features to product`, 'info');
+        }
       }
       
-      // Create product object with the image URL and specifications
+      // Create product object with the image URL, key features, and specifications
       const newProduct = {
         ...newProductForm,
         imageUrl: imageUrl, // Use the uploaded image URL or default
@@ -130,6 +151,7 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
         createdAt: new Date(),
         updatedAt: new Date(),
         updatedBy: user?.email || 'admin',
+        keyFeatures: productKeyFeatures,
         specifications: productSpecifications
       };
       
@@ -150,6 +172,7 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
       });
       setProductImageFile(null);
       setSpecifications([{key: '', value: ''}]);
+      setKeyFeatures(['']);
       onClose();
     } catch (error) {
       logToSystem(`Error adding product: ${error instanceof Error ? error.message : String(error)}`, 'error');
@@ -160,7 +183,7 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl overflow-hidden">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center border-b p-4">
           <h2 className="text-xl font-bold text-gray-900">Add New Product</h2>
           <button 
@@ -297,9 +320,9 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
                   rows={4} 
                   value={newProductForm.description}
                   onChange={handleProductFormChange}
-                  className="mt-1 block c w-full border text-black border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full border text-black border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   required
-                ></textarea>
+                />
               </div>
               
               <div className="flex items-center space-x-4">
@@ -328,78 +351,128 @@ export default function AddProductForm({ onClose }: AddProductFormProps) {
                 </div>
               </div>
               
-              {/* Master Admin Specifications Toggle - Only visible to master admins */}
+              {/* Master Admin Advanced Options Toggle - Only visible to master admins */}
               {isMasterAdmin && (
                 <div className="mt-4 border-t pt-4">
                   <div className="flex justify-between items-center mb-3">
                     <h3 className="text-sm font-medium text-gray-900">Advanced Product Details</h3>
                     <Switch 
-                      id="specifications-toggle" 
-                      checked={showSpecifications} 
-                      onChange={setShowSpecifications}
-                      label={showSpecifications ? "Specifications Mode" : "Basic Mode"}
-                      description={showSpecifications ? "Add detailed specifications" : "Standard product information"}
+                      id="advanced-options-toggle" 
+                      checked={showAdvancedOptions} 
+                      onChange={setShowAdvancedOptions}
+                      label={showAdvancedOptions ? "Advanced Mode" : "Basic Mode"}
+                      description={showAdvancedOptions ? "Add detailed features and specifications" : "Standard product information"}
                     />
                   </div>
                   
-                  {showSpecifications && (
-                    <div className="space-y-3 bg-gray-50 p-3 rounded-md">
-                      <div className="flex justify-between items-center">
-                        <h4 className="text-sm font-medium text-gray-700">Product Specifications</h4>
-                        <button
-                          type="button"
-                          onClick={() => setSpecifications([...specifications, {key: '', value: ''}])}
-                          className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        >
-                          Add Spec
-                        </button>
+                  {showAdvancedOptions && (
+                    <div className="space-y-6 bg-gray-50 p-3 rounded-md">
+                      {/* Key Features Section */}
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <h4 className="text-sm font-medium text-gray-700">Key Features</h4>
+                          <button
+                            type="button"
+                            onClick={() => setKeyFeatures([...keyFeatures, ''])}
+                            className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                          >
+                            Add Feature
+                          </button>
+                        </div>
+                        
+                        {keyFeatures.map((feature, index) => (
+                          <div key={`feature-${index}`} className="flex space-x-2">
+                            <div className="flex-1">
+                              <input
+                                type="text"
+                                placeholder="Feature Name"
+                                value={feature}
+                                onChange={(e) => {
+                                  const newFeatures = [...keyFeatures];
+                                  newFeatures[index] = e.target.value;
+                                  setKeyFeatures(newFeatures);
+                                }}
+                                className="w-full text-sm border text-black border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                              />
+                            </div>
+                            {keyFeatures.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newFeatures = [...keyFeatures];
+                                  newFeatures.splice(index, 1);
+                                  setKeyFeatures(newFeatures);
+                                }}
+                                className="inline-flex items-center p-1 border border-transparent rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            )}
+                          </div>
+                        ))}
                       </div>
                       
-                      {specifications.map((spec, index) => (
-                        <div key={index} className="flex space-x-2">
-                          <div className="flex-1">
-                            <input
-                              type="text"
-                              placeholder="Specification Key"
-                              value={spec.key}
-                              onChange={(e) => {
-                                const newSpecs = [...specifications];
-                                newSpecs[index].key = e.target.value;
-                                setSpecifications(newSpecs);
-                              }}
-                              className="w-full text-sm border text-black border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                            />
-                          </div>
-                          <div className="flex-1">
-                            <input
-                              type="text"
-                              placeholder="Specification Value"
-                              value={spec.value}
-                              onChange={(e) => {
-                                const newSpecs = [...specifications];
-                                newSpecs[index].value = e.target.value;
-                                setSpecifications(newSpecs);
-                              }}
-                              className="w-full text-sm border text-black border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                            />
-                          </div>
-                          {specifications.length > 1 && (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const newSpecs = [...specifications];
-                                newSpecs.splice(index, 1);
-                                setSpecifications(newSpecs);
-                              }}
-                              className="inline-flex items-center p-1 border border-transparent rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none"
-                            >
-                              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                              </svg>
-                            </button>
-                          )}
+                      {/* Specifications Section */}
+                      <div className="space-y-3 pt-3 border-t border-gray-200">
+                        <div className="flex justify-between items-center">
+                          <h4 className="text-sm font-medium text-gray-700">Product Specifications</h4>
+                          <button
+                            type="button"
+                            onClick={() => setSpecifications([...specifications, {key: '', value: ''}])}
+                            className="inline-flex items-center px-2 py-1 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                          >
+                            Add Spec
+                          </button>
                         </div>
-                      ))}
+                        
+                        {specifications.map((spec, index) => (
+                          <div key={index} className="flex space-x-2">
+                            <div className="flex-1">
+                              <input
+                                type="text"
+                                placeholder="Specification Key"
+                                value={spec.key}
+                                onChange={(e) => {
+                                  const newSpecs = [...specifications];
+                                  newSpecs[index].key = e.target.value;
+                                  setSpecifications(newSpecs);
+                                }}
+                                className="w-full text-sm border text-black border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                              />
+                            </div>
+                            <div className="flex-1">
+                              <input
+                                type="text"
+                                placeholder="Specification Value"
+                                value={spec.value}
+                                onChange={(e) => {
+                                  const newSpecs = [...specifications];
+                                  newSpecs[index].value = e.target.value;
+                                  setSpecifications(newSpecs);
+                                }}
+                                className="w-full text-sm border text-black border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                              />
+                            </div>
+                            {specifications.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newSpecs = [...specifications];
+                                  newSpecs.splice(index, 1);
+                                  setSpecifications(newSpecs);
+                                }}
+                                className="inline-flex items-center p-1 border border-transparent rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none"
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>

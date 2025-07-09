@@ -122,7 +122,7 @@ const Hero = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button href="/products" size="lg">
+              <Button href="/categories" size="lg">
                 Explore Products
               </Button>
               <Button href="/contact" variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
