@@ -33,7 +33,7 @@
   border-radius: 0.5rem;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   width: 100%;
-  max-width: 56rem;
+  max-width: 72rem; /* Increased from 56rem to 72rem */
   max-height: 90vh;
   overflow-y: auto;
   border: 1px solid #e5e7eb;

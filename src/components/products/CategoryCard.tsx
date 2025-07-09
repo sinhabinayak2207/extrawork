@@ -102,9 +102,6 @@ const CategoryCard = ({
               className="inline-flex items-center text-blue-300 hover:text-white font-medium transition-colors duration-300"
             >
               View Products
-              <svg className="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
             </Link>
             
             {productCount !== undefined && (

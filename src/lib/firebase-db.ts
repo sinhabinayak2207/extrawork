@@ -31,6 +31,8 @@ export interface Product {
   updatedAt: Date | any; // Support Firestore Timestamp
   updatedBy: string;
   specifications?: Record<string, string>; // Support for product specifications
+  keyFeatures?: string[]; // Support for product key features as array of strings
+  unit?: string; // Support for product unit (kg, pcs, etc.)
 }
 
 /**
@@ -71,7 +73,9 @@ const convertDocToProduct = (doc: QueryDocumentSnapshot): Product => {
     inStock: data.inStock !== undefined ? data.inStock : true,
     updatedAt,
     updatedBy: data.updatedBy || 'system',
-    specifications: data.specifications || {}
+    specifications: data.specifications || {},
+    keyFeatures: Array.isArray(data.keyFeatures) ? data.keyFeatures : [],
+    unit: data.unit || 'kg'
   };
 };
 
@@ -340,7 +344,7 @@ export const addProduct = async (product: Omit<Product, 'id' | 'updatedAt' | 'up
     const productRef = doc(collection(db, 'products'));
     const productId = productRef.id;
     
-    // Set default values
+    // Set default values and ensure no undefined values
     const newProduct = {
       ...product,
       id: productId,
@@ -349,8 +353,18 @@ export const addProduct = async (product: Omit<Product, 'id' | 'updatedAt' | 'up
       updatedBy: updatedBy,
       featured: product.featured || false,
       inStock: product.inStock !== undefined ? product.inStock : true,
-      specifications: product.specifications || {}
+      specifications: product.specifications || {},
+      keyFeatures: Array.isArray(product.keyFeatures) ? product.keyFeatures : []
     };
+    
+    console.log('Adding product with data:', {
+      id: productId,
+      name: product.name,
+      keyFeaturesType: typeof product.keyFeatures,
+      keyFeaturesIsArray: Array.isArray(product.keyFeatures),
+      keyFeaturesCount: Array.isArray(product.keyFeatures) ? product.keyFeatures.length : 0,
+      specificationsCount: Object.keys(product.specifications || {}).length
+    });
     
     // Add the product to Firestore
     await setDoc(productRef, newProduct);

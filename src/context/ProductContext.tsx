@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import { updateProductImage as updateFirebaseProductImage, addProduct as addFirebaseProduct, removeProduct as removeFirebaseProduct } from '@/lib/firebase-db';
 import { Product as FirebaseProduct } from '@/lib/firebase-db';
 import { initializeProducts } from '@/lib/initialize-products';
@@ -18,6 +19,7 @@ export interface Product {
   updatedBy: string;
   price?: number;
   unit?: string;
+  keyFeatures?: string[]; // Changed from Record<string, string> to string[] to match firebase-db.ts
   specifications?: Record<string, string>;
 }
 
@@ -119,9 +121,10 @@ interface ProductContextType {
 
 const ProductContext = createContext<ProductContextType | null>(null);
 
-export const ProductProvider = ({ children }: { children: React.ReactNode }) => {
-  // Set initial products from localStorage or defaults
-  const [products, setProducts] = useState<Product[]>(initialProducts);
+export function ProductProvider({ children }: { children: React.ReactNode }) {
+  const auth = useAuth();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categoriesList, setCategoriesList] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -188,8 +191,8 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
     fetchProducts();
   }, []);
 
-  // Compute derived values
-  const categories = [...new Set(products.map(product => product.category))];
+  // Compute derived values - use the existing categories list
+  const productCategories = [...new Set(products.map(product => product.category))];
   const featuredProducts = products.filter(product => product.featured === true);
 
   // Update product image
@@ -383,14 +386,23 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
     try {
       // Get current user email or use admin default
       let user = 'admin';
-      try {
-        const { getAuth } = await import('firebase/auth');
-        const auth = getAuth();
-        if (auth.currentUser?.email) {
-          user = auth.currentUser.email;
+      
+      // Use the user from the auth context directly
+      if (auth?.user?.email) {
+        user = auth.user.email;
+        console.log(`Using authenticated user email for product creation: ${user}`);
+      } else {
+        // Fallback to Firebase auth if context user is not available
+        try {
+          const { getAuth } = await import('firebase/auth');
+          const firebaseAuth = getAuth();
+          if (firebaseAuth.currentUser?.email) {
+            user = firebaseAuth.currentUser.email;
+            console.log(`Using Firebase currentUser email for product creation: ${user}`);
+          }
+        } catch (authError) {
+          console.warn('Could not get current user from Firebase, using default:', authError);
         }
-      } catch (authError) {
-        console.warn('Could not get current user, using default:', authError);
       }
       
       // Generate a slug from the name
@@ -500,8 +512,8 @@ export const ProductProvider = ({ children }: { children: React.ReactNode }) => 
   return (
     <ProductContext.Provider value={{
       products,
-      categories: Array.from(new Set(products.map(product => product.category))),
-      featuredProducts: products.filter(product => product.featured),
+      categories: productCategories,
+      featuredProducts,
       updateProductImage,
       updateFeaturedStatus,
       updateStockStatus,

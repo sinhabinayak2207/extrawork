@@ -89,7 +89,7 @@ export default function CategoriesPage() {
         <div className="mt-16 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-md p-8">
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-2/3 mb-6 md:mb-0 md:pr-8">
-              <h2 className="text-2xl font-bold mb-4">Need a Custom Category?</h2>
+              <h2 className="text-2xl font-bold mb-4 text-gray-600">Need a Custom Category?</h2>
               <p className="text-gray-600 mb-6">
                 Don't see what you're looking for? We can source custom products and create specialized categories
                 tailored to your business requirements. Our procurement team has extensive experience in finding

@@ -156,17 +156,17 @@ export default function AchievementsPage() {
           {[
             {
               quote: "B2B Showcase has been an invaluable partner in our supply chain. Their quality and reliability are unmatched.",
-              author: "Sarah Johnson",
+              author: "Rajesh Sharma",
               position: "Procurement Manager, TechCorp"
             },
             {
               quote: "The team's expertise and commitment to excellence have helped us streamline our operations significantly.",
-              author: "Michael Chen",
+              author: "Priya Patel",
               position: "Operations Director, Global Industries"
             },
             {
               quote: "Their customer service is exceptional. They truly understand the needs of B2B clients.",
-              author: "Emma Davis",
+              author: "Vikram Mehta",
               position: "CEO, Enterprise Solutions"
             }
           ].map((testimonial, index) => (
