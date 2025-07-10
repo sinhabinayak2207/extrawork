@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import MainLayout from "@/components/layout/MainLayout";
 import Section from "@/components/ui/Section";
 
+
 const certifications = [
   {
     title: "ISO 9001:2015 Certified",
@@ -34,11 +35,12 @@ const certifications = [
   },
 ];
 
+
 const milestones = [
-  { number: "100+", label: "Global Partners" },
+  { number: "55+", label: "Global Partners" },
   { number: "30+", label: "Countries Served" },
-  { number: "15+", label: "Years Experience" },
-  { number: "1M+", label: "Products Delivered" },
+  { number: "5+", label: "Years Experience" },
+  { number: "50000+", label: "Products Delivered" },
 ];
 
 export default function AchievementsPage() {
@@ -99,11 +101,11 @@ export default function AchievementsPage() {
           >
             <h2 className="text-3xl font-bold mb-4 text-gray-700">Certifications & Awards</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Our commitment to quality and excellence has been recognized through various industry certifications and awards.
+            Since 2020, we have been reliably supplying high-quality materials and agricultural commodities to businesses across industries. We take pride in being a trusted partner for companies seeking excellence and consistency in their supply chain.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-700">
             {certifications.map((cert, index) => (
               <motion.div
                 key={cert.title}
@@ -156,17 +158,17 @@ export default function AchievementsPage() {
           {[
             {
               quote: "B2B Showcase has been an invaluable partner in our supply chain. Their quality and reliability are unmatched.",
-              author: "Rajesh Sharma",
+              author: "",
               position: "Procurement Manager, TechCorp"
             },
             {
               quote: "The team's expertise and commitment to excellence have helped us streamline our operations significantly.",
-              author: "Priya Patel",
+              author: "",
               position: "Operations Director, Global Industries"
             },
             {
               quote: "Their customer service is exceptional. They truly understand the needs of B2B clients.",
-              author: "Vikram Mehta",
+              author: "",
               position: "CEO, Enterprise Solutions"
             }
           ].map((testimonial, index) => (

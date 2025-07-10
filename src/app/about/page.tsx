@@ -170,9 +170,9 @@ export default function AboutPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { value: '10+', label: 'Years Experience' },
-              { value: '300+', label: 'Happy Clients' },
-              { value: '30+', label: 'Team Members' },
+              { value: '4+', label: 'Years Experience' },
+              { value: '10+', label: 'Happy Clients' },
+              { value: '20+', label: 'Commmditiy Handling' },
               { value: '20+', label: 'Countries Served' },
             ].map((stat, index) => (
               <motion.div 
@@ -232,10 +232,10 @@ export default function AboutPage() {
               <div className="relative bg-white p-8 rounded-2xl shadow-xl">
                 <h2 className="text-3xl font-bold mb-6 text-gray-800">Our Story</h2>
                 <p className="text-gray-800 mb-4 leading-relaxed">
-                  We are a leading freight forwarder & NVOCC agent established in 2014. We serve Far East, South East, Gulf trade lanes, Europe, US, Latin America, and Oceania trade lanes with a strong presence at all major locations in Gujarat.
+                We are commodity trading and Supply Chain management company based in Qatar and Doing Business Globally with associate present in UAE and Senegal.
                 </p>
                 <p className="text-gray-800 mb-6 leading-relaxed">
-                  We offer FCL and LCL ocean freight services with offices across Gujarat, providing comprehensive to-and-from Gujarat global ocean freight solutions. Our expertise and dedicated service have established us as a trusted partner in international logistics.
+                Company has deep roots in global shipping practice with strong network in shipping and logistics for optimised supply cost.
                 </p>
                 <div className="space-y-4">
                   {["Global Supply Chain Network", "Quality Assurance", "Sustainable Practices", "24/7 Customer Support"].map((item, index) => (
@@ -439,65 +439,62 @@ export default function AboutPage() {
         </div>
       </Section>
       
-      {/* Team Section */}
-      <Section background="white">
-        <motion.div 
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          <h2 className="text-3xl font-bold mb-4 text-gray-700">Our <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Directors</span></h2>
-          <p className="text-gray-600 max-w-3xl mx-auto">
-            Meet the experienced professionals who guide our company's vision and operations.
-          </p>
-        </motion.div>
-        
-        <div className="flex flex-row justify-center gap-12 max-w-4xl mx-auto">
-          {[
-            {
-              name: "Mitesh Desai",
-              role: "Director",
-              image: "/director1.jpg",
-              bio: "With over 20 years of experience in global trade and business development."
-            },
-            {
-              name: "Hitendra Joshi",
-              role: "Director",
-              image: "/director2.jpg",
-              bio: "Expert in supply chain optimization and operational excellence."
-            }
-          ].map((member, index) => (
-            <motion.div 
-              key={index} 
-              className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-            >
-              <div className="relative overflow-hidden group" style={{ width: '900px', height: '300px' }}>
-                <Image 
-                  src={member.image} 
-                  alt={member.name} 
-                  width={387}
-                  height={287}
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                  <p className="text-white text-sm">View Profile</p>
-                </div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-xl font-bold mb-1">{member.name}</h3>
-                <p className="text-blue-600 font-medium mb-3">{member.role}</p>
-                <p className="text-gray-600">{member.bio}</p>
-              </div>
-            </motion.div>
-          ))}
+     {/* Team Section */}
+<Section background="white">
+  <motion.div 
+    className="text-center mb-16"
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-4 text-gray-700">
+      Our Company <span className="bg-gradient-to-r from-blue-600 to-teal-400 bg-clip-text text-transparent">Business Head</span>
+    </h2>
+    <p className="text-gray-600 max-w-3xl mx-auto">
+      Meet the experienced professionals who guide our company's vision and operations.
+    </p>
+  </motion.div>
+
+  <div className="flex justify-center text-gray-700">
+    {[
+      {
+        name: "Ms. Ami Raval",
+        role: "Business Head",
+        image: "/director1.jpg",
+        bio: "With over 20 years of experience in global trade and business development."
+      },
+    ].map((member, index) => (
+      <motion.div 
+        key={index} 
+        className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 max-w-sm"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+      >
+        <div className="relative overflow-hidden group mx-auto">
+          <Image 
+            src={member.image} 
+            alt={member.name} 
+            width={400}
+            height={400}
+            className="object-cover transition-transform duration-500 group-hover:scale-110 rounded-xl"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+            <p className="text-white text-sm">View Profile</p>
+          </div>
         </div>
-      </Section>
+        <div className="p-6 text-center">
+          <h3 className="text-xl font-bold mb-1">{member.name}</h3>
+          <p className="text-blue-600 font-medium mb-3">{member.role}</p>
+          <p className="text-gray-600">{member.bio}</p>
+        </div>
+      </motion.div>
+    ))}
+  </div>
+</Section>
+
       
       {/* Global Presence */}
       <Section background="light">
@@ -537,24 +534,24 @@ export default function AboutPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold">Americas</h3>
+              <h3 className="text-xl font-bold text-gray-700">Africa</h3>
             </div>
             <ul className="space-y-3 text-gray-600 pl-4">
               <li className="flex items-center">
                 <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-                <span>New York, USA <span className="text-sm text-blue-600 font-medium">(Regional HQ)</span></span>
+                <span>West Africa <span className="text-sm text-blue-600 font-medium"></span></span>
               </li>
               <li className="flex items-center">
                 <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-                <span>Toronto, Canada</span>
+                <span>Ghana</span>
               </li>
               <li className="flex items-center">
                 <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-                <span>Mexico City, Mexico</span>
+                <span>Nigeria</span>
               </li>
               <li className="flex items-center">
                 <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-                <span>São Paulo, Brazil</span>
+                <span>Senegal</span>
               </li>
             </ul>
           </motion.div>
@@ -572,12 +569,12 @@ export default function AboutPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold">Europe & Middle East</h3>
+              <h3 className="text-xl font-bold text-gray-700">Europe & Middle East</h3>
             </div>
             <ul className="space-y-3 text-gray-600 pl-4">
               <li className="flex items-center">
                 <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
-                <span>London, UK <span className="text-sm text-purple-600 font-medium">(Regional HQ)</span></span>
+                <span>London, UK <span className="text-sm text-purple-600 font-medium"></span></span>
               </li>
               <li className="flex items-center">
                 <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
@@ -607,141 +604,24 @@ export default function AboutPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold">Asia Pacific</h3>
+              <h3 className="text-xl font-bold text-gray-700">Asia</h3>
             </div>
             <ul className="space-y-3 text-gray-600 pl-4">
               <li className="flex items-center">
                 <span className="w-2 h-2 bg-teal-500 rounded-full mr-2"></span>
-                <span>Singapore <span className="text-sm text-teal-600 font-medium">(Regional HQ)</span></span>
+                <span>Gandhidham (Kandla)<span className="text-sm text-teal-600 font-medium"></span></span>
               </li>
               <li className="flex items-center">
                 <span className="w-2 h-2 bg-teal-500 rounded-full mr-2"></span>
-                <span>Mumbai, India</span>
+                <span>Ahmedabad</span>
               </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-teal-500 rounded-full mr-2"></span>
-                <span>Shanghai, China</span>
-              </li>
-              <li className="flex items-center">
-                <span className="w-2 h-2 bg-teal-500 rounded-full mr-2"></span>
-                <span>Sydney, Australia</span>
-              </li>
+             
             </ul>
           </motion.div>
         </div>
       </Section>
       
-      {/* Affiliated Companies Section */}
-      <Section background="light" paddingY="xl" className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-white to-blue-50/50"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <motion.h2 
-              className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              Affiliated Companies
-            </motion.h2>
-            <motion.p 
-              className="text-xl text-black max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              We proudly partner with industry leaders to deliver exceptional quality and service
-            </motion.p>
-          </div>
-          
-          {/* Logo Carousel */}
-          <motion.div 
-            className="w-full overflow-hidden relative py-10"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            {/* Primary logos row with animation */}
-            <div className="flex space-x-16 animate-marquee">
-              {[
-                {
-                  name: 'IFFCO',
-                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/IFFCO_logo.svg/1200px-IFFCO_logo.svg.png'
-                },
-                {
-                  name: 'Maruti Suzuki',
-                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Maruti_Suzuki_Logo.svg/2560px-Maruti_Suzuki_Logo.svg.png'
-                },
-                {
-                  name: 'Tata Group',
-                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Tata_logo.svg/2560px-Tata_logo.svg.png'
-                },
-                {
-                  name: 'Reliance Industries',
-                  logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/57/Reliance_Industries_Logo.svg/1200px-Reliance_Industries_Logo.svg.png'
-                },
-                {
-                  name: 'Mahindra Group',
-                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Mahindra_Rise_Logo.png/1200px-Mahindra_Rise_Logo.png'
-                },
-                {
-                  name: 'Adani Group',
-                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Adani_2012_logo.svg/1200px-Adani_2012_logo.svg.png'
-                },
-              ].map((company, index) => (
-                <div key={index} className="flex-shrink-0 h-16 w-40 flex items-center justify-center bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-3">
-                  <img 
-                    src={company.logo} 
-                    alt={company.name} 
-                    className="max-h-full max-w-full object-contain"
-                  />
-                </div>
-              ))}
-            </div>
-            
-            {/* Duplicate for seamless loop */}
-            <div className="flex space-x-16 animate-marquee2 absolute top-10">
-              {[
-                {
-                  name: 'IFFCO',
-                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/IFFCO_logo.svg/1200px-IFFCO_logo.svg.png'
-                },
-                {
-                  name: 'Maruti Suzuki',
-                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Maruti_Suzuki_Logo.svg/2560px-Maruti_Suzuki_Logo.svg.png'
-                },
-                {
-                  name: 'Tata Group',
-                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Tata_logo.svg/2560px-Tata_logo.svg.png'
-                },
-                {
-                  name: 'Reliance Industries',
-                  logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/5/57/Reliance_Industries_Logo.svg/1200px-Reliance_Industries_Logo.svg.png'
-                },
-                {
-                  name: 'Mahindra Group',
-                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Mahindra_Rise_Logo.png/1200px-Mahindra_Rise_Logo.png'
-                },
-                {
-                  name: 'Adani Group',
-                  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Adani_2012_logo.svg/1200px-Adani_2012_logo.svg.png'
-                },
-              ].map((company, index) => (
-                <div key={index} className="flex-shrink-0 h-16 w-40 flex items-center justify-center bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-300 p-3">
-                  <img 
-                    src={company.logo} 
-                    alt={company.name} 
-                    className="max-h-full max-w-full object-contain"
-                  />
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </Section>
+    
       
       {/* CTA Section */}
       <Section background="gradient" paddingY="lg">

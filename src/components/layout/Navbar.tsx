@@ -109,7 +109,7 @@ const Navbar = () => {
                   height={40} 
                   className="rounded-md"
                 />
-                <span className="text-2xl font-bold text-white">Octopus SCM</span>
+                <span className="text-2xl font-bold text-white">OCC WORLD TRADE</span>
               </Link>
               
               {/* Right: Hamburger menu */}
@@ -147,7 +147,7 @@ const Navbar = () => {
                   height={48} 
                   className="rounded-md"
                 />
-                <span className="text-2xl font-bold text-white">Octopus SCM</span>
+                <span className="text-2xl font-bold text-white">OCC WORLD TRADE</span>
               </Link>
             </div>
             

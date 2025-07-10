@@ -7,18 +7,9 @@ import Section from '../ui/Section';
 
 // Services data based on client requirements
 const services = [
+  
   {
     id: '1',
-    title: 'CUSTOM HOUSE BROKERAGE',
-    slug: 'custom-house-brokerage',
-    description: 'Having license on Pan India basis with direct online EDI connectivity with Indian Customs. We offer expertise on clearance of many types of cargos with skilled staff for Documentation, Operation, Customer service, Accounts, and Sales for both Air and Sea.',
-    icon: '/icons/customs.svg',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-    color: 'from-blue-500 to-indigo-600',
-    hoverColor: 'group-hover:from-blue-600 group-hover:to-indigo-700'
-  },
-  {
-    id: '2',
     title: 'PACKING & TRANSPORTATION',
     slug: 'packing-transportation',
     description: 'We use the latest methods of packing cargo including palletization for necessary cargo and arrange for fumigation. We have our own vehicles to pick up and deliver cargo in and around Chennai, Bangalore, Krishnapatnam, Tuticorin, etc.',
@@ -47,26 +38,7 @@ const services = [
     color: 'from-red-500 to-rose-600',
     hoverColor: 'group-hover:from-red-600 group-hover:to-rose-700'
   },
-  {
-    id: '3',
-    title: 'SEA FREIGHT',
-    slug: 'sea-freight',
-    description: 'We arrange regular sailings on reliable liner vessels to & from major ports (20ft, 40ft, any special equipment) and handle LCL consignments to & from major ports worldwide.',
-    icon: '/icons/ship.svg',
-    image: 'https://images.unsplash.com/photo-1577125305658-dee71d4e7b91?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-    color: 'from-cyan-500 to-blue-600',
-    hoverColor: 'group-hover:from-cyan-600 group-hover:to-blue-700'
-  },
-  {
-    id: '4',
-    title: 'AIR FREIGHT',
-    slug: 'air-freight',
-    description: 'We offer attractive rates to & from major airports on reliable airlines with committed transit times to ensure your cargo reaches its destination efficiently.',
-    icon: '/icons/plane.svg',
-    image: 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
-    color: 'from-sky-500 to-blue-600',
-    hoverColor: 'group-hover:from-sky-600 group-hover:to-blue-700'
-  }
+
 ];
 
 // Process steps data
@@ -298,7 +270,7 @@ const ServicesSection = () => {
             
             <div className="md:col-span-2 flex flex-col justify-center items-center gap-5">
               <Link 
-                href="/products" 
+                href="/categories" 
                 className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-cyan-500/20 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
