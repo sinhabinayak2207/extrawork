@@ -54,7 +54,7 @@ const Footer = () => {
               </h3>
             </div>
             <p className="text-gray-300 mb-4">
-            Your Trusted commodity partner from India and global countries trade."
+            Your Trusted commodity partner for India and Global countries trade."
             </p>
             <div className="flex space-x-4">
               <a href="https://www.linkedin.com/company/occworldtrade/" className="text-gray-300 hover:text-white transition-colors duration-300">
