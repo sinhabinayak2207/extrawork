@@ -172,7 +172,7 @@ export default function AboutPage() {
             {[
               { value: '4+', label: 'Years Experience' },
               { value: '10+', label: 'Happy Clients' },
-              { value: '20+', label: 'Commmditiy Handling' },
+              { value: '20+', label: 'commodity Handling' },
               { value: '20+', label: 'Countries Served' },
             ].map((stat, index) => (
               <motion.div 
