@@ -172,7 +172,7 @@ export default function AboutPage() {
             {[
               { value: '4+', label: 'Years Experience' },
               { value: '10+', label: 'Happy Clients' },
-              { value: '20+', label: 'commodity Handling' },
+              { value: '20+', label: 'Commodity Handling' },
               { value: '20+', label: 'Countries Served' },
             ].map((stat, index) => (
               <motion.div 
@@ -232,7 +232,7 @@ export default function AboutPage() {
               <div className="relative bg-white p-8 rounded-2xl shadow-xl">
                 <h2 className="text-3xl font-bold mb-6 text-gray-800">Our Story</h2>
                 <p className="text-gray-800 mb-4 leading-relaxed">
-                We are commodity trading and Supply Chain management company based in Qatar and Doing Business Globally with associate present in UAE and Senegal.
+                We are commodity trading and Supply Chain management company based in Qatar and Doing Business Globally with associates present in UAE and Senegal.
                 </p>
                 <p className="text-gray-800 mb-6 leading-relaxed">
                 Company has deep roots in global shipping practice with strong network in shipping and logistics for optimised supply cost.
