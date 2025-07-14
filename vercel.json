@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npm run build",
+  "framework": null,
+  "outputDirectory": "out",
+  "regions": ["bom1"],
+  "trailingSlash": true,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "cleanUrls": true
+}

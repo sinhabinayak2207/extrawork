@@ -1,0 +1,7 @@
+<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="500" fill="#e2e8f0"/>
+  <text x="400" y="250" font-family="Arial" font-size="24" text-anchor="middle" fill="#64748b">World Map Image Placeholder</text>
+  <ellipse cx="400" cy="250" rx="300" ry="150" stroke="#94a3b8" stroke-width="2" fill="none"/>
+  <path d="M200,200 Q400,100 600,200 T800,300" stroke="#94a3b8" stroke-width="2" fill="none"/>
+  <path d="M200,300 Q400,400 600,300" stroke="#94a3b8" stroke-width="2" fill="none"/>
+</svg>

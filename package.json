@@ -1,0 +1,53 @@
+{
+  "name": "b2b-showcase",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "dev:custom": "node server.js",
+    "build": "next build",
+    "start": "next start",
+    "start:custom": "NODE_ENV=production node server.js",
+    "lint": "next lint",
+    "format": "prettier --write .",
+    "check-types": "tsc --noEmit",
+    "firebase-deploy": "next build && firebase deploy"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "@next-auth/firebase-adapter": "^2.0.1",
+    "axios": "^1.10.0",
+    "cloudinary": "^2.7.0",
+    "emailjs-com": "^3.2.0",
+    "firebase": "^11.10.0",
+    "framer-motion": "^11.18.2",
+    "multer": "^2.0.1",
+    "next": "15.3.3",
+    "next-auth": "^4.24.11",
+    "nodemailer": "^6.10.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^6.22.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.0.0",
+    "@netlify/plugin-nextjs": "^4.34.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^20.19.1",
+    "@types/nodemailer": "^6.4.17",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "autoprefixer": "^10.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "15.3.3",
+    "eslint-config-prettier": "^9.1.0",
+    "postcss": "^8.0.0",
+    "prettier": "^3.0.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
