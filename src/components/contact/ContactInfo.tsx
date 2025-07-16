@@ -21,7 +21,7 @@ const ContactInfo = () => {
         </svg>
       ),
       title: 'Email Us',
-      content: 'biz@octopusexpeditors.com\nhttps://octopusexpeditors.com'
+      content: 'Trade@occworldtrade.com \n https://occworldtrade.com'
     },
     {
       icon: (
@@ -30,7 +30,7 @@ const ContactInfo = () => {
         </svg>
       ),
       title: 'Call Us',
-      content: 'Hitendra Joshi (Director)\n+91 7574831100'
+      content: 'Mrs Ami Mehul Rawal \n +91 8258008258'
     },
     {
       icon: (

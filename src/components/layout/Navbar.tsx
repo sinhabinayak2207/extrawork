@@ -192,7 +192,7 @@ const Navbar = () => {
           { name: 'Changes', path: '/admin/changes' },
           { name: 'Products Management', path: '/admin/products' },
           { name: 'Categories Management', path: '/admin/categories' },
-          { name: 'Subcategories Management', path: '/admin/subcategories' },
+       { name: 'Achievements Management', path: '/admin/achievements' }
         ]
       },
     ] : []),

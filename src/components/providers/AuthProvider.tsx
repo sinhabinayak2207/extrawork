@@ -23,16 +23,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
   
   // List of master admin emails
-  const masterAdminEmails = ['sinha.vinayak2207@gmail.com', 'octopusscm3@gmail.com'];
+  const masterAdminEmails = ['sinha.vinayak2207@gmail.com','Trade@occworldtrade.com'];
   
   // List of admin emails (includes master admins)
   const adminEmails = [...masterAdminEmails, 'admin@example.com'];
   
-  // Check if the user is a master admin
-  const isMasterAdmin = user?.email ? masterAdminEmails.includes(user.email) : false;
+  // Check if the user is a master admin (case-insensitive email comparison)
+  const isMasterAdmin = user?.email ? masterAdminEmails.some(email => email.toLowerCase() === user.email.toLowerCase()) : false;
   
-  // Check if the user is an admin
-  const isAdmin = user?.email ? adminEmails.includes(user.email) : false;
+  // Check if the user is an admin (case-insensitive email comparison)
+  const isAdmin = user?.email ? adminEmails.some(email => email.toLowerCase() === user.email.toLowerCase()) : false;
 
   useEffect(() => {
     // Listen for auth state changes

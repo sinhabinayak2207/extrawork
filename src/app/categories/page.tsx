@@ -55,7 +55,7 @@ export default function CategoriesPage() {
             >
               <div className="relative h-48 w-full overflow-hidden">
                 <Image
-                  src={`${category.imageUrl || "/images/placeholder-category.jpg"}${category.imageUrl?.includes('?') ? '&' : '?'}t=${new Date().getTime()}`}
+                  src={`${category.imageUrl}${category.imageUrl?.includes('?') ? '&' : '?'}t=${new Date().getTime()}`}
                   alt={category.title}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"

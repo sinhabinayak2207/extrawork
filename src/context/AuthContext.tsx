@@ -24,10 +24,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   
-  // Check if user is admin or master admin
-  const isAdmin = user?.email === 'admin@example.com';
-  const masterAdminEmails = ['sinha.vinayak2207@gmail.com', 'Trade@occworldtrade.com'];
-  const isMasterAdmin = user?.email ? masterAdminEmails.includes(user.email) : false;
+  // Check if user is admin or master admin - using case-insensitive comparison
+  const adminEmails = ['admin@example.com'];
+  const masterAdminEmails = ['sinha.vinayak2207@gmail.com', 'trade@occworldtrade.com'];
+  const isAdmin = user?.email ? adminEmails.some(email => email.toLowerCase() === user.email?.toLowerCase()) : false;
+  const isMasterAdmin = user?.email ? masterAdminEmails.some(email => email.toLowerCase() === user.email?.toLowerCase()) : false;
   
   // Listen for auth state changes
   useEffect(() => {

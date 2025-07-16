@@ -5,84 +5,19 @@ import { doc, getFirestore, setDoc, Timestamp } from 'firebase/firestore';
 import { 
   addCategory as addFirebaseCategory, 
   removeCategory as removeFirebaseCategory,
-  updateCategoryImage as updateFirebaseCategoryImage
+  updateCategoryImage as updateFirebaseCategoryImage,
+  getAllCategories,
+  Category as FirebaseCategory
 } from '@/lib/firebase-db';
 import { useProducts, Product } from './ProductContext';
 
-export interface Category {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  image: string;
-  imageUrl?: string; // Added for compatibility with new components
-  productCount: number;
-  featured?: boolean;
-  updatedAt?: Date;
-  updatedBy?: string;
-}
-
-// Initial category data
-export const initialCategories: Category[] = [
-  {
-    id: '1',
-    title: 'Rice',
-    slug: 'rice',
-    description: 'Premium quality rice varieties sourced from the finest farms worldwide.',
-    image: 'https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?auto=compress&cs=tinysrgb&w=600',
-    productCount: 8,
-    featured: true
-  },
-  {
-    id: '2',
-    title: 'Seeds',
-    slug: 'seeds',
-    description: 'High-yield agricultural seeds for various crops and growing conditions.',
-    image: 'https://images.pexels.com/photos/1537169/pexels-photo-1537169.jpeg?auto=compress&cs=tinysrgb&w=600',
-    productCount: 12,
-    featured: true
-  },
-  {
-    id: '3',
-    title: 'Oil',
-    slug: 'oil',
-    description: 'Refined and crude oils for industrial and commercial applications.',
-    image: 'https://images.pexels.com/photos/1458694/pexels-photo-1458694.jpeg?auto=compress&cs=tinysrgb&w=600',
-    productCount: 6,
-    featured: false
-  },
-  {
-    id: '4',
-    title: 'Minerals',
-    slug: 'minerals',
-    description: 'High-quality minerals for industrial and commercial applications.',
-    image: 'https://images.pexels.com/photos/3825527/pexels-photo-3825527.jpeg?auto=compress&cs=tinysrgb&w=600',
-    productCount: 9,
-    featured: false
-  },
-  {
-    id: '5',
-    title: 'Bromine Salt',
-    slug: 'bromine-salt',
-    description: 'High-purity bromine salt compounds for chemical and industrial use.',
-    image: 'https://images.pexels.com/photos/6195085/pexels-photo-6195085.jpeg?auto=compress&cs=tinysrgb&w=600',
-    productCount: 4,
-    featured: false
-  },
-  {
-    id: '6',
-    title: 'Sugar',
-    slug: 'sugar',
-    description: 'Premium quality sugar products for food and beverage industries.',
-    image: 'https://images.pexels.com/photos/1435904/pexels-photo-1435904.jpeg?auto=compress&cs=tinysrgb&w=600',
-    productCount: 0,
-    featured: false
-  }
-];
+// Use the Category interface from firebase-db.ts for consistency
+export type Category = FirebaseCategory;
 
 interface CategoryContextType {
   categories: Category[];
   featuredCategories: Category[];
+  loading: boolean;
   updateCategoryFeaturedStatus: (categoryId: string, featured: boolean) => Promise<void>;
   updateCategoryImage: (categoryId: string, imageUrl: string) => Promise<void>;
   updateCategory: (categoryId: string, updates: Partial<Category>) => Promise<void>;
@@ -94,69 +29,79 @@ interface CategoryContextType {
 const CategoryContext = createContext<CategoryContextType | null>(null);
 
 export const CategoryProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [categories, setCategories] = useState<Category[]>(initialCategories);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [featuredCategories, setFeaturedCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const productContext = useProducts();
 
-  // Initialize categories from localStorage, Firestore, or local data
+  // Initialize categories from Firebase
   useEffect(() => {
     const initializeCategories = async () => {
       try {
-        // First, create base categories with imageUrl for compatibility
-        const baseCategories = initialCategories.map(category => ({
-          ...category,
-          imageUrl: category.image // Ensure imageUrl is set for compatibility
-        }));
+        setLoading(true);
+        console.log('CategoryContext: Fetching categories from Firebase');
         
-        // Try to load cached category images from localStorage
-        let cachedCategories = [...baseCategories];
-        try {
-          if (typeof window !== 'undefined') {
-            // Try to load from global cache first
-            const globalCacheStr = localStorage.getItem('categoryCache');
-            if (globalCacheStr) {
-              const globalCache = JSON.parse(globalCacheStr);
-              
-              // Merge global cache with base categories
-              cachedCategories = baseCategories.map(category => {
-                const cachedCategory = globalCache[category.id];
-                if (cachedCategory) {
-                  // For Cloudinary URLs, use them directly without adding timestamp
-                  let imageUrl = cachedCategory.image || category.image;
-                  
-                  // Don't add timestamp to Cloudinary URLs
-                  if (!imageUrl.includes('cloudinary.com')) {
-                    // Add timestamp to non-Cloudinary URLs to bust browser cache
-                    const timestamp = new Date().getTime();
-                    imageUrl = imageUrl.includes('?') 
-                      ? `${imageUrl}&t=${timestamp}` 
-                      : `${imageUrl}?t=${timestamp}`;
-                  }
-                  
-                  return {
-                    ...category,
-                    ...cachedCategory,
-                    image: cachedCategory.image || category.image,
-                    imageUrl: imageUrl
-                  };
-                }
-                return category;
-              });
-              
-              console.log('Loaded categories from global cache:', cachedCategories);
-            } else {
-              console.log('No global category cache found, using base categories');
-            }
-          }
-        } catch (e) {
-          console.warn('Failed to load from localStorage:', e);
+        // Fetch categories from Firebase
+        const firebaseCategories = await getAllCategories();
+        console.log('CategoryContext: Fetched categories from Firebase:', firebaseCategories);
+        
+        if (firebaseCategories.length === 0) {
+          console.warn('CategoryContext: No categories found in Firebase');
         }
         
-        setCategories(cachedCategories);
-        setFeaturedCategories(cachedCategories.filter(category => category.featured));
+        // Process categories for cache busting and compatibility
+        const processedCategories = firebaseCategories.map((category: Category) => {
+          // For Cloudinary URLs, use them directly without adding timestamp
+          let imageUrl = category.image || category.imageUrl || '';
+          
+          // Don't add timestamp to Cloudinary URLs
+          if (imageUrl && !imageUrl.includes('cloudinary.com')) {
+            // Add timestamp to non-Cloudinary URLs to bust browser cache
+            const timestamp = new Date().getTime();
+            imageUrl = imageUrl.includes('?') 
+              ? `${imageUrl}&t=${timestamp}` 
+              : `${imageUrl}?t=${timestamp}`;
+          }
+          
+          return {
+            ...category,
+            imageUrl: imageUrl
+          };
+        });
+        
+        // Update state with fetched categories
+        setCategories(processedCategories);
+        setFeaturedCategories(processedCategories.filter(category => category.featured));
+        
+        // Cache categories in localStorage for faster loading next time
+        try {
+          if (typeof window !== 'undefined') {
+            // Create a cache object with category IDs as keys
+            const categoryCache: Record<string, any> = {};
+            processedCategories.forEach(category => {
+              categoryCache[category.id] = {
+                id: category.id,
+                title: category.title,
+                slug: category.slug,
+                description: category.description || '',
+                image: category.image || '',
+                imageUrl: category.imageUrl,
+                featured: category.featured,
+                updatedAt: category.updatedAt ? category.updatedAt.toISOString() : new Date().toISOString()
+              };
+            });
+            
+            localStorage.setItem('categoryCache', JSON.stringify(categoryCache));
+            console.log('CategoryContext: Updated category cache in localStorage');
+          }
+        } catch (cacheError) {
+          console.warn('CategoryContext: Failed to update localStorage cache:', cacheError);
+        }
         
       } catch (error) {
-        console.error('Error initializing categories:', error);
+        console.error('CategoryContext: Error initializing categories:', error);
+      } finally {
+        setLoading(false);
       }
     };
     
@@ -168,18 +113,104 @@ export const CategoryProvider: React.FC<{ children: ReactNode }> = ({ children }
     setFeaturedCategories(categories.filter(category => category.featured));
   }, [categories]);
 
-  // Update featured status of a category
+  // Update a category's image
+  const updateCategoryImage = async (categoryId: string, imageUrl: string): Promise<void> => {
+    try {
+      // Update in Firestore
+      await updateFirebaseCategoryImage(categoryId, imageUrl);
+      
+      // Fetch the updated category list from Firebase to ensure consistency
+      const updatedCategories = await getAllCategories();
+      setCategories(updatedCategories);
+      setFeaturedCategories(updatedCategories.filter(cat => cat.featured));
+      
+      // Update localStorage cache
+      try {
+        if (typeof window !== 'undefined') {
+          const globalCacheStr = localStorage.getItem('categoryCache');
+          if (globalCacheStr) {
+            const globalCache = JSON.parse(globalCacheStr);
+            if (globalCache[categoryId]) {
+              globalCache[categoryId].image = imageUrl;
+              globalCache[categoryId].updatedAt = new Date().toISOString();
+              localStorage.setItem('categoryCache', JSON.stringify(globalCache));
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('Failed to update localStorage cache:', e);
+      }
+      
+      // Dispatch event for components to update
+      window.dispatchEvent(new CustomEvent('categoryUpdated', { detail: { categoryId } }));
+    } catch (error) {
+      console.error('Error updating category image:', error);
+      throw error;
+    }
+  };
+
+  // Update a category's featured status
   const updateCategoryFeaturedStatus = async (categoryId: string, featured: boolean): Promise<void> => {
     try {
-      // In a real app, update in Firestore
+      const db = getFirestore();
+      const categoryRef = doc(db, 'categories', categoryId);
+      
+      // Get current user email or use system default
+      let updatedBy = 'system@b2b-showcase.com';
+      try {
+        const { getAuth } = await import('firebase/auth');
+        const auth = getAuth();
+        if (auth.currentUser?.email) {
+          updatedBy = auth.currentUser.email;
+        }
+      } catch (authError) {
+        console.warn('Could not get current user, using default:', authError);
+      }
+      
+      await setDoc(categoryRef, {
+        featured,
+        updatedAt: Timestamp.now(),
+        updatedBy
+      }, { merge: true });
       
       // Update local state
-      setCategories(prevCategories => prevCategories.map(category => {
-        if (category.id === categoryId) {
-          return { ...category, featured };
+      setCategories(prevCategories => 
+        prevCategories.map(category => 
+          category.id === categoryId ? { ...category, featured } : category
+        )
+      );
+      
+      // Update featured categories
+      setFeaturedCategories(prevFeatured => {
+        if (featured) {
+          // Add to featured if not already there
+          const category = categories.find(c => c.id === categoryId);
+          if (category && !prevFeatured.some(c => c.id === categoryId)) {
+            return [...prevFeatured, { ...category, featured }];
+          }
+        } else {
+          // Remove from featured
+          return prevFeatured.filter(c => c.id !== categoryId);
         }
-        return category;
-      }));
+        return prevFeatured;
+      });
+      
+      // Update localStorage cache
+      try {
+        if (typeof window !== 'undefined') {
+          const globalCache = JSON.parse(localStorage.getItem('categoryCache') || '{}');
+          if (globalCache[categoryId]) {
+            globalCache[categoryId].featured = featured;
+            globalCache[categoryId].updatedAt = new Date().toISOString();
+            localStorage.setItem('categoryCache', JSON.stringify(globalCache));
+          }
+        }
+      } catch (cacheError) {
+        console.warn('Failed to update localStorage cache:', cacheError);
+      }
+      
+      // Dispatch event for components to update
+      window.dispatchEvent(new CustomEvent('categoryUpdated', { detail: { categoryId } }));
     } catch (error) {
       console.error('Error updating category featured status:', error);
       throw error;
@@ -306,31 +337,34 @@ export const CategoryProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
   };
 
-  // Wrapper function for backward compatibility
-  const updateCategoryImage = async (categoryId: string, imageUrl: string): Promise<void> => {
-    return updateCategory(categoryId, { imageUrl });
-  };
-
   // Add a new category
   const addCategory = async (category: { title: string, description: string, image?: string }): Promise<string> => {
     try {
-      const user = 'admin'; // In a real app, get this from auth context
-      const newCategoryId = await addFirebaseCategory(category, user);
+      // Get current user email or use system default
+      let updatedBy = 'system@b2b-showcase.com';
+      try {
+        const { getAuth } = await import('firebase/auth');
+        const auth = getAuth();
+        if (auth.currentUser?.email) {
+          updatedBy = auth.currentUser.email;
+        }
+      } catch (authError) {
+        console.warn('Could not get current user, using default:', authError);
+      }
       
-      // Update local state
-      const newCategory: Category = {
-        id: newCategoryId,
+      // Add category to Firebase
+      const newCategoryData = {
         title: category.title,
-        slug: category.title.toLowerCase().replace(/\s+/g, '-'),
-        description: category.description,
-        image: category.image || '',
-        productCount: 0,
-        featured: false,
-        updatedAt: new Date(),
-        updatedBy: user
+        description: category.description || '',
+        image: category.image || ''
       };
       
-      setCategories(prevCategories => [...prevCategories, newCategory]);
+      const newCategoryId = await addFirebaseCategory(newCategoryData, updatedBy);
+      
+      // Fetch the updated category list from Firebase to ensure consistency
+      const updatedCategories = await getAllCategories();
+      setCategories(updatedCategories);
+      setFeaturedCategories(updatedCategories.filter(cat => cat.featured));
       
       // Dispatch event for components to update
       window.dispatchEvent(new CustomEvent('categoryAdded', { detail: { categoryId: newCategoryId } }));
@@ -349,6 +383,20 @@ export const CategoryProvider: React.FC<{ children: ReactNode }> = ({ children }
       
       // Update local state
       setCategories(prevCategories => prevCategories.filter(category => category.id !== categoryId));
+      setFeaturedCategories(prevFeatured => prevFeatured.filter(category => category.id !== categoryId));
+      
+      // Update localStorage cache
+      try {
+        if (typeof window !== 'undefined') {
+          const globalCache = JSON.parse(localStorage.getItem('categoryCache') || '{}');
+          if (globalCache[categoryId]) {
+            delete globalCache[categoryId];
+            localStorage.setItem('categoryCache', JSON.stringify(globalCache));
+          }
+        }
+      } catch (cacheError) {
+        console.warn('Failed to update localStorage cache:', cacheError);
+      }
       
       // Dispatch event for components to update
       window.dispatchEvent(new CustomEvent('categoryRemoved', { detail: { categoryId } }));
@@ -360,19 +408,67 @@ export const CategoryProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   // Function to update product count for a category
   const updateProductCount = useCallback((categorySlug: string, count?: number) => {
-    // If count is provided, use it directly, otherwise calculate from products if available
-    const newCount = count !== undefined ? count : 
-      (productContext?.products?.filter(product => product.category === categorySlug)?.length || 0);
+    setCategories(prevCategories => 
+      prevCategories.map(category => {
+        if (category.slug === categorySlug) {
+          // If count is provided, use it directly
+          if (count !== undefined) {
+            return { ...category, productCount: count };
+          }
+          
+          // Otherwise calculate from products context
+          if (productContext) {
+            const productCount = productContext.products.filter(
+              (product: Product) => product.category === categorySlug
+            ).length;
+            return { ...category, productCount };
+          }
+        }
+        return category;
+      })
+    );
     
-    console.log(`Updating product count for category ${categorySlug} to ${newCount}`);
+    // Also update featured categories if needed
+    setFeaturedCategories(prevFeatured => 
+      prevFeatured.map(category => {
+        if (category.slug === categorySlug) {
+          // If count is provided, use it directly
+          if (count !== undefined) {
+            return { ...category, productCount: count };
+          }
+          
+          // Otherwise calculate from products context
+          if (productContext) {
+            const productCount = productContext.products.filter(
+              (product: Product) => product.category === categorySlug
+            ).length;
+            return { ...category, productCount };
+          }
+        }
+        return category;
+      })
+    );
     
-    setCategories(prevCategories => prevCategories.map(category => {
-      if (category.slug === categorySlug) {
-        return { ...category, productCount: newCount };
+    // Update localStorage cache
+    try {
+      if (typeof window !== 'undefined') {
+        const globalCacheStr = localStorage.getItem('categoryCache');
+        if (globalCacheStr) {
+          const globalCache = JSON.parse(globalCacheStr);
+          const categoryId = Object.keys(globalCache).find(id => 
+            globalCache[id].slug === categorySlug
+          );
+          
+          if (categoryId && count !== undefined) {
+            globalCache[categoryId].productCount = count;
+            localStorage.setItem('categoryCache', JSON.stringify(globalCache));
+          }
+        }
       }
-      return category;
-    }));
-  }, [productContext?.products]);
+    } catch (e) {
+      console.warn('Failed to update localStorage cache:', e);
+    }
+  }, [productContext]);
 
   // Listen for product added/removed events to update category counts
   useEffect(() => {
@@ -432,10 +528,53 @@ export const CategoryProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
   }, [productContext?.products, updateProductCount]);
 
+  // Listen for category update events
+  useEffect(() => {
+    const handleCategoryUpdated = (event: CustomEvent) => {
+      console.log('Category updated event received:', event.detail);
+    };
+    
+    const handleCategoryAdded = (event: CustomEvent) => {
+      console.log('Category added event received:', event.detail);
+    };
+    
+    const handleCategoryRemoved = (event: CustomEvent) => {
+      console.log('Category removed event received:', event.detail);
+    };
+    
+    const handleRefreshCategories = async () => {
+      console.log('Refreshing categories from Firebase...');
+      try {
+        setLoading(true);
+        const updatedCategories = await getAllCategories();
+        setCategories(updatedCategories);
+        setFeaturedCategories(updatedCategories.filter(cat => cat.featured));
+        console.log('Categories refreshed successfully');
+      } catch (error) {
+        console.error('Error refreshing categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    window.addEventListener('categoryUpdated', handleCategoryUpdated as EventListener);
+    window.addEventListener('categoryAdded', handleCategoryAdded as EventListener);
+    window.addEventListener('categoryRemoved', handleCategoryRemoved as EventListener);
+    window.addEventListener('refreshCategories', handleRefreshCategories as EventListener);
+    
+    return () => {
+      window.removeEventListener('categoryUpdated', handleCategoryUpdated as EventListener);
+      window.removeEventListener('categoryAdded', handleCategoryAdded as EventListener);
+      window.removeEventListener('categoryRemoved', handleCategoryRemoved as EventListener);
+      window.removeEventListener('refreshCategories', handleRefreshCategories as EventListener);
+    };
+  }, []);
+
   return (
     <CategoryContext.Provider value={{
       categories,
       featuredCategories,
+      loading,
       updateCategoryFeaturedStatus,
       updateCategoryImage,
       updateCategory,

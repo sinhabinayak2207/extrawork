@@ -190,7 +190,7 @@ export default function ProductModal({ productId, onClose }: ProductModalProps) 
                 {isMobile ? (
                   // For mobile users: Use mailto link that opens email app
                   <a 
-                    href={`mailto:info@b2bshowcase.com?subject=Inquiry about ${product.name}&body=I am interested in learning more about ${product.name}.`}
+                    href={`mailto:Trade@occworldtrade.com?subject=Inquiry about ${product.name}&body=I am interested in learning more about ${product.name}.`}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md text-center font-medium transition-colors duration-300"
                   >
                     Contact Supplier

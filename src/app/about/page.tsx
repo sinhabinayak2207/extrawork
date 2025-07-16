@@ -459,9 +459,9 @@ export default function AboutPage() {
   <div className="flex justify-center text-gray-700">
     {[
       {
-        name: "Ms. Ami Raval",
+        name: "Mrs Ami Mehul Rawal",
         role: "Business Head",
-        image: "/director1.jpg",
+        image: "https://res.cloudinary.com/doa53gfwf/image/upload/v1752562335/products/HGmzo9oBr0zxGp69hStO/1752562333707_photo_2025-07-15_12-16-20.jpg.jpg?t=1752562333707&t=1752562335570",
         bio: "With over 20 years of experience in global trade and business development."
       },
     ].map((member, index) => (

@@ -495,6 +495,88 @@ export const removeCategory = async (categoryId: string): Promise<void> => {
   }
 };
 
+// Category interface matching the one in CategoryContext
+export interface Category {
+  id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  image: string;
+  imageUrl?: string;
+  productCount: number;
+  featured?: boolean;
+  updatedAt?: Date;
+  updatedBy?: string;
+}
+
+/**
+ * Helper function to convert Firestore document to Category object
+ * Ensures all required fields are present and properly formatted
+ */
+const convertDocToCategory = (doc: QueryDocumentSnapshot): Category => {
+  const data = doc.data();
+  
+  // Convert Firestore Timestamp to Date
+  const updatedAt = data.updatedAt instanceof Timestamp 
+    ? data.updatedAt.toDate() 
+    : new Date(data.updatedAt || Date.now());
+  
+  // Make sure we have the latest image URL with cache-busting
+  let imageUrl = data.imageUrl || data.image || '';
+  
+  // Add cache-busting parameter if it doesn't already have one
+  if (imageUrl && !imageUrl.includes('cloudinary.com')) {
+    const timestamp = new Date().getTime();
+    imageUrl = imageUrl.includes('?') 
+      ? `${imageUrl}&t=${timestamp}` 
+      : `${imageUrl}?t=${timestamp}`;
+  }
+  
+  return {
+    id: doc.id,
+    title: data.title || '',
+    slug: data.slug || '',
+    description: data.description || '',
+    image: data.image || data.imageUrl || '',
+    imageUrl: imageUrl,
+    productCount: data.productCount || 0,
+    featured: data.featured || false,
+    updatedAt,
+    updatedBy: data.updatedBy || 'system'
+  };
+};
+
+/**
+ * Gets all categories from Firestore
+ * @returns Array of categories
+ */
+export const getAllCategories = async (): Promise<Category[]> => {
+  try {
+    console.log('Firebase DB: Fetching all categories');
+    
+    const categoriesRef = collection(db, 'categories');
+    const querySnapshot = await getDocs(categoriesRef);
+    
+    const categories: Category[] = [];
+    
+    querySnapshot.forEach((doc) => {
+      // Skip deleted categories
+      const data = doc.data();
+      if (data.deleted === true) {
+        return;
+      }
+      
+      categories.push(convertDocToCategory(doc));
+    });
+    
+    console.log(`Firebase DB: Fetched ${categories.length} categories`);
+    return categories;
+  } catch (error) {
+    console.error('Firebase DB: Error getting all categories:', error);
+    throw new Error('Failed to get all categories');
+  }
+};
+
 export { db };
 
 /**
