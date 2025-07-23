@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://octopus-sh.netlify.app'),
   title: {
     template: "%s | B2B Showcase",
-    default: "B2B Showcase - Premium Bulk Products for Global Businesses",
+    default: "OCC WORLD TRADE - Premium Bulk Products for Global Businesses",
   },
   description: "B2B Showcase offers high-quality bulk commodities and raw materials including rice, seeds, oil, raw polymers, and bromine salt for businesses worldwide.",
   keywords: ["B2B", "bulk products", "commodities", "rice", "seeds", "oil", "raw polymers", "bromine salt", "wholesale"],
@@ -32,9 +32,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     url: 'https://octopus-sh.netlify.app',
-    title: 'B2B Showcase - Premium Bulk Products for Global Businesses',
+    title: 'OCC WORLD TRADE- Premium Bulk Products for Global Businesses',
     description: 'High-quality bulk commodities and raw materials for businesses worldwide',
-    siteName: 'B2B Showcase',
+    siteName: 'OCC WORLD TRADE',
   },
   twitter: {
     card: 'summary_large_image',
