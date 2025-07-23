@@ -23,7 +23,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   metadataBase: new URL('https://octopus-sh.netlify.app'),
   title: {
-    template: "%s | B2B Showcase",
+    template: "%s | OCC WORLD TRADE",
     default: "OCC WORLD TRADE - Premium Bulk Products for Global Businesses",
   },
   description: "B2B Showcase offers high-quality bulk commodities and raw materials including rice, seeds, oil, raw polymers, and bromine salt for businesses worldwide.",
