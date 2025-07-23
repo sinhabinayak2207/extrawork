@@ -24,8 +24,8 @@ export const defaultMetadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: baseUrl,
-    siteName: 'B2B Showcase',
-    title: 'B2B Showcase | Premium Industrial Solutions',
+    siteName: 'OCC WORLD TRADE',
+    title: 'OCC WORLD TRADE | Premium Industrial Solutions',
     description: 'Leading provider of industrial solutions with premium products and expert services for businesses worldwide.',
     images: [
       {
@@ -38,7 +38,7 @@ export const defaultMetadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'B2B Showcase | Premium Industrial Solutions',
+    title: 'OCC WORLD TRADE | Premium Industrial Solutions',
     description: 'Leading provider of industrial solutions with premium products and expert services for businesses worldwide.',
     images: [`${baseUrl}/images/twitter-image.jpg`],
     creator: '@yourcompany',
@@ -49,16 +49,16 @@ export const defaultMetadata: Metadata = {
 export function getHomeMetadata(): Metadata {
   return {
     ...defaultMetadata,
-    title: 'B2B Showcase | Premium Industrial Solutions',
+    title: 'OCC WORLD TRADE  | Premium Industrial Solutions',
     description: 'Leading provider of industrial solutions with premium products and expert services for businesses worldwide.',
     openGraph: {
       ...defaultMetadata.openGraph,
-      title: 'B2B Showcase | Premium Industrial Solutions',
+      title: 'OCC WORLD TRADE | Premium Industrial Solutions',
       description: 'Leading provider of industrial solutions with premium products and expert services for businesses worldwide.',
     },
     twitter: {
       ...defaultMetadata.twitter,
-      title: 'B2B Showcase | Premium Industrial Solutions',
+      title: 'OCC WORLD TRADE | Premium Industrial Solutions',
       description: 'Leading provider of industrial solutions with premium products and expert services for businesses worldwide.',
     },
   };
@@ -71,12 +71,12 @@ export function getProductsMetadata(): Metadata {
     description: 'Explore our comprehensive range of high-quality industrial products designed for performance and reliability.',
     openGraph: {
       ...defaultMetadata.openGraph,
-      title: 'Our Products | B2B Showcase',
+      title: 'Our Products | OCC WORLD TRADE',
       description: 'Explore our comprehensive range of high-quality industrial products designed for performance and reliability.',
     },
     twitter: {
       ...defaultMetadata.twitter,
-      title: 'Our Products | B2B Showcase',
+      title: 'Our Products | OCC WORLD TRADE',
       description: 'Explore our comprehensive range of high-quality industrial products designed for performance and reliability.',
     },
   };
