@@ -8,7 +8,7 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yourdomain.com';
 // Default metadata for the site
 export const defaultMetadata: Metadata = {
   title: {
-    default: 'B2B Showcase | Premium Industrial Solutions',
+    default: 'OCC WORLD TRADE',
     template: '%s | B2B Showcase'
   },
   description: 'Leading provider of industrial solutions with premium products and expert services for businesses worldwide.',
